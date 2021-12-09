@@ -1,5 +1,5 @@
 use advent_of_code::read_lines;
-use std::{collections::HashSet, fs::File, ops::Deref};
+use std::{collections::HashSet, fs::File};
 
 fn parse_line(line: &str) -> usize {
     let (patterns, outputs) = line.split_once("|").unwrap();

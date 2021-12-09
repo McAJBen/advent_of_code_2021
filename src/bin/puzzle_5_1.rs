@@ -1,5 +1,5 @@
 use advent_of_code::read_lines;
-use std::{collections::HashMap, fs::File};
+use std::{cmp::Ordering, collections::HashMap, fs::File};
 
 #[derive(Debug, PartialEq, Eq, Hash, Clone, Copy)]
 struct Line {
@@ -10,7 +10,7 @@ struct Line {
 }
 
 impl Line {
-    fn new(line: &String) -> Self {
+    fn new(line: &str) -> Self {
         let (point1, point2) = line.split_once(" -> ").unwrap();
         let (x1, y1) = point1.split_once(",").unwrap();
         let (x2, y2) = point2.split_once(",").unwrap();
@@ -53,28 +53,36 @@ fn main() {
     for line in lines {
         let Line { x1, y1, x2, y2 } = line;
 
-        if x1 < x2 {
-            if y1 == y2 {
-                for x in x1..=x2 {
-                    *map.entry((x, y1)).or_insert(0) += 1;
+        match x1.cmp(&x2) {
+            Ordering::Less => {
+                if y1 == y2 {
+                    for x in x1..=x2 {
+                        *map.entry((x, y1)).or_insert(0) += 1;
+                    }
                 }
             }
-        } else if x1 == x2 {
-            if y1 < y2 {
-                for y in y1..=y2 {
-                    *map.entry((x1, y)).or_insert(0) += 1;
-                }
-            } else if y1 == y2 {
-                *map.entry((x1, y1)).or_insert(0) += 1;
-            } else {
-                for y in y2..=y1 {
-                    *map.entry((x1, y)).or_insert(0) += 1;
-                }
+            Ordering::Equal => {
+                match y1.cmp(&y2) {
+                    Ordering::Less => {
+                        for y in y1..=y2 {
+                            *map.entry((x1, y)).or_insert(0) += 1;
+                        }
+                    }
+                    Ordering::Equal => {
+                        *map.entry((x1, y1)).or_insert(0) += 1;
+                    }
+                    Ordering::Greater => {
+                        for y in y2..=y1 {
+                            *map.entry((x1, y)).or_insert(0) += 1;
+                        }
+                    }
+                };
             }
-        } else {
-            if y1 == y2 {
-                for x in x2..=x1 {
-                    *map.entry((x, y1)).or_insert(0) += 1;
+            Ordering::Greater => {
+                if y1 == y2 {
+                    for x in x2..=x1 {
+                        *map.entry((x, y1)).or_insert(0) += 1;
+                    }
                 }
             }
         }

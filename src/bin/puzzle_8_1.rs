@@ -2,18 +2,13 @@ use advent_of_code::read_lines;
 use std::{collections::HashSet, fs::File};
 
 struct Display {
-    patterns: Vec<HashSet<char>>,
     outputs: Vec<HashSet<char>>,
 }
 
 impl Display {
     fn new(line: String) -> Self {
-        let (patterns, outputs) = line.split_once("|").unwrap();
+        let (_, outputs) = line.split_once("|").unwrap();
         Self {
-            patterns: patterns
-                .split_whitespace()
-                .map(|pattern| pattern.to_string().chars().collect())
-                .collect(),
             outputs: outputs
                 .split_whitespace()
                 .map(|output| output.to_string().chars().collect())

@@ -18,7 +18,7 @@ impl Board {
         Board { rows, cols }
     }
 
-    fn did_win(&self, drawn_numbers: &Vec<i32>) -> bool {
+    fn did_win(&self, drawn_numbers: &[i32]) -> bool {
         for row in &self.rows {
             if row.iter().all(|&x| drawn_numbers.contains(&x)) {
                 return true;
@@ -31,10 +31,10 @@ impl Board {
             }
         }
 
-        return false;
+        false
     }
 
-    fn score(&self, drawn_numbers: &Vec<i32>) -> i32 {
+    fn score(&self, drawn_numbers: &[i32]) -> i32 {
         let drawn_number_set = drawn_numbers.iter().collect::<HashSet<_>>();
         let board_numbers = self
             .rows
@@ -56,7 +56,7 @@ fn main() {
 
     let numbers = lines[0].clone();
     let numbers = numbers
-        .split(",")
+        .split(',')
         .map(|num| num.parse::<i32>().unwrap())
         .collect::<Vec<_>>();
 
@@ -74,7 +74,7 @@ fn main() {
                 })
                 .collect::<Vec<_>>()
         })
-        .map(|board_lines| Board::new(board_lines))
+        .map(Board::new)
         .collect::<Vec<_>>();
 
     for number_index in 0..numbers.len() {

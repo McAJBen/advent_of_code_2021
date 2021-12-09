@@ -5,7 +5,7 @@ fn main() {
     let input = File::open("puzzle_7_input").unwrap();
 
     let positions: Vec<u16> = read_lines(&input)[0]
-        .split(",")
+        .split(',')
         .map(|x| x.parse().unwrap())
         .collect();
 

@@ -35,7 +35,7 @@ fn main() {
 
     let oxygen_rate = i32::from_str_radix(&oxygen_lines[0], 2).unwrap();
 
-    let mut co2_lines = lines.clone();
+    let mut co2_lines = lines;
 
     for position in 0..num_bits {
         if co2_lines.len() == 1 {

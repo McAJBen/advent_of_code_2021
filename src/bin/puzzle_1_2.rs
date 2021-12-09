@@ -9,11 +9,7 @@ fn main() {
         .map(|line| line.parse::<u32>().unwrap())
         .collect::<Vec<_>>();
 
-    let mut depth_groups = depths
-        .iter()
-        .skip(2)
-        .map(|depth| *depth)
-        .collect::<Vec<_>>();
+    let mut depth_groups = depths.iter().skip(2).copied().collect::<Vec<_>>();
 
     for (index, depth) in depths.iter().skip(1).take(depth_groups.len()).enumerate() {
         depth_groups[index] += depth;

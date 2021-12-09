@@ -6,7 +6,7 @@ fn main() {
 
     let directions = read_lines(&input)
         .into_iter()
-        .map(|line| DirectionCommand::new(line))
+        .map(DirectionCommand::new)
         .collect::<Vec<_>>();
 
     let mut horizontal_position = 0;

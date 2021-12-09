@@ -5,7 +5,7 @@ fn main() {
     let input = File::open("puzzle_6_input").unwrap();
 
     let fishes: Vec<u8> = read_lines(&input)[0]
-        .split(",")
+        .split(',')
         .map(|x| x.parse().unwrap())
         .collect();
 
