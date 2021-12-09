@@ -1,4 +1,4 @@
-use advent_of_code::{read_lines, ZipWithNext};
+use advent_of_code::{read_lines, ZipWithNextExt};
 use std::fs::File;
 
 fn main() {
@@ -18,7 +18,9 @@ fn main() {
         depth_groups[index] += depth;
     }
 
-    let num_increases = ZipWithNext::new(depth_groups.iter())
+    let num_increases = depth_groups
+        .iter()
+        .zip_with_next()
         .filter(|(left, right)| left < right)
         .count();
 
