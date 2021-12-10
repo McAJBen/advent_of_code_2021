@@ -4,16 +4,11 @@ use std::fs::File;
 fn main() {
     let input = File::open("puzzle_2_input").unwrap();
 
-    let directions = read_lines(&input)
-        .into_iter()
-        .map(DirectionCommand::new)
-        .collect::<Vec<_>>();
-
     let mut horizontal_position = 0;
     let mut depth = 0;
     let mut aim = 0;
 
-    for direction in directions {
+    for direction in read_lines(&input).into_iter().map(DirectionCommand::new) {
         match direction.direction {
             Direction::Forward => {
                 horizontal_position += direction.amount;

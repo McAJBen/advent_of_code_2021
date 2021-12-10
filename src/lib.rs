@@ -112,6 +112,7 @@ pub trait ZipWithNextNExt: Iterator {
 
 impl<I: Iterator> ZipWithNextNExt for I {}
 
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum Direction {
     Forward,
     Down,
