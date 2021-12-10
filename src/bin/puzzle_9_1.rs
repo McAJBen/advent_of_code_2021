@@ -1,4 +1,4 @@
-use advent_of_code::read_lines;
+use advent_of_code::{read_lines, Point};
 use std::{collections::HashSet, fs::File};
 
 #[derive(Debug, Clone)]
@@ -31,25 +31,25 @@ impl Grid {
         }
     }
 
-    fn get_nearby_heights(&self) -> Vec<((usize, usize), HashSet<(usize, usize)>)> {
+    fn get_nearby_heights(&self) -> Vec<(Point, HashSet<Point>)> {
         let mut heights = Vec::new();
 
         for y in 0..self.height {
             for x in 0..self.width {
                 let mut nearby_heights = HashSet::new();
                 if x < self.width - 1 {
-                    nearby_heights.insert((x + 1, y));
+                    nearby_heights.insert(Point { x: x + 1, y });
                 }
                 if x > 0 {
-                    nearby_heights.insert((x - 1, y));
+                    nearby_heights.insert(Point { x: x - 1, y });
                 }
                 if y < self.height - 1 {
-                    nearby_heights.insert((x, y + 1));
+                    nearby_heights.insert(Point { x, y: y + 1 });
                 }
                 if y > 0 {
-                    nearby_heights.insert((x, y - 1));
+                    nearby_heights.insert(Point { x, y: y - 1 });
                 }
-                heights.push(((x, y), nearby_heights));
+                heights.push((Point { x, y }, nearby_heights));
             }
         }
         heights
@@ -60,9 +60,9 @@ impl Grid {
         nearby_heights
             .into_iter()
             .filter_map(|(center, nearby)| {
-                let center = self.z_heights[center.1][center.0];
+                let center = self.z_heights[center.y][center.x];
                 if nearby.iter().all(|neighbor| {
-                    let neighbor = self.z_heights[neighbor.1][neighbor.0];
+                    let neighbor = self.z_heights[neighbor.y][neighbor.x];
                     neighbor > center
                 }) {
                     Some(center)

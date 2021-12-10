@@ -1,4 +1,5 @@
 use std::{
+    collections::VecDeque,
     fs::File,
     io::{BufRead, BufReader},
     iter::Peekable,
@@ -14,7 +15,7 @@ pub fn read_lines(file: &File) -> Vec<String> {
 pub struct ZipWithNext<Iter, Item>
 where
     Iter: Iterator<Item = Item>,
-    Item: Clone,
+    Item: Clone + Copy,
 {
     iter: Peekable<Iter>,
 }
@@ -22,7 +23,7 @@ where
 impl<Iter, Item> Iterator for ZipWithNext<Iter, Item>
 where
     Iter: Iterator<Item = Item>,
-    Item: Clone,
+    Item: Clone + Copy,
 {
     type Item = (Item, Item);
 
@@ -31,7 +32,7 @@ where
         let right = self.iter.peek();
 
         match (left, right) {
-            (Some(left), Some(right)) => Some((left, right.clone())),
+            (Some(left), Some(right)) => Some((left, *right)),
             _ => None,
         }
     }
@@ -40,7 +41,7 @@ where
 pub trait ZipWithNextExt: Iterator {
     fn zip_with_next(self) -> ZipWithNext<Self, Self::Item>
     where
-        Self::Item: Clone,
+        Self::Item: Clone + Copy,
         Self: Sized,
     {
         ZipWithNext {
@@ -51,76 +52,65 @@ pub trait ZipWithNextExt: Iterator {
 
 impl<I: Iterator> ZipWithNextExt for I {}
 
-// enum LazyInit<U, T> {
-//     Uninit(U),
-//     Init(T),
-// }
+pub struct ZipWithNextN<Iter, Item>
+where
+    Iter: Iterator<Item = Item>,
+    Item: Clone + Copy,
+{
+    n: usize,
+    past: Option<VecDeque<Item>>,
+    iter: Iter,
+}
 
-// pub struct ZipWithNextN<Iter, Item>
-// where
-//     Iter: Iterator<Item = Item>,
-//     Item: Clone,
-// {
-//     past: LazyInit<usize, VecDeque<Item>>,
-//     iter: Iter,
-// }
+impl<Iter, Item> Iterator for ZipWithNextN<Iter, Item>
+where
+    Iter: Iterator<Item = Item>,
+    Item: Clone + Copy,
+{
+    type Item = Vec<Item>;
 
-// impl<Iter, Item> Iterator for ZipWithNextN<Iter, Item>
-// where
-//     Iter: Iterator<Item = Item>,
-//     Item: Clone,
-// {
-//     type Item = Vec<Item>;
+    fn next(&mut self) -> Option<Self::Item> {
+        match &mut self.past {
+            Some(p) => {
+                let next = self.iter.next()?;
+                p.pop_front();
+                p.push_back(next);
 
-//     fn next(&mut self) -> Option<Self::Item> {
-//         let past = match self.past {
-//             LazyInit::Uninit(n) => {
-//                 let mut past = VecDeque::with_capacity(n);
-//                 for _ in 0..n {
-//                     past.push_back(self.iter.next()?);
-//                 }
-//                 LazyInit::Init(past)
-//             }
-//             LazyInit::Init(ref mut past) => {
-//                 let next = self.iter.next();
+                let past_vec = p.iter().cloned().collect::<Vec<_>>();
 
-//                 past.pop_front();
-//                 past.push_back(next);
+                Some(past_vec)
+            }
+            None => {
+                let mut p = VecDeque::with_capacity(self.n);
+                for _ in 0..self.n {
+                    p.push_back(self.iter.next().unwrap());
+                }
 
-//                 past
-//             }
-//         };
+                let past_vec = p.iter().cloned().collect::<Vec<_>>();
 
-//         let LazyInit::Init(past) = &mut self.past;
+                self.past = Some(p);
 
-//         let next = self.iter.next();
+                Some(past_vec)
+            }
+        }
+    }
+}
 
-//         match next {
-//             Some(next) => {
-//                 past.pop_front();
-//                 past.push_back(next);
+pub trait ZipWithNextNExt: Iterator {
+    fn zip_with_next_n(self, n: usize) -> ZipWithNextN<Self, Self::Item>
+    where
+        Self::Item: Clone + Copy,
+        Self: Sized,
+    {
+        ZipWithNextN {
+            n,
+            past: None,
+            iter: self,
+        }
+    }
+}
 
-//                 Some(past.iter().map(|item| item.clone()).collect::<Vec<_>>())
-//             }
-//             None => None,
-//         }
-//     }
-// }
-
-// pub trait ZipWithNextNExt: Iterator {
-//     fn zip_with_next(self, n: usize) -> ZipWithNextN<Self, Self::Item>
-//     where
-//         Self::Item: Clone,
-//         Self: Sized,
-//     {
-//         ZipWithNextN {
-//             past: LazyInit::Uninit(n),
-//             iter: self,
-//         }
-//     }
-// }
-
-// impl<I: Iterator> ZipWithNextNExt for I {}
+impl<I: Iterator> ZipWithNextNExt for I {}
 
 pub enum Direction {
     Forward,
@@ -152,4 +142,10 @@ impl DirectionCommand {
             amount: right.parse::<i32>().unwrap(),
         }
     }
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+pub struct Point {
+    pub x: usize,
+    pub y: usize,
 }
