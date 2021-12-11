@@ -69,7 +69,7 @@ fn parse_line(line: &str) -> ErrorType {
         }
     }
 
-    if stack.len() > 0 {
+    if !stack.is_empty() {
         stack.reverse();
         ErrorType::Incomplete(
             stack
@@ -96,7 +96,7 @@ fn main() {
 
     println!("{:?}", incomplete_values);
 
-    incomplete_values.sort();
+    incomplete_values.sort_unstable();
 
     let middle = incomplete_values[incomplete_values.len() / 2];
 
