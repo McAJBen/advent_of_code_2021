@@ -1,5 +1,4 @@
-use advent_of_code::read_lines;
-use std::fs::File;
+use std::fs::read_to_string;
 
 enum BracketType {
     Open,
@@ -57,15 +56,15 @@ fn find_corruption(line: &str) -> Option<Bracket> {
 }
 
 fn main() {
-    let input = File::open("puzzle_10_input").unwrap();
+    let input = read_to_string("puzzle_10_input").unwrap();
 
-    let lines = read_lines(&input);
-
-    let total = lines
-        .into_iter()
-        .filter_map(|line| find_corruption(&line))
+    let total = input
+        .lines()
+        .filter_map(find_corruption)
         .map(|bracket| bracket.value())
         .sum::<u32>();
 
-    println!("{:?}", total);
+    assert_eq!(392097, total);
+
+    println!("{}", total);
 }

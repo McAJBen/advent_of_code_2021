@@ -121,5 +121,7 @@ fn main() {
         }
     }
 
-    println!("{:#?}", num_ticks);
+    assert_eq!(216, num_ticks);
+
+    println!("{}", num_ticks);
 }

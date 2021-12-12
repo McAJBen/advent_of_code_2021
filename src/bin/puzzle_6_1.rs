@@ -1,13 +1,9 @@
-use advent_of_code::read_lines;
-use std::fs::File;
+use std::fs::read_to_string;
 
 fn main() {
-    let input = File::open("puzzle_6_input").unwrap();
+    let input = read_to_string("puzzle_6_input").unwrap();
 
-    let mut fishes: Vec<u8> = read_lines(&input)[0]
-        .split(',')
-        .map(|x| x.parse().unwrap())
-        .collect();
+    let mut fishes: Vec<u8> = input.split(',').map(|x| x.parse().unwrap()).collect();
 
     for _ in 0..80 {
         let mut num_new_fish = 0;
@@ -24,5 +20,9 @@ fn main() {
         fishes.extend(vec![8; num_new_fish]);
     }
 
-    println!("{:?}", fishes.len());
+    let total = fishes.len();
+
+    assert_eq!(389726, total);
+
+    println!("{}", total);
 }

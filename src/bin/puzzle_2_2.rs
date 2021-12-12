@@ -1,14 +1,14 @@
-use advent_of_code::{read_lines, Direction, DirectionCommand};
-use std::fs::File;
+use advent_of_code::{Direction, DirectionCommand};
+use std::fs::read_to_string;
 
 fn main() {
-    let input = File::open("puzzle_2_input").unwrap();
+    let input = read_to_string("puzzle_2_input").unwrap();
 
     let mut horizontal_position = 0;
     let mut depth = 0;
     let mut aim = 0;
 
-    for direction in read_lines(&input).into_iter().map(DirectionCommand::new) {
+    for direction in input.lines().map(DirectionCommand::new) {
         match direction.direction {
             Direction::Forward => {
                 horizontal_position += direction.amount;
@@ -19,10 +19,9 @@ fn main() {
         }
     }
 
-    println!(
-        "{} {} {}",
-        horizontal_position,
-        depth,
-        horizontal_position * depth
-    );
+    let total = horizontal_position * depth;
+
+    assert_eq!(2006917119, total);
+
+    println!("{}", total);
 }

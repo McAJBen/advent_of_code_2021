@@ -1,12 +1,11 @@
-use advent_of_code::read_lines;
-use std::{collections::HashSet, fs::File};
+use std::{collections::HashSet, fs::read_to_string};
 
 struct Display {
     outputs: Vec<HashSet<char>>,
 }
 
 impl Display {
-    fn new(line: String) -> Self {
+    fn new(line: &str) -> Self {
         let (_, outputs) = line.split_once("|").unwrap();
         Self {
             outputs: outputs
@@ -18,12 +17,9 @@ impl Display {
 }
 
 fn main() {
-    let input = File::open("puzzle_8_input").unwrap();
+    let input = read_to_string("puzzle_8_input").unwrap();
 
-    let displays = read_lines(&input)
-        .into_iter()
-        .map(Display::new)
-        .collect::<Vec<_>>();
+    let displays = input.lines().map(Display::new).collect::<Vec<_>>();
 
     // number of times that 1, 4, 7, 8 appear
     let count: u128 = displays
@@ -39,6 +35,8 @@ fn main() {
                 .count() as u128
         })
         .sum();
+
+    assert_eq!(449, count);
 
     println!("{}", count);
 }

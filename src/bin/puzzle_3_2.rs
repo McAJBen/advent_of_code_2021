@@ -1,10 +1,9 @@
-use advent_of_code::read_lines;
-use std::fs::File;
+use std::fs::read_to_string;
 
 fn main() {
-    let input = File::open("puzzle_3_input").unwrap();
+    let input = read_to_string("puzzle_3_input").unwrap();
 
-    let lines = read_lines(&input);
+    let lines: Vec<&str> = input.lines().collect();
 
     let num_bits = lines[0].len();
 
@@ -33,7 +32,7 @@ fn main() {
             .collect();
     }
 
-    let oxygen_rate = i32::from_str_radix(&oxygen_lines[0], 2).unwrap();
+    let oxygen_rate = i32::from_str_radix(oxygen_lines[0], 2).unwrap();
 
     let mut co2_lines = lines;
 
@@ -59,7 +58,11 @@ fn main() {
             .filter(|line| line.chars().nth(position).unwrap() == correct_value)
             .collect();
     }
-    let co2_rate = i32::from_str_radix(&co2_lines[0], 2).unwrap();
+    let co2_rate = i32::from_str_radix(co2_lines[0], 2).unwrap();
 
-    println!("{} {} {}", oxygen_rate, co2_rate, oxygen_rate * co2_rate);
+    let total = oxygen_rate * co2_rate;
+
+    assert_eq!(7440311, total);
+
+    println!("{}", total);
 }

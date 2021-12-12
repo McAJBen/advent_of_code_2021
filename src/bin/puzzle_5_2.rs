@@ -1,5 +1,4 @@
-use advent_of_code::read_lines;
-use std::{cmp::Ordering, collections::HashMap, fs::File};
+use std::{cmp::Ordering, collections::HashMap, fs::read_to_string};
 
 #[derive(Debug, PartialEq, Eq, Hash, Clone, Copy)]
 struct Line {
@@ -25,28 +24,9 @@ impl Line {
 }
 
 fn main() {
-    let input = File::open("puzzle_5_input").unwrap();
+    let input = read_to_string("puzzle_5_input").unwrap();
 
-    let lines = read_lines(&input);
-
-    let lines = lines
-        .into_iter()
-        .map(|line| Line::new(&line))
-        .collect::<Vec<_>>();
-
-    let size = lines
-        .iter()
-        .map(|line| {
-            [line.x1, line.y1, line.x2, line.y2]
-                .into_iter()
-                .max()
-                .unwrap()
-        })
-        .max()
-        .unwrap() as usize
-        + 1;
-
-    println!("{}", size);
+    let lines = input.lines().map(Line::new).collect::<Vec<_>>();
 
     let mut map = HashMap::new();
 
@@ -108,12 +88,7 @@ fn main() {
 
     let num_2 = map.iter().filter(|(_, &x)| x > 1).count();
 
-    // for row in grid {
-    //     for x in row {
-    //         print!("{}", x);
-    //     }
-    //     println!();
-    // }
+    assert_eq!(16793, num_2);
 
     println!("{}", num_2);
 }

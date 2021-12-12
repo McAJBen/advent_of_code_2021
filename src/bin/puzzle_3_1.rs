@@ -1,10 +1,9 @@
-use advent_of_code::read_lines;
-use std::fs::File;
+use std::fs::read_to_string;
 
 fn main() {
-    let input = File::open("puzzle_3_input").unwrap();
+    let input = read_to_string("puzzle_3_input").unwrap();
 
-    let lines = read_lines(&input);
+    let lines = input.lines().collect::<Vec<_>>();
 
     let num_bits = lines[0].len();
     let total_lines = lines.len();
@@ -37,10 +36,9 @@ fn main() {
 
     let epsilon_rate = i32::from_str_radix(&epsilon_rate_str, 2).unwrap();
 
-    println!(
-        "{} {} {}",
-        gamma_rate,
-        epsilon_rate,
-        gamma_rate * epsilon_rate
-    );
+    let total = gamma_rate * epsilon_rate;
+
+    assert_eq!(3959450, total);
+
+    println!("{}", gamma_rate * epsilon_rate);
 }

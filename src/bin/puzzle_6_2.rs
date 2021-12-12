@@ -1,13 +1,9 @@
-use advent_of_code::read_lines;
-use std::{collections::HashMap, fs::File};
+use std::{collections::HashMap, fs::read_to_string};
 
 fn main() {
-    let input = File::open("puzzle_6_input").unwrap();
+    let input = read_to_string("puzzle_6_input").unwrap();
 
-    let fishes: Vec<u8> = read_lines(&input)[0]
-        .split(',')
-        .map(|x| x.parse().unwrap())
-        .collect();
+    let fishes: Vec<u8> = input.split(',').map(|x| x.parse().unwrap()).collect();
 
     let mut map = HashMap::new();
 
@@ -30,5 +26,9 @@ fn main() {
         map = new_map;
     }
 
-    println!("{:?}", map.values().sum::<u128>());
+    let total = map.values().sum::<u128>();
+
+    assert_eq!(1743335992042, total);
+
+    println!("{}", total);
 }

@@ -1,13 +1,10 @@
-use advent_of_code::{read_lines, Direction, DirectionCommand};
-use std::fs::File;
+use advent_of_code::{Direction, DirectionCommand};
+use std::fs::read_to_string;
 
 fn main() {
-    let input = File::open("puzzle_2_input").unwrap();
+    let input = read_to_string("puzzle_2_input").unwrap();
 
-    let directions = read_lines(&input)
-        .into_iter()
-        .map(DirectionCommand::new)
-        .collect::<Vec<_>>();
+    let directions = input.lines().map(DirectionCommand::new).collect::<Vec<_>>();
 
     let horizontal_position: i32 = directions
         .iter()
@@ -25,6 +22,8 @@ fn main() {
         .sum();
 
     let total = horizontal_position * depth;
+
+    assert_eq!(1989014, total);
 
     println!("{}", total);
 }

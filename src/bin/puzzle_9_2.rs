@@ -1,5 +1,5 @@
-use advent_of_code::{read_lines, Point};
-use std::{collections::HashSet, fs::File};
+use advent_of_code::Point;
+use std::{collections::HashSet, fs::read_to_string};
 
 #[derive(Debug, Clone)]
 struct Grid {
@@ -9,7 +9,7 @@ struct Grid {
 }
 
 impl Grid {
-    fn new(lines: Vec<String>) -> Self {
+    fn new(lines: Vec<&str>) -> Self {
         let z_heights: Vec<Vec<u8>> = lines
             .into_iter()
             .map(|line| {
@@ -105,13 +105,11 @@ impl Grid {
 }
 
 fn main() {
-    let input = File::open("puzzle_9_input").unwrap();
+    let input = read_to_string("puzzle_9_input").unwrap();
 
-    let grid = Grid::new(read_lines(&input));
+    let grid = Grid::new(input.lines().collect());
 
     let low_points = grid.get_low_points();
-
-    println!("{:?}", low_points);
 
     let mut basin_sizes = low_points
         .into_iter()
@@ -123,5 +121,7 @@ fn main() {
 
     let total: usize = basin_sizes.iter().take(3).product();
 
-    println!("{:?}", total);
+    assert_eq!(858494, total);
+
+    println!("{}", total);
 }

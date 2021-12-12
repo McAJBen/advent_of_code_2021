@@ -1,6 +1,5 @@
-use advent_of_code::read_lines;
 use core::panic;
-use std::fs::File;
+use std::fs::read_to_string;
 
 enum BracketType {
     Open,
@@ -82,23 +81,21 @@ fn parse_line(line: &str) -> ErrorType {
 }
 
 fn main() {
-    let input = File::open("puzzle_10_input").unwrap();
+    let input = read_to_string("puzzle_10_input").unwrap();
 
-    let lines = read_lines(&input);
-
-    let mut incomplete_values = lines
-        .into_iter()
-        .filter_map(|line| match parse_line(&line) {
+    let mut incomplete_values = input
+        .lines()
+        .filter_map(|line| match parse_line(line) {
             ErrorType::Corruption(_) => None,
             ErrorType::Incomplete(i) => Some(i),
         })
         .collect::<Vec<_>>();
 
-    println!("{:?}", incomplete_values);
-
     incomplete_values.sort_unstable();
 
     let middle = incomplete_values[incomplete_values.len() / 2];
 
-    println!("{:?}", middle);
+    assert_eq!(4263222782, middle);
+
+    println!("{}", middle);
 }

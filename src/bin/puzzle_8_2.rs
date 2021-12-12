@@ -1,5 +1,4 @@
-use advent_of_code::read_lines;
-use std::{collections::HashSet, fs::File};
+use std::{collections::HashSet, fs::read_to_string};
 
 fn parse_line(line: &str) -> usize {
     let (patterns, outputs) = line.split_once("|").unwrap();
@@ -62,12 +61,11 @@ fn parse_line(line: &str) -> usize {
 }
 
 fn main() {
-    let input = File::open("puzzle_8_input").unwrap();
+    let input = read_to_string("puzzle_8_input").unwrap();
 
-    let x: usize = read_lines(&input)
-        .into_iter()
-        .map(|line| parse_line(&line))
-        .sum();
+    let total = input.lines().map(parse_line).sum::<usize>();
 
-    println!("{}", x);
+    assert_eq!(968175, total);
+
+    println!("{}", total);
 }

@@ -112,7 +112,9 @@ fn main() {
 
     let mut grid = OctopusGrid::new(input);
 
-    let total: u32 = (0..10000).map(|_| grid.tick()).sum();
+    let total: u32 = (0..100).map(|_| grid.tick()).sum();
 
-    println!("{:#?}", total);
+    assert_eq!(1691, total);
+
+    println!("{}", total);
 }

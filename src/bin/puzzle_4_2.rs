@@ -1,5 +1,5 @@
-use advent_of_code::read_lines;
-use std::{collections::HashSet, fs::File};
+use core::panic;
+use std::{collections::HashSet, fs::read_to_string};
 
 struct Board {
     rows: Vec<Vec<i32>>,
@@ -50,17 +50,17 @@ impl Board {
 }
 
 fn main() {
-    let input = File::open("puzzle_4_input").unwrap();
+    let input = read_to_string("puzzle_4_input").unwrap();
 
-    let lines = read_lines(&input);
+    let mut lines = input.lines().collect::<Vec<_>>();
 
-    let numbers = lines[0].clone();
-    let numbers = numbers
+    let numbers = lines
+        .remove(0)
         .split(',')
         .map(|num| num.parse::<i32>().unwrap())
         .collect::<Vec<_>>();
 
-    let board_lines = lines.into_iter().skip(1).collect::<Vec<_>>();
+    let board_lines = lines.into_iter().collect::<Vec<_>>();
 
     let mut boards = board_lines
         .chunks(6)
@@ -83,15 +83,14 @@ fn main() {
         let did_every_board_win = boards.iter().all(|board| board.did_win(&called_numbers));
 
         if did_every_board_win {
-            println!("{:?}", boards.len());
-
             let losing_board = &boards[0];
-            println!("{:?}", called_numbers);
 
-            println!("{:?}", losing_board.rows);
+            let score = losing_board.score(&called_numbers);
 
-            println!("{:?}", losing_board.score(&called_numbers));
-            break;
+            assert_eq!(7075, score);
+
+            println!("{}", score);
+            return;
         } else {
             boards = boards
                 .into_iter()
@@ -99,4 +98,6 @@ fn main() {
                 .collect();
         }
     }
+
+    panic!("No winning board found");
 }

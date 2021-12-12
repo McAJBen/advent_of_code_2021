@@ -1,16 +1,4 @@
-use std::{
-    collections::VecDeque,
-    fs::File,
-    io::{BufRead, BufReader},
-    iter::Peekable,
-};
-
-pub fn read_lines(file: &File) -> Vec<String> {
-    BufReader::new(file)
-        .lines()
-        .map(|line| line.unwrap())
-        .collect()
-}
+use std::{collections::VecDeque, iter::Peekable};
 
 pub struct ZipWithNext<Iter, Item>
 where
@@ -136,7 +124,7 @@ pub struct DirectionCommand {
 }
 
 impl DirectionCommand {
-    pub fn new(cmd: String) -> Self {
+    pub fn new(cmd: &str) -> Self {
         let (left, right) = cmd.split_once(' ').unwrap();
         Self {
             direction: Direction::from_str(left),

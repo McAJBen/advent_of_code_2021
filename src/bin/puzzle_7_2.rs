@@ -1,18 +1,12 @@
-use advent_of_code::read_lines;
-use std::fs::File;
+use std::fs::read_to_string;
 
 fn main() {
-    let input = File::open("puzzle_7_input").unwrap();
+    let input = read_to_string("puzzle_7_input").unwrap();
 
-    let positions: Vec<u16> = read_lines(&input)[0]
-        .split(',')
-        .map(|x| x.parse().unwrap())
-        .collect();
+    let positions: Vec<u16> = input.split(',').map(|x| x.parse().unwrap()).collect();
 
     let max_position = *positions.iter().max().unwrap();
     let min_position = *positions.iter().min().unwrap();
-
-    println!("{} {}", min_position, max_position);
 
     let position_fuel = (min_position..=max_position)
         .map(|middle| {
@@ -28,9 +22,9 @@ fn main() {
         .enumerate()
         .collect::<Vec<_>>();
 
-    println!("{:?}", position_fuel);
+    let total = position_fuel.into_iter().min_by_key(|&(_, x)| x).unwrap().1;
 
-    let best = position_fuel.into_iter().min_by_key(|&(_, x)| x).unwrap();
+    assert_eq!(98905973, total);
 
-    println!("{:?}", best);
+    println!("{:?}", total);
 }
