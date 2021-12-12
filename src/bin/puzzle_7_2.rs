@@ -8,7 +8,7 @@ fn main() {
     let max_position = *positions.iter().max().unwrap();
     let min_position = *positions.iter().min().unwrap();
 
-    let position_fuel = (min_position..=max_position)
+    let total = (min_position..=max_position)
         .map(|middle| {
             positions
                 .iter()
@@ -20,9 +20,9 @@ fn main() {
                 .sum::<u128>()
         })
         .enumerate()
-        .collect::<Vec<_>>();
-
-    let total = position_fuel.into_iter().min_by_key(|&(_, x)| x).unwrap().1;
+        .min_by_key(|&(_, x)| x)
+        .unwrap()
+        .1;
 
     assert_eq!(98905973, total);
 
