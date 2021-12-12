@@ -22,7 +22,7 @@ impl Node {
     }
 
     fn is_small(&self) -> bool {
-        matches!(self, Node::BigCave(_))
+        matches!(self, Node::SmallCave(_))
     }
 }
 
