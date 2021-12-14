@@ -138,3 +138,14 @@ pub struct Point {
     pub x: usize,
     pub y: usize,
 }
+
+impl Point {
+    pub fn from_str(input: &str) -> Self {
+        let (x, y) = input.split_once(',').unwrap();
+
+        Self {
+            x: x.parse().unwrap(),
+            y: y.parse().unwrap(),
+        }
+    }
+}
