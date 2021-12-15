@@ -11,7 +11,7 @@ fn display_grid(points: &HashSet<Point>) {
             if points.contains(&point) {
                 print!("#");
             } else {
-                print!(".");
+                print!(" ");
             }
         }
         println!();
