@@ -1,5 +1,5 @@
 use advent_of_code::Point;
-use std::{collections::HashSet, fs::read_to_string};
+use std::{collections::HashSet, fs::read_to_string, str::FromStr};
 
 fn display_grid(points: &HashSet<Point>) {
     let width = points.iter().map(|p| p.x).max().unwrap() + 1;
@@ -24,7 +24,10 @@ fn main() {
 
     let (points, folds) = input.split_once("\n\n").unwrap();
 
-    let mut points = points.lines().map(Point::from_str).collect::<HashSet<_>>();
+    let mut points = points
+        .lines()
+        .map(|line| Point::from_str(line).unwrap())
+        .collect::<HashSet<_>>();
 
     for line in folds.lines() {
         let (axis, value) = line[11..].split_once('=').unwrap();

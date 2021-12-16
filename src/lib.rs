@@ -1,4 +1,4 @@
-use std::{collections::VecDeque, iter::Peekable};
+use std::{collections::VecDeque, iter::Peekable, str::FromStr};
 
 pub struct ZipWithNext<Iter, Item>
 where
@@ -140,12 +140,20 @@ pub struct Point {
 }
 
 impl Point {
-    pub fn from_str(input: &str) -> Self {
+    pub fn new(x: usize, y: usize) -> Self {
+        Self { x, y }
+    }
+}
+
+impl FromStr for Point {
+    type Err = ();
+
+    fn from_str(input: &str) -> Result<Self, Self::Err> {
         let (x, y) = input.split_once(',').unwrap();
 
-        Self {
+        Ok(Self {
             x: x.parse().unwrap(),
             y: y.parse().unwrap(),
-        }
+        })
     }
 }

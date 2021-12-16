@@ -1,6 +1,5 @@
-use std::{collections::HashMap, fs::read_to_string};
-
 use advent_of_code::ZipWithNextExt;
+use std::{collections::HashMap, fs::read_to_string};
 
 fn main() {
     let input = read_to_string("puzzle_14_input").unwrap();
@@ -24,8 +23,8 @@ fn main() {
         .map(|line| {
             let (input, output) = line.split_once(" -> ").unwrap();
 
-            let input_0 = input.chars().nth(0).unwrap();
-            let output_0 = output.chars().nth(0).unwrap();
+            let input_0 = input.chars().next().unwrap();
+            let output_0 = output.chars().next().unwrap();
             let input_1 = input.chars().nth(1).unwrap();
 
             let output = vec![
@@ -67,5 +66,5 @@ fn main() {
 
     assert_eq!(2566282754493, total);
 
-    println!("{:?}", total);
+    println!("{}", total);
 }
