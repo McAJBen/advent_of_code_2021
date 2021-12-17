@@ -28,4 +28,6 @@ cargo run --release --bin puzzle_14_1
 cargo run --release --bin puzzle_14_2
 cargo run --release --bin puzzle_15_1
 cargo run --release --bin puzzle_15_2
+cargo run --release --bin puzzle_16_1
+cargo run --release --bin puzzle_16_2
 
