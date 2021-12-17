@@ -1,3 +1,5 @@
+start=`date +%s`
+
 cargo run --release --bin puzzle_1_1
 cargo run --release --bin puzzle_1_2
 cargo run --release --bin puzzle_2_1
@@ -30,4 +32,9 @@ cargo run --release --bin puzzle_15_1
 cargo run --release --bin puzzle_15_2
 cargo run --release --bin puzzle_16_1
 cargo run --release --bin puzzle_16_2
+
+end=`date +%s`
+echo "took $(expr $end - $start)s"
+
+read
 
