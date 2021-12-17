@@ -1,9 +1,35 @@
 use advent_of_code::Point;
-use std::fs::read_to_string;
+use std::{collections::BinaryHeap, fs::read_to_string, panic};
+
+struct ToVisit {
+    position: usize,
+    risk: u16,
+}
+
+impl Ord for ToVisit {
+    fn cmp(&self, other: &Self) -> std::cmp::Ordering {
+        other.risk.cmp(&self.risk)
+    }
+}
+
+impl PartialOrd for ToVisit {
+    fn partial_cmp(&self, other: &Self) -> Option<std::cmp::Ordering> {
+        Some(self.cmp(other))
+    }
+}
+
+impl PartialEq for ToVisit {
+    fn eq(&self, other: &Self) -> bool {
+        self.risk.eq(&other.risk)
+    }
+}
+
+impl Eq for ToVisit {}
 
 #[derive(Debug)]
 struct Grid {
-    data: Vec<u8>,
+    risks: Vec<u8>,
+    adjacency_list: Vec<Vec<usize>>,
     width: usize,
     height: usize,
 }
@@ -24,66 +50,89 @@ impl Grid {
             })
             .collect::<Vec<_>>();
 
-        let mut data = vec![];
+        let mut risks = Vec::new();
 
         for d_y in 0..5 {
             for row in original_data.iter() {
                 for d_x in 0..5 {
                     for value in row.iter() {
                         let mod_value = (value + d_y + d_x - 1) % 9 + 1;
-                        data.push(mod_value);
+                        risks.push(mod_value);
                     }
                 }
             }
         }
 
+        let width = original_width * 5;
+        let height = original_height * 5;
+
+        let adjacency_list = (0..risks.len())
+            .map(|index| {
+                let point = Point::new(index % width, index / width);
+                let mut neighbors = Vec::new();
+                if point.x > 0 {
+                    neighbors.push(index - 1);
+                }
+                if point.x < width - 1 {
+                    neighbors.push(index + 1);
+                }
+                if point.y > 0 {
+                    neighbors.push(index - width);
+                }
+                if point.y < height - 1 {
+                    neighbors.push(index + width);
+                }
+                neighbors
+            })
+            .collect::<Vec<_>>();
+
         Self {
-            data,
-            width: original_width * 5,
-            height: original_height * 5,
+            risks,
+            adjacency_list,
+            width,
+            height,
         }
     }
 
-    fn walk(&self) -> u64 {
-        let mut best_risks: Vec<Option<u64>> = vec![None; self.width * self.height];
-        let mut updatable_points = vec![0];
+    fn dijkstra(&self) -> u16 {
+        let mut risks = vec![u16::MAX; self.adjacency_list.len()];
+        let mut visited = vec![false; self.adjacency_list.len()];
+        let mut to_visit = BinaryHeap::new();
 
-        while let Some(index) = updatable_points.pop() {
-            let point = Point::new(index % self.width, index / self.width);
-            let mut neighbors = Vec::new();
-            if point.x > 0 {
-                neighbors.push(index - 1);
+        risks[0] = 0;
+        to_visit.push(ToVisit {
+            position: 0,
+            risk: 0,
+        });
+
+        let end = self.adjacency_list.len() - 1;
+
+        while let Some(current) = to_visit.pop() {
+            if current.position == end {
+                return current.risk;
             }
-            if point.x < self.width - 1 {
-                neighbors.push(index + 1);
-            }
-            if point.y > 0 {
-                neighbors.push(index - self.width);
-            }
-            if point.y < self.height - 1 {
-                neighbors.push(index + self.width);
+            if visited[current.position] {
+                continue;
             }
 
-            let best_risk = if index == 0 {
-                0
-            } else {
-                let self_risk = self.data[index] as u64;
+            for &neighbor_index in self.adjacency_list[current.position].iter() {
+                if !visited[neighbor_index] {
+                    let old_risk = risks[neighbor_index];
+                    let new_risk = current.risk + self.risks[neighbor_index] as u16;
 
-                let min_risk = neighbors
-                    .iter()
-                    .filter_map(|neighbor| best_risks[*neighbor])
-                    .min()
-                    .unwrap();
-                min_risk + self_risk
-            };
-
-            if best_risks[index].map_or(true, |previous| previous > best_risk) {
-                best_risks[index] = Some(best_risk);
-                updatable_points.extend(neighbors);
+                    if new_risk < old_risk {
+                        risks[neighbor_index] = new_risk;
+                        to_visit.push(ToVisit {
+                            position: neighbor_index,
+                            risk: new_risk,
+                        });
+                    }
+                }
             }
+            visited[current.position] = true;
         }
 
-        best_risks.last().unwrap().unwrap()
+        panic!("No path found");
     }
 }
 
@@ -92,7 +141,7 @@ fn main() {
 
     let grid = Grid::new(input);
 
-    let total_risk = grid.walk();
+    let total_risk = grid.dijkstra();
 
     assert_eq!(2963, total_risk);
 
