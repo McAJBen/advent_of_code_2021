@@ -99,7 +99,7 @@ fn main() {
 
     let mut probes = Vec::new();
 
-    for velocity_x in -1000..1000 {
+    for velocity_x in 0..1000 {
         for velocity_y in -1000..1000 {
             let probe = Probe {
                 x: 0,
