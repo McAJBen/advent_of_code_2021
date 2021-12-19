@@ -15,34 +15,36 @@ impl Beacon {
     fn new(x: i16, y: i16, z: i16) -> Beacon {
         Beacon { x, y, z }
     }
-    fn rotations(&self) -> [Beacon; 24] {
+
+    fn rotate(&self, rotation: usize) -> Beacon {
         let Beacon { x, y, z } = self.clone();
-        [
-            Beacon::new(x, y, z),
-            Beacon::new(-x, -y, z),
-            Beacon::new(-x, y, -z),
-            Beacon::new(x, -y, -z),
-            Beacon::new(-x, -z, -y),
-            Beacon::new(-x, z, y),
-            Beacon::new(x, -z, y),
-            Beacon::new(x, z, -y),
-            Beacon::new(-y, x, z),
-            Beacon::new(y, -x, z),
-            Beacon::new(y, x, -z),
-            Beacon::new(-y, -x, -z),
-            Beacon::new(y, z, x),
-            Beacon::new(-y, -z, x),
-            Beacon::new(-y, z, -x),
-            Beacon::new(y, -z, -x),
-            Beacon::new(z, x, y),
-            Beacon::new(-z, -x, y),
-            Beacon::new(-z, x, -y),
-            Beacon::new(z, -x, -y),
-            Beacon::new(-z, y, x),
-            Beacon::new(z, -y, x),
-            Beacon::new(z, y, -x),
-            Beacon::new(-z, -y, -x),
-        ]
+        match rotation {
+            0 => Beacon::new(x, y, z),
+            1 => Beacon::new(-x, -y, z),
+            2 => Beacon::new(-x, y, -z),
+            3 => Beacon::new(x, -y, -z),
+            4 => Beacon::new(-x, -z, -y),
+            5 => Beacon::new(-x, z, y),
+            6 => Beacon::new(x, -z, y),
+            7 => Beacon::new(x, z, -y),
+            8 => Beacon::new(-y, x, z),
+            9 => Beacon::new(y, -x, z),
+            10 => Beacon::new(y, x, -z),
+            11 => Beacon::new(-y, -x, -z),
+            12 => Beacon::new(y, z, x),
+            13 => Beacon::new(-y, -z, x),
+            14 => Beacon::new(-y, z, -x),
+            15 => Beacon::new(y, -z, -x),
+            16 => Beacon::new(z, x, y),
+            17 => Beacon::new(-z, -x, y),
+            18 => Beacon::new(-z, x, -y),
+            19 => Beacon::new(z, -x, -y),
+            20 => Beacon::new(-z, y, x),
+            21 => Beacon::new(z, -y, x),
+            22 => Beacon::new(z, y, -x),
+            23 => Beacon::new(-z, -y, -x),
+            _ => panic!("rotation out of range"),
+        }
     }
 }
 
@@ -74,8 +76,9 @@ struct Scanner {
 
 impl Scanner {
     fn get_offset(&self, other: &Scanner) -> Option<Offset> {
-        for (rotation_index, rotation) in other.rotations().iter().enumerate() {
-            for beacon in rotation.beacons.iter() {
+        for rotation_index in 0..24 {
+            let beacons = other.rotate(rotation_index);
+            for beacon in beacons.iter() {
                 for self_beacon in self.beacons.iter() {
                     let diff = beacon.clone() - self_beacon.clone();
 
@@ -83,7 +86,7 @@ impl Scanner {
                         .beacons
                         .iter()
                         .map(|b| b.clone() + diff.clone())
-                        .filter(|b| rotation.beacons.contains(b))
+                        .filter(|b| beacons.contains(b))
                         .count();
 
                     if num_matching_becaons >= 12 {
@@ -100,25 +103,15 @@ impl Scanner {
     }
 
     fn add_beacons(&mut self, other: &Scanner, offset: &Offset) {
-        let rotation = &other.rotations()[offset.rotation_index];
+        let beacons = &other.rotate(offset.rotation_index);
 
-        for beacon in rotation.beacons.iter() {
+        for beacon in beacons.iter() {
             self.beacons.insert(beacon.clone() - offset.diff.clone());
         }
     }
 
-    fn rotations(&self) -> Vec<Scanner> {
-        let beacons = self
-            .beacons
-            .iter()
-            .map(|b| b.rotations())
-            .collect::<Vec<_>>();
-
-        (0..24)
-            .map(|beacon_group| Scanner {
-                beacons: beacons.iter().map(|b| b[beacon_group].clone()).collect(),
-            })
-            .collect()
+    fn rotate(&self, rotation: usize) -> Vec<Beacon> {
+        self.beacons.iter().map(|b| b.rotate(rotation)).collect()
     }
 }
 
