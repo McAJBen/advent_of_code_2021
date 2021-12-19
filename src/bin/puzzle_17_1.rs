@@ -1,6 +1,5 @@
-use std::fs::read_to_string;
-
 use regex::Regex;
+use std::fs::read_to_string;
 
 #[derive(Debug, Clone)]
 struct Probe {
