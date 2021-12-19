@@ -30,8 +30,6 @@ impl Eq for ToVisit {}
 struct Grid {
     risks: Vec<u8>,
     adjacency_list: Vec<Vec<usize>>,
-    width: usize,
-    height: usize,
 }
 
 impl Grid {
@@ -89,8 +87,6 @@ impl Grid {
         Self {
             risks,
             adjacency_list,
-            width,
-            height,
         }
     }
 

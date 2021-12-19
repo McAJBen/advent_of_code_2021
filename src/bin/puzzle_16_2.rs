@@ -18,8 +18,6 @@ enum PacketType {
 
 #[derive(Debug)]
 struct Packet {
-    version: u8,
-    type_id: u8,
     packet_type: PacketType,
     num_bits: usize,
 }
@@ -42,7 +40,6 @@ impl Packet {
     }
 
     fn from_bits(bits: &[bool]) -> Self {
-        let version = to_num(&bits[0..3]) as u8;
         let type_id = to_num(&bits[3..6]) as u8;
         match type_id {
             4 => {
@@ -57,8 +54,6 @@ impl Packet {
                     index += 5;
                 }
                 Packet {
-                    version,
-                    type_id,
                     packet_type: PacketType::Literal { value },
                     num_bits: index + 5,
                 }
@@ -88,44 +83,30 @@ impl Packet {
 
                 match type_id {
                     0 => Packet {
-                        version,
-                        type_id,
                         packet_type: PacketType::Sum { sub_packets },
                         num_bits,
                     },
                     1 => Packet {
-                        version,
-                        type_id,
                         packet_type: PacketType::Product { sub_packets },
                         num_bits,
                     },
                     2 => Packet {
-                        version,
-                        type_id,
                         packet_type: PacketType::Minimum { sub_packets },
                         num_bits,
                     },
                     3 => Packet {
-                        version,
-                        type_id,
                         packet_type: PacketType::Maximum { sub_packets },
                         num_bits,
                     },
                     5 => Packet {
-                        version,
-                        type_id,
                         packet_type: PacketType::GreaterThan { sub_packets },
                         num_bits,
                     },
                     6 => Packet {
-                        version,
-                        type_id,
                         packet_type: PacketType::LessThan { sub_packets },
                         num_bits,
                     },
                     7 => Packet {
-                        version,
-                        type_id,
                         packet_type: PacketType::EqualTo { sub_packets },
                         num_bits,
                     },

@@ -129,7 +129,7 @@ fn main() {
 
     let result = input
         .lines()
-        .map(|line| SnailfishNumber::new(line))
+        .map(SnailfishNumber::new)
         .reduce(|a, b| a + b)
         .unwrap();
 

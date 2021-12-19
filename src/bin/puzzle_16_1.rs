@@ -6,14 +6,13 @@ fn to_num(bits: &[bool]) -> usize {
 
 #[derive(Debug)]
 enum PacketType {
-    Literal { value: u128 },
+    Literal,
     Operator { sub_packets: Vec<Packet> },
 }
 
 #[derive(Debug)]
 struct Packet {
     version: u8,
-    type_id: u8,
     packet_type: PacketType,
     num_bits: usize,
 }
@@ -40,11 +39,8 @@ impl Packet {
         let type_id = to_num(&bits[3..6]) as u8;
         match type_id {
             4 => {
-                let mut value = 0u128;
                 let mut index = 6;
                 loop {
-                    value <<= 4;
-                    value += to_num(&bits[(index + 1)..(index + 5)]) as u128;
                     if !bits[index] {
                         break;
                     }
@@ -52,8 +48,7 @@ impl Packet {
                 }
                 Packet {
                     version,
-                    type_id,
-                    packet_type: PacketType::Literal { value },
+                    packet_type: PacketType::Literal,
                     num_bits: index + 5,
                 }
             }
@@ -81,7 +76,6 @@ impl Packet {
                 }
                 Packet {
                     version,
-                    type_id,
                     packet_type: PacketType::Operator { sub_packets },
                     num_bits,
                 }
@@ -91,7 +85,7 @@ impl Packet {
 
     fn version_sum(&self) -> u128 {
         match self.packet_type {
-            PacketType::Literal { value: _ } => self.version as u128,
+            PacketType::Literal => self.version as u128,
             PacketType::Operator { ref sub_packets } => {
                 sub_packets
                     .iter()

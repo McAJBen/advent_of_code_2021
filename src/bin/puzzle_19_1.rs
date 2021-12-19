@@ -62,13 +62,18 @@ impl Add for Beacon {
     }
 }
 
+struct Offset {
+    rotation_index: usize,
+    diff: Beacon,
+}
+
 #[derive(Debug)]
 struct Scanner {
     beacons: HashSet<Beacon>,
 }
 
 impl Scanner {
-    fn get_offset(&self, other: &Scanner) -> Option<(usize, Beacon)> {
+    fn get_offset(&self, other: &Scanner) -> Option<Offset> {
         for (rotation_index, rotation) in other.rotations().iter().enumerate() {
             for beacon in rotation.beacons.iter() {
                 for self_beacon in self.beacons.iter() {
@@ -82,7 +87,10 @@ impl Scanner {
                         .count();
 
                     if num_matching_becaons >= 12 {
-                        return Some((rotation_index, diff));
+                        return Some(Offset {
+                            rotation_index,
+                            diff,
+                        });
                     }
                 }
             }
@@ -91,17 +99,11 @@ impl Scanner {
         None
     }
 
-    fn matches_with(&self, other: &Scanner) -> bool {
-        self.get_offset(other).is_some()
-    }
-
-    fn add_beacons(&mut self, other: &Scanner) {
-        let (rotation_index, diff) = self.get_offset(other).unwrap();
-
-        let rotation = &other.rotations()[rotation_index];
+    fn add_beacons(&mut self, other: &Scanner, offset: &Offset) {
+        let rotation = &other.rotations()[offset.rotation_index];
 
         for beacon in rotation.beacons.iter() {
-            self.beacons.insert(beacon.clone() - diff.clone());
+            self.beacons.insert(beacon.clone() - offset.diff.clone());
         }
     }
 
@@ -145,14 +147,14 @@ fn main() {
 
     let mut base_scanner = scanners.remove(0);
 
-    while let Some((scanner_index, _)) = scanners
+    while let Some((scanner_index, offset)) = scanners
         .iter()
         .enumerate()
-        .find(|(_, s)| base_scanner.matches_with(s))
+        .find_map(|(index, s)| base_scanner.get_offset(s).map(|x| (index, x)))
     {
         let scanner = scanners.remove(scanner_index);
 
-        base_scanner.add_beacons(&scanner);
+        base_scanner.add_beacons(&scanner, &offset);
     }
 
     assert!(scanners.is_empty());
