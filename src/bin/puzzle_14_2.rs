@@ -14,7 +14,7 @@ fn main() {
         .zip_with_next()
         .map(|(a, b)| format!("{}{}", a, b))
         .fold(HashMap::new(), |mut acc, key| {
-            *acc.entry(key).or_insert(0u128) += 1;
+            *acc.entry(key).or_insert(0u64) += 1;
             acc
         });
 

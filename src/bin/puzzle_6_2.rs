@@ -12,7 +12,7 @@ fn main() {
     }
 
     for _ in 0..256 {
-        let mut new_map: HashMap<u8, u128> = HashMap::new();
+        let mut new_map: HashMap<u8, u64> = HashMap::new();
 
         for (key, value) in map.into_iter() {
             if key == 0 {
@@ -26,7 +26,7 @@ fn main() {
         map = new_map;
     }
 
-    let total = map.values().sum::<u128>();
+    let total = map.values().sum::<u64>();
 
     assert_eq!(1743335992042, total);
 

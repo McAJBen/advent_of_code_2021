@@ -83,15 +83,15 @@ impl Packet {
         }
     }
 
-    fn version_sum(&self) -> u128 {
+    fn version_sum(&self) -> u64 {
         match self.packet_type {
-            PacketType::Literal => self.version as u128,
+            PacketType::Literal => self.version as u64,
             PacketType::Operator { ref sub_packets } => {
                 sub_packets
                     .iter()
                     .map(|packet| packet.version_sum())
-                    .sum::<u128>()
-                    + self.version as u128
+                    .sum::<u64>()
+                    + self.version as u64
             }
         }
     }

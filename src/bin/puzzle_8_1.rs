@@ -22,7 +22,7 @@ fn main() {
     let displays = input.lines().map(Display::new).collect::<Vec<_>>();
 
     // number of times that 1, 4, 7, 8 appear
-    let count: u128 = displays
+    let count = displays
         .iter()
         .map(|display| {
             display
@@ -32,9 +32,9 @@ fn main() {
                     let num_segments = output.len();
                     num_segments == 2 || num_segments == 4 || num_segments == 3 || num_segments == 7
                 })
-                .count() as u128
+                .count()
         })
-        .sum();
+        .sum::<usize>();
 
     assert_eq!(449, count);
 

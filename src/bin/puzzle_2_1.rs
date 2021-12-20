@@ -4,22 +4,18 @@ use std::fs::read_to_string;
 fn main() {
     let input = read_to_string("input/2").unwrap();
 
-    let directions = input.lines().map(DirectionCommand::new).collect::<Vec<_>>();
+    let mut horizontal_position = 0;
+    let mut depth = 0;
 
-    let horizontal_position: i32 = directions
-        .iter()
-        .filter(|d| d.direction == Direction::Forward)
-        .map(|d| d.amount)
-        .sum();
-
-    let depth: i32 = directions
-        .into_iter()
-        .filter_map(|d| match d.direction {
-            Direction::Forward => None,
-            Direction::Down => Some(d.amount),
-            Direction::Up => Some(-d.amount),
-        })
-        .sum();
+    for direction in input.lines().map(DirectionCommand::new) {
+        match direction.direction {
+            Direction::Forward => {
+                horizontal_position += direction.amount;
+            }
+            Direction::Down => depth += direction.amount,
+            Direction::Up => depth -= direction.amount,
+        }
+    }
 
     let total = horizontal_position * depth;
 

@@ -3,62 +3,64 @@ use std::fs::read_to_string;
 fn main() {
     let input = read_to_string("input/3").unwrap();
 
-    let lines: Vec<&str> = input.lines().collect();
+    let lines: Vec<Vec<bool>> = input
+        .lines()
+        .map(|line| line.chars().map(|char| char == '1').collect())
+        .collect();
 
     let num_bits = lines[0].len();
 
+    let mut oxygen_rate = 0;
     let mut oxygen_lines = lines.clone();
 
     for position in 0..num_bits {
-        if oxygen_lines.len() == 1 {
-            break;
-        }
+        let bit = if oxygen_lines.len() != 1 {
+            let num_ones = oxygen_lines.iter().filter(|line| line[position]).count();
 
-        let num_ones = oxygen_lines
-            .iter()
-            .filter(|line| line.chars().nth(position).unwrap() == '1')
-            .count();
-
-        let correct_value = if num_ones * 2 >= oxygen_lines.len() {
             // 1 is more common or equal
-            '1'
+            let correct_value = num_ones >= oxygen_lines.len() / 2;
+
+            oxygen_lines = oxygen_lines
+                .into_iter()
+                .filter(|line| line[position] == correct_value)
+                .collect();
+
+            correct_value
         } else {
-            '0'
+            oxygen_lines[0][position]
         };
 
-        oxygen_lines = oxygen_lines
-            .into_iter()
-            .filter(|line| line.chars().nth(position).unwrap() == correct_value)
-            .collect();
+        oxygen_rate <<= 1;
+        if bit {
+            oxygen_rate |= 1;
+        }
     }
 
-    let oxygen_rate = i32::from_str_radix(oxygen_lines[0], 2).unwrap();
-
+    let mut co2_rate = 0;
     let mut co2_lines = lines;
 
     for position in 0..num_bits {
-        if co2_lines.len() == 1 {
-            break;
-        }
+        let bit = if co2_lines.len() != 1 {
+            let num_ones = co2_lines.iter().filter(|line| line[position]).count();
 
-        let num_ones = co2_lines
-            .iter()
-            .filter(|line| line.chars().nth(position).unwrap() == '1')
-            .count();
+            // 0 is less common
+            let correct_value = num_ones < co2_lines.len() / 2;
 
-        let correct_value = if num_ones * 2 >= co2_lines.len() {
-            // 1 is more common or equal
-            '0'
+            co2_lines = co2_lines
+                .into_iter()
+                .filter(|line| line[position] == correct_value)
+                .collect();
+
+            correct_value
         } else {
-            '1'
+            co2_lines[0][position]
         };
 
-        co2_lines = co2_lines
-            .into_iter()
-            .filter(|line| line.chars().nth(position).unwrap() == correct_value)
-            .collect();
+        co2_rate <<= 1;
+        if bit {
+            co2_rate |= 1;
+        }
     }
-    let co2_rate = i32::from_str_radix(co2_lines[0], 2).unwrap();
 
     let total = oxygen_rate * co2_rate;
 

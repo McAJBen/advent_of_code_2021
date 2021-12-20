@@ -6,11 +6,9 @@ fn main() {
 
     let num_increases = input
         .lines()
-        .map(|line| line.parse::<u32>().unwrap())
+        .map(|line| line.parse::<u16>().unwrap())
         .zip_with_next_n(3)
-        .map(|group| group.iter().sum::<u32>())
-        .collect::<Vec<_>>()
-        .into_iter()
+        .map(|group| group.iter().sum::<u16>())
         .zip_with_next()
         .filter(|(left, right)| left < right)
         .count();

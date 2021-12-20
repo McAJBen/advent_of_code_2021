@@ -31,12 +31,12 @@ impl Grid {
         }
     }
 
-    fn walk(&self) -> u128 {
-        let mut routes = vec![0u128];
+    fn walk(&self) -> u16 {
+        let mut routes = vec![0u16];
 
         for index in 1..(self.width * self.height) {
             let point = Point::new(index % self.width, index / self.width);
-            let risk = self.data[index] as u128;
+            let risk = self.data[index] as u16;
 
             let mut possible_routes = vec![];
 

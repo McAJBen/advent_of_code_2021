@@ -81,7 +81,7 @@ fn main() {
 
     let low_points = grid.get_low_points();
 
-    let total = low_points.into_iter().map(|x| x as u128 + 1).sum::<u128>();
+    let total = low_points.into_iter().map(|x| x as u32 + 1).sum::<u32>();
 
     assert_eq!(594, total);
 

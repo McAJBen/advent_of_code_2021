@@ -13,11 +13,11 @@ fn main() {
             positions
                 .iter()
                 .map(|&p| {
-                    let distance = if middle > p { middle - p } else { p - middle } as u128;
+                    let distance = if middle > p { middle - p } else { p - middle } as u32;
 
                     distance * (distance + 1) / 2
                 })
-                .sum::<u128>()
+                .sum::<u32>()
         })
         .enumerate()
         .min_by_key(|&(_, x)| x)

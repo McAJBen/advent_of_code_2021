@@ -6,7 +6,7 @@ fn main() {
 
     let num_increases = input
         .lines()
-        .map(|line| line.parse::<u32>().unwrap())
+        .map(|line| line.parse::<u16>().unwrap())
         .zip_with_next()
         .filter(|(left, right)| left < right)
         .count();

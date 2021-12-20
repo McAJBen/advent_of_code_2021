@@ -10,7 +10,7 @@ enum PacketType {
     Product { sub_packets: Vec<Packet> },
     Minimum { sub_packets: Vec<Packet> },
     Maximum { sub_packets: Vec<Packet> },
-    Literal { value: u128 },
+    Literal { value: u64 },
     GreaterThan { sub_packets: Vec<Packet> },
     LessThan { sub_packets: Vec<Packet> },
     EqualTo { sub_packets: Vec<Packet> },
@@ -43,11 +43,11 @@ impl Packet {
         let type_id = to_num(&bits[3..6]) as u8;
         match type_id {
             4 => {
-                let mut value = 0u128;
+                let mut value = 0u64;
                 let mut index = 6;
                 loop {
                     value <<= 4;
-                    value += to_num(&bits[(index + 1)..(index + 5)]) as u128;
+                    value += to_num(&bits[(index + 1)..(index + 5)]) as u64;
                     if !bits[index] {
                         break;
                     }
@@ -116,7 +116,7 @@ impl Packet {
         }
     }
 
-    fn eval(&self) -> u128 {
+    fn eval(&self) -> u64 {
         match self.packet_type {
             PacketType::Sum { ref sub_packets } => sub_packets.iter().map(Packet::eval).sum(),
             PacketType::Product { ref sub_packets } => {
