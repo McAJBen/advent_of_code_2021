@@ -38,6 +38,8 @@ cargo run --release --bin puzzle_18_1
 cargo run --release --bin puzzle_18_2
 cargo run --release --bin puzzle_19_1
 cargo run --release --bin puzzle_19_2
+cargo run --release --bin puzzle_20_1
+cargo run --release --bin puzzle_20_2
 
 end=`date +%s`
 echo "took $(expr $end - $start)s"
