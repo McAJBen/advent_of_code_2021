@@ -1,5 +1,5 @@
 use std::{
-    collections::HashSet,
+    collections::{HashMap, HashSet},
     fs::read_to_string,
     ops::{Add, Sub},
 };
@@ -82,24 +82,27 @@ impl Scanner {
     fn get_offset(&self, other: &Scanner) -> Option<Offset> {
         for rotation_index in 0..24 {
             let beacons = other.rotate(rotation_index);
+
+            let mut diffs = HashMap::new();
+
             for beacon in beacons.iter() {
                 for self_beacon in self.beacons.iter() {
                     let diff = beacon.clone() - self_beacon.clone();
+                    let entry = diffs.entry(diff).or_insert(0);
+                    *entry += 1;
 
-                    let num_matching_becaons = self
-                        .beacons
-                        .iter()
-                        .map(|b| b.clone() + diff.clone())
-                        .filter(|b| beacons.contains(b))
-                        .count();
-
-                    if num_matching_becaons >= 12 {
-                        return Some(Offset {
-                            rotation_index,
-                            diff,
-                        });
+                    if *entry >= 12 {
+                        break;
                     }
                 }
+            }
+
+            let solution = diffs.into_iter().find(|(_, count)| *count >= 12);
+            if let Some(solution) = solution {
+                return Some(Offset {
+                    rotation_index,
+                    diff: solution.0,
+                });
             }
         }
 
