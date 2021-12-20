@@ -81,7 +81,7 @@ fn parse_line(line: &str) -> ErrorType {
 }
 
 fn main() {
-    let input = read_to_string("puzzle_10_input").unwrap();
+    let input = read_to_string("input/10").unwrap();
 
     let mut incomplete_values = input
         .lines()

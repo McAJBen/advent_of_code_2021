@@ -1,4 +1,4 @@
-use advent_of_code::Point;
+use advent_of_code_2021::Point;
 use std::{collections::HashSet, fs::read_to_string, str::FromStr};
 
 fn display_grid(points: &HashSet<Point>) {
@@ -20,7 +20,7 @@ fn display_grid(points: &HashSet<Point>) {
 }
 
 fn main() {
-    let input = read_to_string("puzzle_13_input").unwrap();
+    let input = read_to_string("input/13").unwrap();
 
     let (points, folds) = input.split_once("\n\n").unwrap();
 

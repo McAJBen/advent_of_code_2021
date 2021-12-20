@@ -17,7 +17,7 @@ impl Display {
 }
 
 fn main() {
-    let input = read_to_string("puzzle_8_input").unwrap();
+    let input = read_to_string("input/8").unwrap();
 
     let displays = input.lines().map(Display::new).collect::<Vec<_>>();
 

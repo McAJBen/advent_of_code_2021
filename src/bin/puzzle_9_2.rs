@@ -1,4 +1,4 @@
-use advent_of_code::Point;
+use advent_of_code_2021::Point;
 use std::{collections::HashSet, fs::read_to_string};
 
 #[derive(Debug, Clone)]
@@ -105,7 +105,7 @@ impl Grid {
 }
 
 fn main() {
-    let input = read_to_string("puzzle_9_input").unwrap();
+    let input = read_to_string("input/9").unwrap();
 
     let grid = Grid::new(input.lines().collect());
 

@@ -1,8 +1,8 @@
-use advent_of_code::ZipWithNextExt;
+use advent_of_code_2021::ZipWithNextExt;
 use std::{collections::HashMap, fs::read_to_string};
 
 fn main() {
-    let input = read_to_string("puzzle_14_input").unwrap();
+    let input = read_to_string("input/14").unwrap();
 
     let (template, pairs) = input.split_once("\n\n").unwrap();
 

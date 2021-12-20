@@ -125,7 +125,7 @@ impl Add for SnailfishNumber {
 }
 
 fn main() {
-    let input = read_to_string("puzzle_18_input").unwrap();
+    let input = read_to_string("input/18").unwrap();
 
     let snailfish_numbers = input.lines().map(SnailfishNumber::new).collect::<Vec<_>>();
 

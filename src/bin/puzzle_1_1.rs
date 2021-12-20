@@ -1,8 +1,8 @@
-use advent_of_code::ZipWithNextExt;
+use advent_of_code_2021::ZipWithNextExt;
 use std::fs::read_to_string;
 
 fn main() {
-    let input = read_to_string("puzzle_1_input").unwrap();
+    let input = read_to_string("input/1").unwrap();
 
     let num_increases = input
         .lines()

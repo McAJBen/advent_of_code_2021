@@ -92,7 +92,7 @@ impl TargetRange {
 }
 
 fn main() {
-    let input = read_to_string("puzzle_17_input").unwrap();
+    let input = read_to_string("input/17").unwrap();
 
     let value = TargetRange::new(&input);
 

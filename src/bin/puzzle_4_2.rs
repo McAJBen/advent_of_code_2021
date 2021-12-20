@@ -50,7 +50,7 @@ impl Board {
 }
 
 fn main() {
-    let input = read_to_string("puzzle_4_input").unwrap();
+    let input = read_to_string("input/4").unwrap();
 
     let mut lines = input.lines().collect::<Vec<_>>();
 

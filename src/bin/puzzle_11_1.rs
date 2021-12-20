@@ -1,4 +1,4 @@
-use advent_of_code::Point;
+use advent_of_code_2021::Point;
 use std::fs::read_to_string;
 
 #[derive(Debug, Clone)]
@@ -108,7 +108,7 @@ impl OctopusGrid {
 }
 
 fn main() {
-    let input = read_to_string("puzzle_11_input").unwrap();
+    let input = read_to_string("input/11").unwrap();
 
     let mut grid = OctopusGrid::new(input);
 

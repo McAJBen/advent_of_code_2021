@@ -61,7 +61,7 @@ fn parse_line(line: &str) -> usize {
 }
 
 fn main() {
-    let input = read_to_string("puzzle_8_input").unwrap();
+    let input = read_to_string("input/8").unwrap();
 
     let total = input.lines().map(parse_line).sum::<usize>();
 

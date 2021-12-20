@@ -24,7 +24,7 @@ impl Line {
 }
 
 fn main() {
-    let input = read_to_string("puzzle_5_input").unwrap();
+    let input = read_to_string("input/5").unwrap();
 
     let lines = input.lines().map(Line::new).collect::<Vec<_>>();
 

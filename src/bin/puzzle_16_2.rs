@@ -155,7 +155,7 @@ impl Packet {
 }
 
 fn main() {
-    let input = read_to_string("puzzle_16_input").unwrap();
+    let input = read_to_string("input/16").unwrap();
 
     let value = Packet::from_input(&input).eval();
 

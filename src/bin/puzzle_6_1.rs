@@ -1,7 +1,7 @@
 use std::fs::read_to_string;
 
 fn main() {
-    let input = read_to_string("puzzle_6_input").unwrap();
+    let input = read_to_string("input/6").unwrap();
 
     let mut fishes: Vec<u8> = input.split(',').map(|x| x.parse().unwrap()).collect();
 

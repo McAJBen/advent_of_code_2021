@@ -1,7 +1,7 @@
 use std::fs::read_to_string;
 
 fn main() {
-    let input = read_to_string("puzzle_3_input").unwrap();
+    let input = read_to_string("input/3").unwrap();
 
     let lines = input.lines().collect::<Vec<_>>();
 

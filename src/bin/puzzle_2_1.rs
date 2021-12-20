@@ -1,8 +1,8 @@
-use advent_of_code::{Direction, DirectionCommand};
+use advent_of_code_2021::{Direction, DirectionCommand};
 use std::fs::read_to_string;
 
 fn main() {
-    let input = read_to_string("puzzle_2_input").unwrap();
+    let input = read_to_string("input/2").unwrap();
 
     let directions = input.lines().map(DirectionCommand::new).collect::<Vec<_>>();
 

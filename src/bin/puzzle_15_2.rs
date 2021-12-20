@@ -1,4 +1,4 @@
-use advent_of_code::Point;
+use advent_of_code_2021::Point;
 use std::{collections::BinaryHeap, fs::read_to_string, panic};
 
 struct ToVisit {
@@ -133,7 +133,7 @@ impl Grid {
 }
 
 fn main() {
-    let input = read_to_string("puzzle_15_input").unwrap();
+    let input = read_to_string("input/15").unwrap();
 
     let grid = Grid::new(input);
 

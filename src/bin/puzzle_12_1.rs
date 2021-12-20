@@ -72,7 +72,7 @@ impl Graph {
 }
 
 fn main() {
-    let input = read_to_string("puzzle_12_input").unwrap();
+    let input = read_to_string("input/12").unwrap();
 
     let graph = Graph::new(&input);
 

@@ -123,7 +123,7 @@ impl Scanner {
 }
 
 fn main() {
-    let input = read_to_string("puzzle_19_input").unwrap();
+    let input = read_to_string("input/19").unwrap();
 
     let mut scanners = Vec::new();
     for line in input.lines() {
