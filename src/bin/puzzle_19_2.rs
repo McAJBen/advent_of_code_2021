@@ -68,57 +68,38 @@ impl Add for Beacon {
     }
 }
 
-struct Offset {
-    rotation_index: usize,
-    diff: Beacon,
-}
-
 #[derive(Debug)]
 struct Scanner {
     beacons: HashSet<Beacon>,
 }
 
 impl Scanner {
-    fn get_offset(&self, other: &Scanner) -> Option<Offset> {
+    fn check_merge(&mut self, other: &Scanner) -> Option<Beacon> {
         for rotation_index in 0..24 {
-            let beacons = other.rotate(rotation_index);
+            let beacons = other
+                .beacons
+                .iter()
+                .map(|b| b.rotate(rotation_index))
+                .collect::<Vec<_>>();
 
             let mut diffs = HashMap::new();
 
             for beacon in beacons.iter() {
                 for self_beacon in self.beacons.iter() {
                     let diff = beacon.clone() - self_beacon.clone();
-                    let entry = diffs.entry(diff).or_insert(0);
+                    let entry = diffs.entry(diff.clone()).or_insert(0);
                     *entry += 1;
 
                     if *entry >= 12 {
-                        break;
+                        self.beacons
+                            .extend(beacons.into_iter().map(|b| b - diff.clone()));
+                        return Some(diff);
                     }
                 }
-            }
-
-            let solution = diffs.into_iter().find(|(_, count)| *count >= 12);
-            if let Some(solution) = solution {
-                return Some(Offset {
-                    rotation_index,
-                    diff: solution.0,
-                });
             }
         }
 
         None
-    }
-
-    fn add_beacons(&mut self, other: &Scanner, offset: &Offset) {
-        let beacons = &other.rotate(offset.rotation_index);
-
-        for beacon in beacons.iter() {
-            self.beacons.insert(beacon.clone() - offset.diff.clone());
-        }
-    }
-
-    fn rotate(&self, rotation: usize) -> Vec<Beacon> {
-        self.beacons.iter().map(|b| b.rotate(rotation)).collect()
     }
 }
 
@@ -152,15 +133,13 @@ fn main() {
     while let Some((scanner_index, offset)) = scanners
         .iter()
         .enumerate()
-        .find_map(|(index, s)| base_scanner.get_offset(s).map(|x| (index, x)))
+        .find_map(|(index, s)| base_scanner.check_merge(s).map(|offset| (index, offset)))
     {
-        let scanner = scanners.remove(scanner_index);
-
-        base_scanner.add_beacons(&scanner, &offset);
-        scanner_positions.push(offset.diff);
+        scanners.swap_remove(scanner_index);
+        scanner_positions.push(offset);
     }
 
-    assert!(scanners.is_empty());
+    debug_assert!(scanners.is_empty());
 
     let max_distance = scanner_positions
         .iter()
