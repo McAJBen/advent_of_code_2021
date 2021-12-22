@@ -1,5 +1,5 @@
 use advent_of_code_2021::ZipWithNextExt;
-use std::{collections::HashSet, fs::read_to_string};
+use std::fs::read_to_string;
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
 struct Coordinate {
@@ -40,86 +40,91 @@ impl Cuboid {
     }
 }
 
+struct CuboidGrid {
+    x_ranges: Vec<(i32, i32)>,
+    y_ranges: Vec<(i32, i32)>,
+    z_ranges: Vec<(i32, i32)>,
+    cubes: Vec<Vec<Vec<bool>>>,
+    num_lit: u64,
+}
+
+fn unique_ranges(mut values: Vec<i32>) -> Vec<(i32, i32)> {
+    values.sort_unstable();
+    values.dedup();
+    values.into_iter().zip_with_next().collect()
+}
+
+fn get_ranges_in_range(ranges: &[(i32, i32)], range: (i32, i32)) -> Vec<usize> {
+    ranges
+        .iter()
+        .enumerate()
+        .skip_while(|(_, &r)| r.0 < range.0)
+        .take_while(|(_, &r)| r.0 < range.1)
+        .map(|(i, _)| i)
+        .collect()
+}
+
+impl CuboidGrid {
+    fn new(cuboids: &[Cuboid]) -> Self {
+        let x_ranges = unique_ranges(cuboids.iter().flat_map(|c| [c.x.0, c.x.1]).collect());
+        let y_ranges = unique_ranges(cuboids.iter().flat_map(|c| [c.y.0, c.y.1]).collect());
+        let z_ranges = unique_ranges(cuboids.iter().flat_map(|c| [c.z.0, c.z.1]).collect());
+
+        let cubes = vec![vec![vec![false; x_ranges.len()]; y_ranges.len()]; z_ranges.len()];
+
+        Self {
+            x_ranges,
+            y_ranges,
+            z_ranges,
+            cubes,
+            num_lit: 0,
+        }
+    }
+
+    fn add_cuboid(&mut self, cuboid: &Cuboid) {
+        let valid_x_ranges = get_ranges_in_range(&self.x_ranges, cuboid.x);
+        let valid_y_ranges = get_ranges_in_range(&self.y_ranges, cuboid.y);
+        let valid_z_ranges = get_ranges_in_range(&self.z_ranges, cuboid.z);
+
+        for x_range in valid_x_ranges {
+            for &y_range in valid_y_ranges.iter() {
+                for &z_range in valid_z_ranges.iter() {
+                    let cube = self.cubes[z_range][y_range][x_range];
+
+                    if cuboid.set_type && !cube {
+                        let x = self.x_ranges[x_range];
+                        let y = self.y_ranges[y_range];
+                        let z = self.z_ranges[z_range];
+
+                        self.num_lit +=
+                            (x.1 - x.0) as u64 * (y.1 - y.0) as u64 * (z.1 - z.0) as u64;
+                    } else if !cuboid.set_type && cube {
+                        let x = self.x_ranges[x_range];
+                        let y = self.y_ranges[y_range];
+                        let z = self.z_ranges[z_range];
+
+                        self.num_lit -=
+                            (x.1 - x.0) as u64 * (y.1 - y.0) as u64 * (z.1 - z.0) as u64;
+                    }
+                    self.cubes[z_range][y_range][x_range] = cuboid.set_type;
+                }
+            }
+        }
+    }
+}
+
 fn main() {
     let input = read_to_string("input/22").unwrap();
 
     let cuboids = input.lines().map(Cuboid::new).collect::<Vec<_>>();
 
-    let mut x_axis = cuboids
-        .iter()
-        .flat_map(|c| [c.x.0, c.x.1])
-        .collect::<HashSet<_>>()
-        .into_iter()
-        .collect::<Vec<_>>();
-    x_axis.sort_unstable();
-    let x_axis = x_axis.into_iter().zip_with_next().collect::<Vec<_>>();
-
-    let mut y_axis = cuboids
-        .iter()
-        .flat_map(|c| [c.y.0, c.y.1])
-        .collect::<HashSet<_>>()
-        .into_iter()
-        .collect::<Vec<_>>();
-    y_axis.sort_unstable();
-    let y_axis = y_axis.into_iter().zip_with_next().collect::<Vec<_>>();
-
-    let mut z_axis = cuboids
-        .iter()
-        .flat_map(|c| [c.z.0, c.z.1])
-        .collect::<HashSet<_>>()
-        .into_iter()
-        .collect::<Vec<_>>();
-    z_axis.sort_unstable();
-    let z_axis = z_axis.into_iter().zip_with_next().collect::<Vec<_>>();
-
-    let mut cubes = vec![vec![vec![false; x_axis.len()]; y_axis.len()]; z_axis.len()];
+    let mut cuboid_grid = CuboidGrid::new(&cuboids);
 
     for cuboid in cuboids {
-        let x_ranges = x_axis
-            .iter()
-            .enumerate()
-            .filter(|(_, &x)| cuboid.x.0 <= x.0 && x.0 < cuboid.x.1)
-            .map(|(i, _)| i)
-            .collect::<Vec<_>>();
-
-        let y_ranges = y_axis
-            .iter()
-            .enumerate()
-            .filter(|(_, &y)| cuboid.y.0 <= y.0 && y.0 < cuboid.y.1)
-            .map(|(i, _)| i)
-            .collect::<Vec<_>>();
-
-        let z_ranges = z_axis
-            .iter()
-            .enumerate()
-            .filter(|(_, &z)| cuboid.z.0 <= z.0 && z.0 < cuboid.z.1)
-            .map(|(i, _)| i)
-            .collect::<Vec<_>>();
-
-        for x_range in x_ranges {
-            for &y_range in y_ranges.iter() {
-                for &z_range in z_ranges.iter() {
-                    if cuboid.set_type {
-                        cubes[z_range][y_range][x_range] = true;
-                    } else {
-                        cubes[z_range][y_range][x_range] = false;
-                    }
-                }
-            }
-        }
+        cuboid_grid.add_cuboid(&cuboid);
     }
 
-    let mut num_lit: u64 = 0;
-
-    for (index_x, x) in x_axis.iter().enumerate() {
-        for (index_y, y) in y_axis.iter().enumerate() {
-            for (index_z, z) in z_axis.iter().enumerate() {
-                if cubes[index_z][index_y][index_x] {
-                    num_lit += (x.1 - x.0) as u64 * (y.1 - y.0) as u64 * (z.1 - z.0) as u64;
-                }
-            }
-        }
-    }
+    let num_lit = cuboid_grid.num_lit;
 
     assert_eq!(1235484513229032, num_lit);
 
