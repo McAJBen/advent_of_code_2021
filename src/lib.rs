@@ -133,7 +133,7 @@ impl DirectionCommand {
     }
 }
 
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, PartialOrd, Ord)]
 pub struct Point {
     pub x: usize,
     pub y: usize,
