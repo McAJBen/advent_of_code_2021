@@ -40,24 +40,32 @@ struct CellInput {
     can_stay: bool,
     room: Option<Amphipod>,
     current: Option<Amphipod>,
+    is_end: bool,
 }
 
 #[derive(Debug)]
 enum Cell {
     Hallway { can_stay: bool },
-    Room { amphipod: Amphipod },
+    Room { amphipod: Amphipod, is_end: bool },
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Hash, PartialOrd, Ord)]
+struct AmphipodState {
+    amphipod: Amphipod,
+    position: Point,
+    final_position: bool,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Hash, PartialOrd, Ord)]
+struct BurrowState {
+    amphipods: Vec<AmphipodState>,
+    energy_cost: u32,
 }
 
 #[derive(Debug)]
 struct Burrow {
     cells: HashMap<Point, Cell>,
     adjacency_list: HashMap<Point, Vec<Point>>,
-}
-
-#[derive(Debug, Clone, PartialEq, Eq, Hash, PartialOrd, Ord)]
-struct BurrowState {
-    amphipods: Vec<(Amphipod, Vec<Point>)>,
-    energy_cost: u32,
 }
 
 impl Burrow {
@@ -74,23 +82,32 @@ impl Burrow {
                             can_stay: false,
                             room: None,
                             current: None,
+                            is_end: false,
                         },
                         '.' => CellInput {
                             is_movable: true,
                             can_stay: true,
                             room: None,
                             current: None,
+                            is_end: false,
                         },
                         c => CellInput {
                             is_movable: true,
                             can_stay: true,
                             room: None,
                             current: Amphipod::from_char(c),
+                            is_end: false,
                         },
                     })
                     .collect::<Vec<_>>()
             })
             .collect::<Vec<_>>();
+
+        for c in cells[lines.len() - 2].iter_mut() {
+            if c.is_movable {
+                c.is_end = true;
+            }
+        }
 
         let mut adjacency_list = HashMap::new();
 
@@ -151,7 +168,15 @@ impl Burrow {
         let burrow_state = BurrowState {
             amphipods: important_cells
                 .iter()
-                .filter_map(|&point| cells[point.y][point.x].current.map(|a| (a, vec![point])))
+                .filter_map(|&point| {
+                    cells[point.y][point.x]
+                        .current
+                        .map(|amphipod| AmphipodState {
+                            amphipod,
+                            position: point,
+                            final_position: false,
+                        })
+                })
                 .collect(),
             energy_cost: 0,
         };
@@ -161,7 +186,13 @@ impl Burrow {
             .map(|&p| {
                 let cell = cells[p.y][p.x];
                 if let Some(amphipod) = cell.room {
-                    (p, Cell::Room { amphipod })
+                    (
+                        p,
+                        Cell::Room {
+                            amphipod,
+                            is_end: cell.is_end,
+                        },
+                    )
                 } else {
                     (
                         p,
@@ -175,7 +206,7 @@ impl Burrow {
 
         let adjacency_list = important_cells
             .iter()
-            .map(|&p| (p, adjacency_list[&p].iter().map(|&p| p).collect::<Vec<_>>()))
+            .map(|&p| (p, adjacency_list[&p].iter().copied().collect::<Vec<_>>()))
             .collect::<HashMap<_, _>>();
 
         (
@@ -188,18 +219,11 @@ impl Burrow {
     }
 
     fn get_valid_moves(&self, state: &BurrowState, amphipod_index: usize) -> Vec<Move> {
-        if state.amphipods[amphipod_index].1.len() >= 3 {
+        if state.amphipods[amphipod_index].final_position {
             return Vec::new();
         }
-
-        let base_energy_cost = state.amphipods[amphipod_index].0.energy_cost();
-        let current_position = *state.amphipods[amphipod_index].1.last().unwrap();
-
-        let filled_positions = state
-            .amphipods
-            .iter()
-            .map(|(_, l)| *l.last().unwrap())
-            .collect::<Vec<_>>();
+        let base_energy_cost = state.amphipods[amphipod_index].amphipod.energy_cost();
+        let current_position = state.amphipods[amphipod_index].position;
 
         let mut moves_to_test = self.adjacency_list[&current_position]
             .iter()
@@ -209,10 +233,11 @@ impl Burrow {
             })
             .collect::<Vec<_>>();
 
-        let mut visited = state.amphipods[amphipod_index]
-            .1
+        let mut visited = state
+            .amphipods
             .iter()
-            .copied()
+            .map(|a| a.position)
+            .chain([current_position])
             .collect::<HashSet<_>>();
 
         let mut valid_moves = Vec::new();
@@ -224,10 +249,6 @@ impl Burrow {
 
             visited.insert(movement.position);
 
-            if filled_positions.contains(&movement.position) {
-                continue;
-            }
-
             match self.cells[&movement.position] {
                 Cell::Hallway { can_stay } => {
                     if can_stay {
@@ -236,11 +257,9 @@ impl Burrow {
                         }
                     }
                 }
-                Cell::Room { amphipod } => {
-                    if amphipod == state.amphipods[amphipod_index].0 {
-                        if let Cell::Hallway { .. } = self.cells[&current_position] {
-                            valid_moves.push(movement.clone());
-                        }
+                Cell::Room { amphipod, .. } => {
+                    if amphipod == state.amphipods[amphipod_index].amphipod {
+                        valid_moves.push(movement.clone());
                     }
                 }
             }
@@ -266,16 +285,12 @@ impl Burrow {
             let valid_moves = self
                 .get_valid_moves(state, index)
                 .into_iter()
-                .filter_map(|m| {
+                .map(|m| {
                     let mut copy = state.clone();
-                    copy.amphipods[index].1.push(m.position);
+                    copy.amphipods[index].position = m.position;
                     copy.energy_cost += m.energy_cost;
-
-                    if copy.amphipods[index].1.len() >= 3 && !self.is_complete(&copy) {
-                        None
-                    } else {
-                        Some(copy)
-                    }
+                    self.final_position(&mut copy);
+                    copy
                 })
                 .collect::<Vec<_>>();
 
@@ -285,13 +300,44 @@ impl Burrow {
         moves
     }
 
+    fn final_position(&self, state: &mut BurrowState) {
+        let mut ends = self
+            .cells
+            .iter()
+            .filter(|(_, c)| match c {
+                Cell::Room { is_end, .. } => *is_end,
+                _ => false,
+            })
+            .map(|(p, _)| *p)
+            .collect::<Vec<_>>();
+
+        let mut checked = HashSet::new();
+
+        while let Some(point) = ends.pop() {
+            if checked.contains(&point) {
+                continue;
+            }
+            checked.insert(point);
+            if let Cell::Room { amphipod, .. } = self.cells[&point] {
+                if let Some(a) = state.amphipods.iter_mut().find(|a| a.position == point) {
+                    if a.amphipod == amphipod {
+                        a.final_position = true;
+
+                        ends.extend(self.adjacency_list[&point].iter());
+                    }
+                }
+            }
+        }
+    }
+
     fn is_complete(&self, state: &BurrowState) -> bool {
-        state.amphipods.iter().all(
-            |(a, positions)| match self.cells[positions.last().unwrap()] {
+        state
+            .amphipods
+            .iter()
+            .all(|a| match self.cells[&a.position] {
                 Cell::Hallway { .. } => false,
-                Cell::Room { amphipod } => *a == amphipod,
-            },
-        )
+                Cell::Room { amphipod, .. } => a.amphipod == amphipod,
+            })
     }
 }
 
@@ -303,26 +349,27 @@ struct Move {
 
 fn find_shortest(burrow: &Burrow, state: &BurrowState) -> Option<BurrowState> {
     let mut states = vec![state.clone()];
+    let mut i = 0;
 
-    while let Some(state) = states.pop() {
-        println!("{:?}", state);
-        if state.energy_cost > 12521 {
-            panic!("{:?}", state);
-        }
-        if burrow.is_complete(&state) {
-            return Some(state);
+    while let Some(test_state) = states.pop() {
+        if burrow.is_complete(&test_state) {
+            return Some(test_state);
         } else {
-            states.extend(burrow.get_moves(&state));
+            states.extend(burrow.get_moves(&test_state));
         }
 
         states.sort_by_key(|s| u32::MAX - s.energy_cost);
+        i += 1;
+        if i % 1000 == 0 {
+            println!("{}:{}:{}", test_state.energy_cost, states.len(), i);
+            states.dedup();
+        }
     }
 
     None
 }
 
 fn main() {
-    panic!("This doesn't work");
     let input = read_to_string("input/23").unwrap();
 
     let (burrow, state) = Burrow::new(&input);
