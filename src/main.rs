@@ -1,4 +1,5 @@
 use clap::Parser;
+use std::time::Instant;
 
 #[derive(Debug, Parser)]
 #[clap(about, version, author)]
@@ -22,11 +23,18 @@ fn main() {
                 && day.unwrap_or($day) == $day
                 && part.unwrap_or($part) == $part
             {
-                let result = advent_of_code::$year_i::$day_i::$part_i();
-                println!("year{} day{:02} part{}: {:?}", $year, $day, $part, result);
+                let start = Instant::now();
+                advent_of_code::$year_i::$day_i::$part_i();
+                let duration = Instant::now() - start;
+                println!("year{} day{:02} part{}: {:?}", $year, $day, $part, duration);
             }
         };
     }
+
+    matches_args!(2019, year2019, 1, day01, 1, part1);
+    matches_args!(2019, year2019, 1, day01, 2, part2);
+    matches_args!(2019, year2019, 2, day02, 1, part1);
+    matches_args!(2019, year2019, 2, day02, 2, part2);
 
     matches_args!(2021, year2021, 1, day01, 1, part1);
     matches_args!(2021, year2021, 1, day01, 2, part2);
