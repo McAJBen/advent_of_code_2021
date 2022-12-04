@@ -86,5 +86,8 @@ fn main() {
     // matches_args!(2021, year2021, 24, day24, 2, part2);
     matches_args!(2021, year2021, 25, day25, 1, part1);
 
+    matches_args!(2022, year2022, 1, day01, 1, part1);
+    matches_args!(2022, year2022, 1, day01, 2, part2);
+
     println!("{:?}", args);
 }
