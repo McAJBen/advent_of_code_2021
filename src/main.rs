@@ -94,6 +94,8 @@ fn main() {
     matches_args!(2022, year2022, 3, day03, 2, part2);
     matches_args!(2022, year2022, 4, day04, 1, part1);
     matches_args!(2022, year2022, 4, day04, 2, part2);
+    matches_args!(2022, year2022, 5, day05, 1, part1);
+    matches_args!(2022, year2022, 5, day05, 2, part2);
 
     println!("{:?}", args);
 }
