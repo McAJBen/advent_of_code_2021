@@ -1,6 +1,5 @@
+use crate::utils::read_input;
 use std::collections::HashSet;
-
-use crate::utils::{read_input, ZipWithNextExt};
 
 pub fn part1() -> u32 {
     read_input(2022, 3)
