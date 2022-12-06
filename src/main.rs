@@ -24,9 +24,10 @@ fn main() {
                 && part.unwrap_or($part) == $part
             {
                 let start = Instant::now();
-                advent_of_code::$year_i::$day_i::$part_i();
+                let result = advent_of_code::$year_i::$day_i::$part_i();
                 let duration = Instant::now() - start;
                 println!("year{} day{:02} part{}: {:?}", $year, $day, $part, duration);
+                println!("{}", result);
             }
         };
     }
