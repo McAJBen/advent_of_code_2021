@@ -1,9 +1,7 @@
 use crate::utils::read_input;
 use std::collections::HashMap;
 
-pub fn part1() -> usize {
-    let input = read_input(2021, 6);
-
+pub fn part1(input: &str) -> usize {
     let mut fishes: Vec<u8> = input.split(',').map(|x| x.parse().unwrap()).collect();
 
     for _ in 0..80 {
@@ -24,9 +22,13 @@ pub fn part1() -> usize {
     fishes.len()
 }
 
-pub fn part2() -> u64 {
+#[test]
+fn test_part1() {
     let input = read_input(2021, 6);
+    assert_eq!(part1(&input), 389726);
+}
 
+pub fn part2(input: &str) -> u64 {
     let fishes: Vec<u8> = input.split(',').map(|x| x.parse().unwrap()).collect();
 
     let mut map = HashMap::new();
@@ -54,11 +56,7 @@ pub fn part2() -> u64 {
 }
 
 #[test]
-fn test_part1() {
-    assert_eq!(part1(), 389726);
-}
-
-#[test]
 fn test_part2() {
-    assert_eq!(part2(), 1743335992042);
+    let input = read_input(2021, 6);
+    assert_eq!(part2(&input), 1743335992042);
 }

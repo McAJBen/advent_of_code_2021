@@ -12,8 +12,8 @@ struct Line {
 impl Line {
     fn new(line: &str) -> Self {
         let (point1, point2) = line.split_once(" -> ").unwrap();
-        let (x1, y1) = point1.split_once(",").unwrap();
-        let (x2, y2) = point2.split_once(",").unwrap();
+        let (x1, y1) = point1.split_once(',').unwrap();
+        let (x2, y2) = point2.split_once(',').unwrap();
 
         Self {
             x1: x1.parse().unwrap(),
@@ -24,9 +24,7 @@ impl Line {
     }
 }
 
-pub fn part1() -> usize {
-    let input = read_input(2021, 5);
-
+pub fn part1(input: &str) -> usize {
     let lines = input.lines().map(Line::new).collect::<Vec<_>>();
 
     let mut map = HashMap::new();
@@ -72,9 +70,13 @@ pub fn part1() -> usize {
     map.iter().filter(|(_, &x)| x > 1).count()
 }
 
-pub fn part2() -> usize {
+#[test]
+fn test_part1() {
     let input = read_input(2021, 5);
+    assert_eq!(part1(&input), 4826);
+}
 
+pub fn part2(input: &str) -> usize {
     let lines = input.lines().map(Line::new).collect::<Vec<_>>();
 
     let mut map = HashMap::new();
@@ -139,11 +141,7 @@ pub fn part2() -> usize {
 }
 
 #[test]
-fn test_part1() {
-    assert_eq!(part1(), 4826);
-}
-
-#[test]
 fn test_part2() {
-    assert_eq!(part2(), 16793);
+    let input = read_input(2021, 5);
+    assert_eq!(part2(&input), 16793);
 }

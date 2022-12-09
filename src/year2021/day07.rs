@@ -1,8 +1,6 @@
 use crate::utils::read_input;
 
-pub fn part1() -> u32 {
-    let input = read_input(2021, 7);
-
+pub fn part1(input: &str) -> u32 {
     let positions: Vec<u16> = input.split(',').map(|x| x.parse().unwrap()).collect();
 
     let max_position = *positions.iter().max().unwrap();
@@ -21,9 +19,13 @@ pub fn part1() -> u32 {
         .1
 }
 
-pub fn part2() -> u32 {
+#[test]
+fn test_part1() {
     let input = read_input(2021, 7);
+    assert_eq!(part1(&input), 354129);
+}
 
+pub fn part2(input: &str) -> u32 {
     let positions: Vec<u16> = input.split(',').map(|x| x.parse().unwrap()).collect();
 
     let max_position = *positions.iter().max().unwrap();
@@ -47,11 +49,7 @@ pub fn part2() -> u32 {
 }
 
 #[test]
-fn test_part1() {
-    assert_eq!(part1(), 354129);
-}
-
-#[test]
 fn test_part2() {
-    assert_eq!(part2(), 98905973);
+    let input = read_input(2021, 7);
+    assert_eq!(part2(&input), 98905973);
 }

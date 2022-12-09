@@ -1,3 +1,4 @@
+use advent_of_code::utils::read_input;
 use clap::Parser;
 use std::time::Instant;
 
@@ -23,8 +24,9 @@ fn main() {
                 && day.unwrap_or($day) == $day
                 && part.unwrap_or($part) == $part
             {
+                let input = read_input($year, $day);
                 let start = Instant::now();
-                let result = advent_of_code::$year_i::$day_i::$part_i();
+                let result = advent_of_code::$year_i::$day_i::$part_i(&input);
                 let duration = Instant::now() - start;
                 println!("year{} day{:02} part{}: {:?}", $year, $day, $part, duration);
                 println!("{}", result);

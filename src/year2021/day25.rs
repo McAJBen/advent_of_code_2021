@@ -106,10 +106,8 @@ impl SeaFloor {
     }
 }
 
-pub fn part1() -> u16 {
-    let input = read_input(2021, 25);
-
-    let mut prev_floor = SeaFloor::new(&input);
+pub fn part1(input: &str) -> u16 {
+    let mut prev_floor = SeaFloor::new(input);
     let mut iterations = 0;
 
     loop {
@@ -127,5 +125,6 @@ pub fn part1() -> u16 {
 
 #[test]
 fn test_part1() {
-    assert_eq!(part1(), 557);
+    let input = read_input(2021, 25);
+    assert_eq!(part1(&input), 557);
 }

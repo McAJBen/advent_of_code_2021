@@ -1,7 +1,7 @@
 use crate::utils::read_input;
 
-pub fn part1() -> u32 {
-    read_input(2022, 1)
+pub fn part1(input: &str) -> u32 {
+    input
         .split("\n\n")
         .map(|section| {
             section
@@ -13,8 +13,14 @@ pub fn part1() -> u32 {
         .unwrap()
 }
 
-pub fn part2() -> u32 {
-    let mut sections: Vec<u32> = read_input(2022, 1)
+#[test]
+fn test_part1() {
+    let input = read_input(2022, 1);
+    assert_eq!(part1(&input), 66186);
+}
+
+pub fn part2(input: &str) -> u32 {
+    let mut sections: Vec<u32> = input
         .split("\n\n")
         .map(|section| {
             section
@@ -31,11 +37,7 @@ pub fn part2() -> u32 {
 }
 
 #[test]
-fn test_part1() {
-    assert_eq!(part1(), 66186);
-}
-
-#[test]
 fn test_part2() {
-    assert_eq!(part2(), 196804);
+    let input = read_input(2022, 1);
+    assert_eq!(part2(&input), 196804);
 }

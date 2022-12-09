@@ -1,8 +1,6 @@
 use crate::utils::read_input;
 
-pub fn part1() -> i32 {
-    let input = read_input(2021, 3);
-
+pub fn part1(input: &str) -> i32 {
     let lines: Vec<Vec<bool>> = input
         .lines()
         .map(|line| line.chars().map(|char| char == '1').collect())
@@ -27,9 +25,13 @@ pub fn part1() -> i32 {
     gamma_rate * epsilon_rate
 }
 
-pub fn part2() -> i32 {
+#[test]
+fn test_part1() {
     let input = read_input(2021, 3);
+    assert_eq!(part1(&input), 3959450);
+}
 
+pub fn part2(input: &str) -> i32 {
     let lines: Vec<Vec<bool>> = input
         .lines()
         .map(|line| line.chars().map(|char| char == '1').collect())
@@ -47,10 +49,7 @@ pub fn part2() -> i32 {
             // 1 is more common or equal
             let correct_value = num_ones >= oxygen_lines.len() / 2;
 
-            oxygen_lines = oxygen_lines
-                .into_iter()
-                .filter(|line| line[position] == correct_value)
-                .collect();
+            oxygen_lines.retain(|line| line[position] == correct_value);
 
             correct_value
         } else {
@@ -73,10 +72,7 @@ pub fn part2() -> i32 {
             // 0 is less common
             let correct_value = num_ones < co2_lines.len() / 2;
 
-            co2_lines = co2_lines
-                .into_iter()
-                .filter(|line| line[position] == correct_value)
-                .collect();
+            co2_lines.retain(|line| line[position] == correct_value);
 
             correct_value
         } else {
@@ -93,11 +89,7 @@ pub fn part2() -> i32 {
 }
 
 #[test]
-fn test_part1() {
-    assert_eq!(part1(), 3959450);
-}
-
-#[test]
 fn test_part2() {
-    assert_eq!(part2(), 7440311);
+    let input = read_input(2021, 3);
+    assert_eq!(part2(&input), 7440311);
 }

@@ -96,9 +96,7 @@ fn parse_line(line: &str) -> ErrorType {
     }
 }
 
-pub fn part1() -> u64 {
-    let input = read_input(2021, 10);
-
+pub fn part1(input: &str) -> u64 {
     input
         .lines()
         .filter_map(find_corruption)
@@ -106,9 +104,13 @@ pub fn part1() -> u64 {
         .sum::<u64>()
 }
 
-pub fn part2() -> u64 {
+#[test]
+fn test_part1() {
     let input = read_input(2021, 10);
+    assert_eq!(part1(&input), 392097);
+}
 
+pub fn part2(input: &str) -> u64 {
     let mut incomplete_values = input
         .lines()
         .filter_map(|line| match parse_line(line) {
@@ -123,11 +125,7 @@ pub fn part2() -> u64 {
 }
 
 #[test]
-fn test_part1() {
-    assert_eq!(part1(), 392097);
-}
-
-#[test]
 fn test_part2() {
-    assert_eq!(part2(), 4263222782);
+    let input = read_input(2021, 10);
+    assert_eq!(part2(&input), 4263222782);
 }

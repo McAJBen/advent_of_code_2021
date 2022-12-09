@@ -33,9 +33,7 @@ impl DirectionCommand {
     }
 }
 
-pub fn part1() -> i32 {
-    let input = read_input(2021, 2);
-
+pub fn part1(input: &str) -> i32 {
     let mut horizontal_position = 0;
     let mut depth = 0;
 
@@ -52,9 +50,13 @@ pub fn part1() -> i32 {
     horizontal_position * depth
 }
 
-pub fn part2() -> i32 {
+#[test]
+fn test_part1() {
     let input = read_input(2021, 2);
+    assert_eq!(part1(&input), 1989014);
+}
 
+pub fn part2(input: &str) -> i32 {
     let mut horizontal_position = 0;
     let mut depth = 0;
     let mut aim = 0;
@@ -74,11 +76,7 @@ pub fn part2() -> i32 {
 }
 
 #[test]
-fn test_part1() {
-    assert_eq!(part1(), 1989014);
-}
-
-#[test]
 fn test_part2() {
-    assert_eq!(part2(), 2006917119);
+    let input = read_input(2021, 2);
+    assert_eq!(part2(&input), 2006917119);
 }

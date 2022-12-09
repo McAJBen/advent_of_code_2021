@@ -111,9 +111,7 @@ impl CompressionAlgorithm {
     }
 }
 
-pub fn part1() -> usize {
-    let input = read_input(2021, 20);
-
+pub fn part1(input: &str) -> usize {
     let (compression_algorithm, image) = input.split_once("\n\n").unwrap();
 
     let compression_algorithm = CompressionAlgorithm::new(compression_algorithm);
@@ -126,9 +124,13 @@ pub fn part1() -> usize {
     image.num_lit_pixels()
 }
 
-pub fn part2() -> usize {
+#[test]
+fn test_part1() {
     let input = read_input(2021, 20);
+    assert_eq!(part1(&input), 5597);
+}
 
+pub fn part2(input: &str) -> usize {
     let (compression_algorithm, image) = input.split_once("\n\n").unwrap();
 
     let compression_algorithm = CompressionAlgorithm::new(compression_algorithm);
@@ -142,11 +144,7 @@ pub fn part2() -> usize {
 }
 
 #[test]
-fn test_part1() {
-    assert_eq!(part1(), 5597);
-}
-
-#[test]
 fn test_part2() {
-    assert_eq!(part2(), 18723);
+    let input = read_input(2021, 20);
+    assert_eq!(part2(&input), 18723);
 }

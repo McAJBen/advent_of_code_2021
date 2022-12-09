@@ -366,9 +366,7 @@ fn find_shortest(burrow: &Burrow, state: &BurrowState) -> Option<BurrowState> {
     None
 }
 
-pub fn part1() {
-    let input = read_input(2021, 23);
-
+pub fn part1(input: &str) {
     let (burrow, state) = Burrow::new(&input);
 
     println!("{:#?}", burrow);

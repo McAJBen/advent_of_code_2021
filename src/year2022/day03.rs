@@ -1,8 +1,8 @@
 use crate::utils::read_input;
 use std::collections::HashSet;
 
-pub fn part1() -> u32 {
-    read_input(2022, 3)
+pub fn part1(input: &str) -> u32 {
+    input
         .lines()
         .map(|line| {
             let items: Vec<u8> = line
@@ -15,8 +15,8 @@ pub fn part1() -> u32 {
                 .collect();
             let (c1, c2) = items.split_at(items.len() / 2);
 
-            let c1: HashSet<u8> = c1.into_iter().copied().collect();
-            let c2: HashSet<u8> = c2.into_iter().copied().collect();
+            let c1: HashSet<u8> = c1.iter().copied().collect();
+            let c2: HashSet<u8> = c2.iter().copied().collect();
 
             let intersection: HashSet<u8> = c1.intersection(&c2).copied().collect();
             intersection.into_iter().map(|u8| u8 as u32).sum::<u32>()
@@ -26,17 +26,18 @@ pub fn part1() -> u32 {
 
 #[test]
 fn test_part1() {
-    assert_eq!(part1(), 8176);
+    let input = read_input(2022, 3);
+    assert_eq!(part1(&input), 8176);
 }
 
-pub fn part2() -> u32 {
-    read_input(2022, 3)
+pub fn part2(input: &str) -> u32 {
+    input
         .lines()
         .collect::<Vec<_>>()
         .chunks_exact(3)
         .map(|lines| {
             lines
-                .into_iter()
+                .iter()
                 .map(|line| {
                     line.chars()
                         .map(|c| match c {
@@ -57,5 +58,6 @@ pub fn part2() -> u32 {
 
 #[test]
 fn test_part2() {
-    assert_eq!(part2(), 2689);
+    let input = read_input(2022, 3);
+    assert_eq!(part2(&input), 2689);
 }

@@ -50,9 +50,7 @@ impl Board {
     }
 }
 
-pub fn part1() -> i32 {
-    let input = read_input(2021, 4);
-
+pub fn part1(input: &str) -> i32 {
     let mut lines = input.lines().collect::<Vec<_>>();
 
     let numbers = lines
@@ -90,9 +88,13 @@ pub fn part1() -> i32 {
     panic!("No winning board found");
 }
 
-pub fn part2() -> i32 {
+#[test]
+fn test_part1() {
     let input = read_input(2021, 4);
+    assert_eq!(part1(&input), 16674);
+}
 
+pub fn part2(input: &str) -> i32 {
     let mut lines = input.lines().collect::<Vec<_>>();
 
     let numbers = lines
@@ -128,10 +130,7 @@ pub fn part2() -> i32 {
 
             return losing_board.score(&called_numbers);
         } else {
-            boards = boards
-                .into_iter()
-                .filter(|board| !board.did_win(&called_numbers))
-                .collect();
+            boards.retain(|board| !board.did_win(&called_numbers));
         }
     }
 
@@ -139,11 +138,7 @@ pub fn part2() -> i32 {
 }
 
 #[test]
-fn test_part1() {
-    assert_eq!(part1(), 16674);
-}
-
-#[test]
 fn test_part2() {
-    assert_eq!(part2(), 7075);
+    let input = read_input(2021, 4);
+    assert_eq!(part2(&input), 7075);
 }

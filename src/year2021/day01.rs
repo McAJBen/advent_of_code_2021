@@ -1,7 +1,7 @@
 use crate::utils::{read_input, ZipWithNextExt, ZipWithNextNExt};
 
-pub fn part1() -> usize {
-    read_input(2021, 1)
+pub fn part1(input: &str) -> usize {
+    input
         .lines()
         .map(|line| line.parse::<u16>().unwrap())
         .zip_with_next()
@@ -9,8 +9,14 @@ pub fn part1() -> usize {
         .count()
 }
 
-pub fn part2() -> usize {
-    read_input(2021, 1)
+#[test]
+fn test_part1() {
+    let input = read_input(2021, 1);
+    assert_eq!(part1(&input), 1583);
+}
+
+pub fn part2(input: &str) -> usize {
+    input
         .lines()
         .map(|line| line.parse::<u16>().unwrap())
         .zip_with_next_n(3)
@@ -21,11 +27,7 @@ pub fn part2() -> usize {
 }
 
 #[test]
-fn test_part1() {
-    assert_eq!(part1(), 1583);
-}
-
-#[test]
 fn test_part2() {
-    assert_eq!(part2(), 1627);
+    let input = read_input(2021, 1);
+    assert_eq!(part2(&input), 1627);
 }

@@ -114,32 +114,29 @@ impl Graph {
     }
 }
 
-pub fn part1() -> usize {
-    let input = read_input(2021, 12);
-
-    let graph = Graph::new(&input);
+pub fn part1(input: &str) -> usize {
+    let graph = Graph::new(input);
 
     let paths = graph.get_all_paths();
 
     paths.len()
 }
 
-pub fn part2() -> usize {
+#[test]
+fn test_part1() {
     let input = read_input(2021, 12);
+    assert_eq!(part1(&input), 4011);
+}
 
-    let graph = Graph::new(&input);
+pub fn part2(input: &str) -> usize {
+    let graph = Graph::new(input);
 
     let paths = graph.get_all_paths2();
 
     paths.len()
 }
-
-#[test]
-fn test_part1() {
-    assert_eq!(part1(), 4011);
-}
-
 #[test]
 fn test_part2() {
-    assert_eq!(part2(), 108035);
+    let input = read_input(2021, 12);
+    assert_eq!(part2(&input), 108035);
 }

@@ -84,10 +84,8 @@ impl DeterministicDie {
     }
 }
 
-pub fn part1() -> u32 {
-    let input = read_input(2021, 21);
-
-    let mut game_state = GameState::new(&input);
+pub fn part1(input: &str) -> u32 {
+    let mut game_state = GameState::new(input);
 
     let mut die = DeterministicDie::new();
 
@@ -107,10 +105,14 @@ pub fn part1() -> u32 {
     die.num_rolls() as u32 * looser_score as u32
 }
 
-pub fn part2() -> u64 {
+#[test]
+fn test_part1() {
     let input = read_input(2021, 21);
+    assert_eq!(part1(&input), 916083);
+}
 
-    let mut game_states = vec![(1, GameState::new(&input))];
+pub fn part2(input: &str) -> u64 {
+    let mut game_states = vec![(1, GameState::new(input))];
     let mut player1_wins: u64 = 0;
     let mut player2_wins: u64 = 0;
 
@@ -134,11 +136,7 @@ pub fn part2() -> u64 {
 }
 
 #[test]
-fn test_part1() {
-    assert_eq!(part1(), 916083);
-}
-
-#[test]
 fn test_part2() {
-    assert_eq!(part2(), 49982165861983);
+    let input = read_input(2021, 21);
+    assert_eq!(part2(&input), 49982165861983);
 }

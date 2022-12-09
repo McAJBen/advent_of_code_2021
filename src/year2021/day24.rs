@@ -200,9 +200,7 @@ impl<'a> ALUProgramState<'a> {
                     Err(b) => b,
                 };
                 let mut state = self.clone();
-                state
-                    .registers
-                    .modify_register(a, |x| if x == rhs { 1 } else { 0 });
+                state.registers.modify_register(a, |x| i64::from(x == rhs));
                 state.instruction_pointer += 1;
                 vec![state]
             }
@@ -218,7 +216,7 @@ impl<'a> ALUProgramState<'a> {
     }
 }
 
-pub fn part1() {
+pub fn part1(input: &str) {
     let input = read_to_string("input/24").unwrap();
 
     let program = ALUProgram::new(
@@ -263,7 +261,7 @@ pub fn part1() {
     println!("{}", output);
 }
 
-pub fn part2() {
+pub fn part2(input: &str) {
     let input = read_to_string("input/24").unwrap();
 
     let program = ALUProgram::new(

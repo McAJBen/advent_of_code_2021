@@ -103,9 +103,7 @@ impl Scanner {
     }
 }
 
-pub fn part1() -> usize {
-    let input = read_input(2021, 19);
-
+pub fn part1(input: &str) -> usize {
     let mut scanners = Vec::new();
     for line in input.lines() {
         if line.starts_with("---") {
@@ -141,9 +139,13 @@ pub fn part1() -> usize {
     base_scanner.beacons.len()
 }
 
-pub fn part2() -> i16 {
+#[test]
+fn test_part1() {
     let input = read_input(2021, 19);
+    assert_eq!(part1(&input), 362);
+}
 
+pub fn part2(input: &str) -> i16 {
     let mut scanners = Vec::new();
     for line in input.lines() {
         if line.starts_with("---") {
@@ -193,11 +195,7 @@ pub fn part2() -> i16 {
 }
 
 #[test]
-fn test_part1() {
-    assert_eq!(part1(), 362);
-}
-
-#[test]
 fn test_part2() {
-    assert_eq!(part2(), 12204);
+    let input = read_input(2021, 19);
+    assert_eq!(part2(&input), 12204);
 }

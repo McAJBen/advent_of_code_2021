@@ -103,10 +103,8 @@ impl TargetRange {
     }
 }
 
-pub fn part1() -> i32 {
-    let input = read_input(2021, 17);
-
-    let value = TargetRange::new(&input);
+pub fn part1(input: &str) -> i32 {
+    let value = TargetRange::new(input);
 
     let mut best_probe: Option<Probe> = None;
 
@@ -130,10 +128,14 @@ pub fn part1() -> i32 {
     best_probe.unwrap().max_height()
 }
 
-pub fn part2() -> usize {
+#[test]
+fn test_part1() {
     let input = read_input(2021, 17);
+    assert_eq!(part1(&input), 5565);
+}
 
-    let value = TargetRange::new(&input);
+pub fn part2(input: &str) -> usize {
+    let value = TargetRange::new(input);
 
     let mut probes = Vec::new();
 
@@ -156,11 +158,7 @@ pub fn part2() -> usize {
 }
 
 #[test]
-fn test_part1() {
-    assert_eq!(part1(), 5565);
-}
-
-#[test]
 fn test_part2() {
-    assert_eq!(part2(), 2118);
+    let input = read_input(2021, 17);
+    assert_eq!(part2(&input), 2118);
 }

@@ -7,7 +7,7 @@ struct Display {
 
 impl Display {
     fn new(line: &str) -> Self {
-        let (_, outputs) = line.split_once("|").unwrap();
+        let (_, outputs) = line.split_once('|').unwrap();
         Self {
             outputs: outputs
                 .split_whitespace()
@@ -17,9 +17,7 @@ impl Display {
     }
 }
 
-pub fn part1() -> usize {
-    let input = read_input(2021, 8);
-
+pub fn part1(input: &str) -> usize {
     let displays = input.lines().map(Display::new).collect::<Vec<_>>();
 
     // number of times that 1, 4, 7, 8 appear
@@ -38,8 +36,14 @@ pub fn part1() -> usize {
         .sum::<usize>()
 }
 
+#[test]
+fn test_part1() {
+    let input = read_input(2021, 8);
+    assert_eq!(part1(&input), 449);
+}
+
 fn parse_line(line: &str) -> usize {
-    let (patterns, outputs) = line.split_once("|").unwrap();
+    let (patterns, outputs) = line.split_once('|').unwrap();
     let mut patterns = patterns
         .split_whitespace()
         .map(|s| s.chars().collect::<HashSet<char>>())
@@ -98,18 +102,12 @@ fn parse_line(line: &str) -> usize {
         .fold(0, |prev, digit| digit + prev * 10)
 }
 
-pub fn part2() -> usize {
-    let input = read_input(2021, 8);
-
+pub fn part2(input: &str) -> usize {
     input.lines().map(parse_line).sum::<usize>()
 }
 
 #[test]
-fn test_part1() {
-    assert_eq!(part1(), 449);
-}
-
-#[test]
 fn test_part2() {
-    assert_eq!(part2(), 968175);
+    let input = read_input(2021, 8);
+    assert_eq!(part2(&input), 968175);
 }

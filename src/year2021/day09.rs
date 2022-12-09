@@ -122,9 +122,7 @@ impl Grid {
     }
 }
 
-pub fn part1() -> u32 {
-    let input = read_input(2021, 9);
-
+pub fn part1(input: &str) -> u32 {
     let grid = Grid::new(input.lines().collect());
 
     let low_points = grid.get_low_points();
@@ -132,9 +130,13 @@ pub fn part1() -> u32 {
     low_points.into_iter().map(|x| x as u32 + 1).sum::<u32>()
 }
 
-pub fn part2() -> usize {
+#[test]
+fn test_part1() {
     let input = read_input(2021, 9);
+    assert_eq!(part1(&input), 594);
+}
 
+pub fn part2(input: &str) -> usize {
     let grid = Grid::new(input.lines().collect());
 
     let low_points = grid.get_low_points2();
@@ -151,11 +153,7 @@ pub fn part2() -> usize {
 }
 
 #[test]
-fn test_part1() {
-    assert_eq!(part1(), 594);
-}
-
-#[test]
 fn test_part2() {
-    assert_eq!(part2(), 858494);
+    let input = read_input(2021, 9);
+    assert_eq!(part2(&input), 858494);
 }

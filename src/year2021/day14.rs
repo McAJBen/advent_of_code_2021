@@ -1,9 +1,7 @@
 use crate::utils::{read_input, ZipWithNextExt};
 use std::collections::HashMap;
 
-pub fn part1() -> i32 {
-    let input = read_input(2021, 14);
-
+pub fn part1(input: &str) -> i32 {
     let (template, pairs) = input.split_once("\n\n").unwrap();
     let mut template = template.to_string();
 
@@ -48,9 +46,13 @@ pub fn part1() -> i32 {
     most_common.1 - least_common.1
 }
 
-pub fn part2() -> u64 {
+#[test]
+fn test_part1() {
     let input = read_input(2021, 14);
+    assert_eq!(part1(&input), 2223);
+}
 
+pub fn part2(input: &str) -> u64 {
     let (template, pairs) = input.split_once("\n\n").unwrap();
 
     let template_start = *template.chars().collect::<Vec<_>>().first().unwrap();
@@ -113,11 +115,7 @@ pub fn part2() -> u64 {
 }
 
 #[test]
-fn test_part1() {
-    assert_eq!(part1(), 2223);
-}
-
-#[test]
 fn test_part2() {
-    assert_eq!(part2(), 2566282754493);
+    let input = read_input(2021, 14);
+    assert_eq!(part2(&input), 2566282754493);
 }

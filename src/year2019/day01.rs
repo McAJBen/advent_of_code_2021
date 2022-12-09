@@ -1,17 +1,19 @@
 use crate::utils::read_input;
 
-pub fn part1() -> u32 {
-    let input = read_input(2019, 1);
-
+pub fn part1(input: &str) -> u32 {
     input
         .lines()
         .map(|line| line.parse::<u32>().unwrap() / 3 - 2)
         .sum::<u32>()
 }
 
-pub fn part2() -> u32 {
+#[test]
+fn test_part1() {
     let input = read_input(2019, 1);
+    assert_eq!(part1(&input), 3403509);
+}
 
+pub fn part2(input: &str) -> u32 {
     let mut masses = input
         .lines()
         .map(|line| line.parse::<u32>().unwrap())
@@ -31,11 +33,7 @@ pub fn part2() -> u32 {
 }
 
 #[test]
-fn test_part1() {
-    assert_eq!(part1(), 3403509);
-}
-
-#[test]
 fn test_part2() {
-    assert_eq!(part2(), 5102369);
+    let input = read_input(2019, 1);
+    assert_eq!(part2(&input), 5102369);
 }

@@ -33,7 +33,7 @@ struct Grid {
 }
 
 impl Grid {
-    fn new(input: String, multiplier: u8) -> Self {
+    fn new(input: &str, multiplier: u8) -> Self {
         let lines = input.lines().collect::<Vec<_>>();
 
         let original_height = lines.len();
@@ -132,28 +132,26 @@ impl Grid {
     }
 }
 
-pub fn part1() -> u16 {
-    let input = read_input(2021, 15);
-
+pub fn part1(input: &str) -> u16 {
     let grid = Grid::new(input, 1);
-
-    grid.dijkstra()
-}
-
-pub fn part2() -> u16 {
-    let input = read_input(2021, 15);
-
-    let grid = Grid::new(input, 5);
 
     grid.dijkstra()
 }
 
 #[test]
 fn test_part1() {
-    assert_eq!(part1(), 769);
+    let input = read_input(2021, 15);
+    assert_eq!(part1(&input), 769);
+}
+
+pub fn part2(input: &str) -> u16 {
+    let grid = Grid::new(input, 5);
+
+    grid.dijkstra()
 }
 
 #[test]
 fn test_part2() {
-    assert_eq!(part2(), 2963);
+    let input = read_input(2021, 15);
+    assert_eq!(part2(&input), 2963);
 }

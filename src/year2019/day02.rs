@@ -69,10 +69,8 @@ impl IntCodeVirtualMachine {
     }
 }
 
-pub fn part1() -> u32 {
-    let input = read_input(2019, 2);
-
-    let mut vm = IntCodeVirtualMachine::new(&input);
+pub fn part1(input: &str) -> u32 {
+    let mut vm = IntCodeVirtualMachine::new(input);
 
     vm.set_address(1, 12);
     vm.set_address(2, 2);
@@ -82,12 +80,16 @@ pub fn part1() -> u32 {
     vm.get_address(0)
 }
 
-pub fn part2() -> u32 {
+#[test]
+fn test_part1() {
     let input = read_input(2019, 2);
+    assert_eq!(part1(&input), 3765464);
+}
 
+pub fn part2(input: &str) -> u32 {
     for noun in 0..100 {
         for verb in 0..100 {
-            let mut vm = IntCodeVirtualMachine::new(&input);
+            let mut vm = IntCodeVirtualMachine::new(input);
             vm.set_address(1, noun);
             vm.set_address(2, verb);
             vm.run_to_completion();
@@ -101,11 +103,7 @@ pub fn part2() -> u32 {
 }
 
 #[test]
-fn test_part1() {
-    assert_eq!(part1(), 3765464);
-}
-
-#[test]
 fn test_part2() {
-    assert_eq!(part2(), 7610);
+    let input = read_input(2019, 2);
+    assert_eq!(part2(&input), 7610);
 }

@@ -1,7 +1,6 @@
 use crate::utils::read_input;
 
-pub fn part1() -> String {
-    let input = read_input(2022, 5);
+pub fn part1(input: &str) -> String {
     let (original, directions) = input.split_once("\n\n").unwrap();
 
     let mut positions = Vec::new();
@@ -47,11 +46,11 @@ pub fn part1() -> String {
 
 #[test]
 fn test_part1() {
-    assert_eq!(part1(), "CFFHVVHNC");
+    let input = read_input(2022, 5);
+    assert_eq!(part1(&input), "CFFHVVHNC");
 }
 
-pub fn part2() -> String {
-    let input = read_input(2022, 5);
+pub fn part2(input: &str) -> String {
     let (original, directions) = input.split_once("\n\n").unwrap();
 
     let mut positions = Vec::new();
@@ -98,5 +97,6 @@ pub fn part2() -> String {
 
 #[test]
 fn test_part2() {
-    assert_eq!(part2(), "FSZWBPTBG");
+    let input = read_input(2022, 5);
+    assert_eq!(part2(&input), "FSZWBPTBG");
 }

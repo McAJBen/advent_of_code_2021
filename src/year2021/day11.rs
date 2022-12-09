@@ -13,7 +13,7 @@ struct OctopusGrid {
 }
 
 impl OctopusGrid {
-    fn new(input: String) -> Self {
+    fn new(input: &str) -> Self {
         let octopus_energies: Vec<Vec<u8>> = input
             .lines()
             .into_iter()
@@ -106,17 +106,19 @@ impl OctopusGrid {
     }
 }
 
-pub fn part1() -> u32 {
-    let input = read_input(2021, 11);
-
+pub fn part1(input: &str) -> u32 {
     let mut grid = OctopusGrid::new(input);
 
     (0..100).map(|_| grid.tick()).sum()
 }
 
-pub fn part2() -> u32 {
+#[test]
+fn test_part1() {
     let input = read_input(2021, 11);
+    assert_eq!(part1(&input), 1691);
+}
 
+pub fn part2(input: &str) -> u32 {
     let mut grid = OctopusGrid::new(input);
 
     let mut num_ticks = 0;
@@ -130,11 +132,7 @@ pub fn part2() -> u32 {
 }
 
 #[test]
-fn test_part1() {
-    assert_eq!(part1(), 1691);
-}
-
-#[test]
 fn test_part2() {
-    assert_eq!(part2(), 216);
+    let input = read_input(2021, 11);
+    assert_eq!(part2(&input), 216);
 }

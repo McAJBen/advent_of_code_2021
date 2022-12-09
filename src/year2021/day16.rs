@@ -175,48 +175,34 @@ impl Packet {
             }
             PacketType::Literal { value } => value,
             PacketType::GreaterThan { ref sub_packets } => {
-                if sub_packets[0].eval() > sub_packets[1].eval() {
-                    1
-                } else {
-                    0
-                }
+                u64::from(sub_packets[0].eval() > sub_packets[1].eval())
             }
             PacketType::LessThan { ref sub_packets } => {
-                if sub_packets[0].eval() < sub_packets[1].eval() {
-                    1
-                } else {
-                    0
-                }
+                u64::from(sub_packets[0].eval() < sub_packets[1].eval())
             }
             PacketType::EqualTo { ref sub_packets } => {
-                if sub_packets[0].eval() == sub_packets[1].eval() {
-                    1
-                } else {
-                    0
-                }
+                u64::from(sub_packets[0].eval() == sub_packets[1].eval())
             }
         }
     }
 }
 
-pub fn part1() -> u64 {
-    let input = read_input(2021, 16);
-
-    Packet::from_input(&input).version_sum()
-}
-
-pub fn part2() -> u64 {
-    let input = read_input(2021, 16);
-
-    Packet::from_input(&input).eval()
+pub fn part1(input: &str) -> u64 {
+    Packet::from_input(input).version_sum()
 }
 
 #[test]
 fn test_part1() {
-    assert_eq!(part1(), 967);
+    let input = read_input(2021, 16);
+    assert_eq!(part1(&input), 967);
+}
+
+pub fn part2(input: &str) -> u64 {
+    Packet::from_input(input).eval()
 }
 
 #[test]
 fn test_part2() {
-    assert_eq!(part2(), 12883091136209);
+    let input = read_input(2021, 16);
+    assert_eq!(part2(&input), 12883091136209);
 }

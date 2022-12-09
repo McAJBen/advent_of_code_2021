@@ -125,9 +125,7 @@ impl Add for SnailfishNumber {
     }
 }
 
-pub fn part1() -> u32 {
-    let input = read_input(2021, 18);
-
+pub fn part1(input: &str) -> u32 {
     let result = input
         .lines()
         .map(SnailfishNumber::new)
@@ -137,9 +135,13 @@ pub fn part1() -> u32 {
     result.magnitude()
 }
 
-pub fn part2() -> u32 {
+#[test]
+fn test_part1() {
     let input = read_input(2021, 18);
+    assert_eq!(part1(&input), 4008);
+}
 
+pub fn part2(input: &str) -> u32 {
     let snailfish_numbers = input.lines().map(SnailfishNumber::new).collect::<Vec<_>>();
 
     let mut max_magnitude = 0;
@@ -158,11 +160,7 @@ pub fn part2() -> u32 {
 }
 
 #[test]
-fn test_part1() {
-    assert_eq!(part1(), 4008);
-}
-
-#[test]
 fn test_part2() {
-    assert_eq!(part2(), 4667);
+    let input = read_input(2021, 18);
+    assert_eq!(part2(&input), 4667);
 }

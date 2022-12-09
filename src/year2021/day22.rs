@@ -122,9 +122,7 @@ impl CuboidGrid {
     }
 }
 
-pub fn part1() -> usize {
-    let input = read_input(2021, 22);
-
+pub fn part1(input: &str) -> usize {
     let mut lit_cells = HashSet::new();
 
     for line in input.lines() {
@@ -152,9 +150,13 @@ pub fn part1() -> usize {
     lit_cells.len()
 }
 
-pub fn part2() -> u64 {
+#[test]
+fn test_part1() {
     let input = read_input(2021, 22);
+    assert_eq!(part1(&input), 644257);
+}
 
+pub fn part2(input: &str) -> u64 {
     let cuboids = input.lines().map(Cuboid::new).collect::<Vec<_>>();
 
     let mut cuboid_grid = CuboidGrid::new(&cuboids);
@@ -167,11 +169,7 @@ pub fn part2() -> u64 {
 }
 
 #[test]
-fn test_part1() {
-    assert_eq!(part1(), 644257);
-}
-
-#[test]
 fn test_part2() {
-    assert_eq!(part2(), 1235484513229032);
+    let input = read_input(2021, 22);
+    assert_eq!(part2(&input), 1235484513229032);
 }

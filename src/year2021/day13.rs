@@ -22,9 +22,7 @@ fn format_grid(points: &HashSet<Point>) -> String {
     s
 }
 
-pub fn part1() -> usize {
-    let input = read_input(2021, 13);
-
+pub fn part1(input: &str) -> usize {
     let (points, folds) = input.split_once("\n\n").unwrap();
 
     let mut points = points
@@ -71,9 +69,13 @@ pub fn part1() -> usize {
     points.len()
 }
 
-pub fn part2() -> String {
+#[test]
+fn test_part1() {
     let input = read_input(2021, 13);
+    assert_eq!(part1(&input), 671);
+}
 
+pub fn part2(input: &str) -> String {
     let (points, folds) = input.split_once("\n\n").unwrap();
 
     let mut points = points
@@ -121,11 +123,7 @@ pub fn part2() -> String {
 }
 
 #[test]
-fn test_part1() {
-    assert_eq!(part1(), 671);
-}
-
-#[test]
 fn test_part2() {
-    assert_eq!(part2(), "###   ##  ###  #  #  ##  ###  #  # #   \n#  # #  # #  # #  # #  # #  # # #  #   \n#  # #    #  # #### #  # #  # ##   #   \n###  #    ###  #  # #### ###  # #  #   \n#    #  # #    #  # #  # # #  # #  #   \n#     ##  #    #  # #  # #  # #  # ####\n");
+    let input = read_input(2021, 13);
+    assert_eq!(part2(&input), "###   ##  ###  #  #  ##  ###  #  # #   \n#  # #  # #  # #  # #  # #  # # #  #   \n#  # #    #  # #### #  # #  # ##   #   \n###  #    ###  #  # #### ###  # #  #   \n#    #  # #    #  # #  # # #  # #  #   \n#     ##  #    #  # #  # #  # #  # ####\n");
 }
