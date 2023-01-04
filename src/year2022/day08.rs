@@ -50,8 +50,6 @@ pub fn part1(input: &str) -> u64 {
         }
     }
 
-    dbg!(&visibility_grid);
-
     visibility_grid.iter().flatten().filter(|v| **v).count() as u64
 }
 
