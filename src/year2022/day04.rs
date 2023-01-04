@@ -1,4 +1,3 @@
-use crate::utils::read_input;
 use std::ops::RangeInclusive;
 
 pub fn part1(input: &str) -> usize {
@@ -37,12 +36,6 @@ pub fn part1(input: &str) -> usize {
         .count()
 }
 
-#[test]
-fn test_part1() {
-    let input = read_input(2022, 4);
-    assert_eq!(part1(&input), 644);
-}
-
 pub fn part2(input: &str) -> usize {
     input
         .lines()
@@ -65,10 +58,4 @@ pub fn part2(input: &str) -> usize {
             left_range.start() <= right_range.end() && left_range.end() >= right_range.start()
         })
         .count()
-}
-
-#[test]
-fn test_part2() {
-    let input = read_input(2022, 4);
-    assert_eq!(part2(&input), 926);
 }

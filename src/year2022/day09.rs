@@ -1,4 +1,4 @@
-use crate::utils::{read_input, ZipWithNextExt};
+use crate::utils::ZipWithNextExt;
 use std::collections::HashSet;
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
@@ -21,7 +21,7 @@ pub fn part1(input: &str) -> usize {
                 "R" => Direction::Right,
                 _ => panic!(),
             };
-            let count = usize::from_str_radix(count, 10).unwrap();
+            let count = count.parse::<usize>().unwrap();
 
             vec![direction; count]
         })
@@ -31,7 +31,7 @@ pub fn part1(input: &str) -> usize {
     let mut tail = (0, 0);
 
     let mut tail_history = HashSet::new();
-    tail_history.insert(tail.clone());
+    tail_history.insert(tail);
 
     for direction in orders {
         match direction {
@@ -66,16 +66,10 @@ pub fn part1(input: &str) -> usize {
             _ => {}
         }
 
-        tail_history.insert(tail.clone());
+        tail_history.insert(tail);
     }
 
     tail_history.len()
-}
-
-#[test]
-fn test_part1() {
-    let input = read_input(2022, 9);
-    assert_eq!(part1(&input), 5883);
 }
 
 pub fn part2(input: &str) -> usize {
@@ -90,7 +84,7 @@ pub fn part2(input: &str) -> usize {
                 "R" => Direction::Right,
                 _ => panic!(),
             };
-            let count = usize::from_str_radix(count, 10).unwrap();
+            let count = count.parse::<usize>().unwrap();
 
             vec![direction; count]
         })
@@ -99,7 +93,7 @@ pub fn part2(input: &str) -> usize {
     let mut snake = vec![(0, 0); 10];
 
     let mut tail_history = HashSet::new();
-    tail_history.insert(snake.last().unwrap().clone());
+    tail_history.insert(*snake.last().unwrap());
 
     for direction in orders {
         {
@@ -141,14 +135,8 @@ pub fn part2(input: &str) -> usize {
             }
         }
 
-        tail_history.insert(snake.last().unwrap().clone());
+        tail_history.insert(*snake.last().unwrap());
     }
 
     tail_history.len()
-}
-
-#[test]
-fn test_part2() {
-    let input = read_input(2022, 9);
-    assert_eq!(part2(&input), 0);
 }

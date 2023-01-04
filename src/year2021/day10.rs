@@ -1,5 +1,3 @@
-use crate::utils::read_input;
-
 enum BracketType {
     Open,
     Close,
@@ -104,12 +102,6 @@ pub fn part1(input: &str) -> u64 {
         .sum::<u64>()
 }
 
-#[test]
-fn test_part1() {
-    let input = read_input(2021, 10);
-    assert_eq!(part1(&input), 392097);
-}
-
 pub fn part2(input: &str) -> u64 {
     let mut incomplete_values = input
         .lines()
@@ -122,10 +114,4 @@ pub fn part2(input: &str) -> u64 {
     incomplete_values.sort_unstable();
 
     incomplete_values[incomplete_values.len() / 2]
-}
-
-#[test]
-fn test_part2() {
-    let input = read_input(2021, 10);
-    assert_eq!(part2(&input), 4263222782);
 }

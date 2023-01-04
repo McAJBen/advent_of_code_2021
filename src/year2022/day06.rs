@@ -1,4 +1,4 @@
-use crate::utils::{read_input, ZipWithNextNExt};
+use crate::utils::ZipWithNextNExt;
 use std::collections::HashSet;
 
 pub fn part1(input: &str) -> usize {
@@ -17,12 +17,6 @@ pub fn part1(input: &str) -> usize {
     x[0]
 }
 
-#[test]
-fn test_part1() {
-    let input = read_input(2022, 6);
-    assert_eq!(part1(&input), 1235);
-}
-
 pub fn part2(input: &str) -> usize {
     let x = input
         .chars()
@@ -37,10 +31,4 @@ pub fn part2(input: &str) -> usize {
         .collect::<Vec<_>>();
 
     x[0]
-}
-
-#[test]
-fn test_part2() {
-    let input = read_input(2022, 6);
-    assert_eq!(part2(&input), 3051);
 }

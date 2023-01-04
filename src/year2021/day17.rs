@@ -1,4 +1,3 @@
-use crate::utils::read_input;
 use regex::Regex;
 
 #[derive(Debug, Clone)]
@@ -128,12 +127,6 @@ pub fn part1(input: &str) -> i32 {
     best_probe.unwrap().max_height()
 }
 
-#[test]
-fn test_part1() {
-    let input = read_input(2021, 17);
-    assert_eq!(part1(&input), 5565);
-}
-
 pub fn part2(input: &str) -> usize {
     let value = TargetRange::new(input);
 
@@ -155,10 +148,4 @@ pub fn part2(input: &str) -> usize {
     }
 
     probes.len()
-}
-
-#[test]
-fn test_part2() {
-    let input = read_input(2021, 17);
-    assert_eq!(part2(&input), 2118);
 }

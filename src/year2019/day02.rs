@@ -1,5 +1,3 @@
-use crate::utils::read_input;
-
 struct IntCodeVirtualMachine {
     memory: Vec<u32>,
     instruction_pointer: usize,
@@ -80,12 +78,6 @@ pub fn part1(input: &str) -> u32 {
     vm.get_address(0)
 }
 
-#[test]
-fn test_part1() {
-    let input = read_input(2019, 2);
-    assert_eq!(part1(&input), 3765464);
-}
-
 pub fn part2(input: &str) -> u32 {
     for noun in 0..100 {
         for verb in 0..100 {
@@ -100,10 +92,4 @@ pub fn part2(input: &str) -> u32 {
     }
 
     panic!("No noun and verb found that produce 19690720");
-}
-
-#[test]
-fn test_part2() {
-    let input = read_input(2019, 2);
-    assert_eq!(part2(&input), 7610);
 }

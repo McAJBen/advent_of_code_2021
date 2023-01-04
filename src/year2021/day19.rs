@@ -1,4 +1,3 @@
-use crate::utils::read_input;
 use std::{
     collections::{HashMap, HashSet},
     ops::{Add, Sub},
@@ -139,12 +138,6 @@ pub fn part1(input: &str) -> usize {
     base_scanner.beacons.len()
 }
 
-#[test]
-fn test_part1() {
-    let input = read_input(2021, 19);
-    assert_eq!(part1(&input), 362);
-}
-
 pub fn part2(input: &str) -> i16 {
     let mut scanners = Vec::new();
     for line in input.lines() {
@@ -192,10 +185,4 @@ pub fn part2(input: &str) -> i16 {
         })
         .max()
         .unwrap()
-}
-
-#[test]
-fn test_part2() {
-    let input = read_input(2021, 19);
-    assert_eq!(part2(&input), 12204);
 }

@@ -1,4 +1,3 @@
-use crate::utils::read_input;
 use std::collections::HashMap;
 
 pub fn part1(input: &str) -> usize {
@@ -20,12 +19,6 @@ pub fn part1(input: &str) -> usize {
     }
 
     fishes.len()
-}
-
-#[test]
-fn test_part1() {
-    let input = read_input(2021, 6);
-    assert_eq!(part1(&input), 389726);
 }
 
 pub fn part2(input: &str) -> u64 {
@@ -53,10 +46,4 @@ pub fn part2(input: &str) -> u64 {
     }
 
     map.values().sum::<u64>()
-}
-
-#[test]
-fn test_part2() {
-    let input = read_input(2021, 6);
-    assert_eq!(part2(&input), 1743335992042);
 }

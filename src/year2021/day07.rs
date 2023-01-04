@@ -1,5 +1,3 @@
-use crate::utils::read_input;
-
 pub fn part1(input: &str) -> u32 {
     let positions: Vec<u16> = input.split(',').map(|x| x.parse().unwrap()).collect();
 
@@ -17,12 +15,6 @@ pub fn part1(input: &str) -> u32 {
         .min_by_key(|&(_, x)| x)
         .unwrap()
         .1
-}
-
-#[test]
-fn test_part1() {
-    let input = read_input(2021, 7);
-    assert_eq!(part1(&input), 354129);
 }
 
 pub fn part2(input: &str) -> u32 {
@@ -46,10 +38,4 @@ pub fn part2(input: &str) -> u32 {
         .min_by_key(|&(_, x)| x)
         .unwrap()
         .1
-}
-
-#[test]
-fn test_part2() {
-    let input = read_input(2021, 7);
-    assert_eq!(part2(&input), 98905973);
 }

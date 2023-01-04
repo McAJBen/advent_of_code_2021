@@ -7,4 +7,5 @@ version = "0.1.0"
 
 [dependencies]
 clap = {version = "3.0.0-rc.9", features = ["derive"]}
+paste = "1.0.11"
 regex = "1.5.4"

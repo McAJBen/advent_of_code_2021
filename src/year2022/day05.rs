@@ -1,5 +1,3 @@
-use crate::utils::read_input;
-
 pub fn part1(input: &str) -> String {
     let (original, directions) = input.split_once("\n\n").unwrap();
 
@@ -42,12 +40,6 @@ pub fn part1(input: &str) -> String {
         .into_iter()
         .map(|stack| stack.last().copied().unwrap())
         .collect::<String>()
-}
-
-#[test]
-fn test_part1() {
-    let input = read_input(2022, 5);
-    assert_eq!(part1(&input), "CFFHVVHNC");
 }
 
 pub fn part2(input: &str) -> String {
@@ -93,10 +85,4 @@ pub fn part2(input: &str) -> String {
         .into_iter()
         .map(|stack| stack.last().copied().unwrap())
         .collect::<String>()
-}
-
-#[test]
-fn test_part2() {
-    let input = read_input(2022, 5);
-    assert_eq!(part2(&input), "FSZWBPTBG");
 }

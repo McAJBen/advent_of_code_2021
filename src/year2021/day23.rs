@@ -1,6 +1,5 @@
+use crate::utils::Point;
 use std::collections::{HashMap, HashSet};
-
-use crate::utils::{read_input, Point};
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, PartialOrd, Ord)]
 enum Amphipod {
@@ -367,7 +366,7 @@ fn find_shortest(burrow: &Burrow, state: &BurrowState) -> Option<BurrowState> {
 }
 
 pub fn part1(input: &str) {
-    let (burrow, state) = Burrow::new(&input);
+    let (burrow, state) = Burrow::new(input);
 
     println!("{:#?}", burrow);
 

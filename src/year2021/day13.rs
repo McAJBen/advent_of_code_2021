@@ -1,4 +1,4 @@
-use crate::utils::{read_input, Point};
+use crate::utils::Point;
 use std::{collections::HashSet, str::FromStr};
 
 fn format_grid(points: &HashSet<Point>) -> String {
@@ -69,12 +69,6 @@ pub fn part1(input: &str) -> usize {
     points.len()
 }
 
-#[test]
-fn test_part1() {
-    let input = read_input(2021, 13);
-    assert_eq!(part1(&input), 671);
-}
-
 pub fn part2(input: &str) -> String {
     let (points, folds) = input.split_once("\n\n").unwrap();
 
@@ -120,10 +114,4 @@ pub fn part2(input: &str) -> String {
     }
 
     format_grid(&points)
-}
-
-#[test]
-fn test_part2() {
-    let input = read_input(2021, 13);
-    assert_eq!(part2(&input), "###   ##  ###  #  #  ##  ###  #  # #   \n#  # #  # #  # #  # #  # #  # # #  #   \n#  # #    #  # #### #  # #  # ##   #   \n###  #    ###  #  # #### ###  # #  #   \n#    #  # #    #  # #  # # #  # #  #   \n#     ##  #    #  # #  # #  # #  # ####\n");
 }

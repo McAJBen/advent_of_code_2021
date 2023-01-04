@@ -1,5 +1,3 @@
-use crate::utils::read_input;
-
 fn to_num(bits: &[bool]) -> usize {
     bits.iter().fold(0, |acc, &b| (acc << 1) + (b as usize))
 }
@@ -191,18 +189,6 @@ pub fn part1(input: &str) -> u64 {
     Packet::from_input(input).version_sum()
 }
 
-#[test]
-fn test_part1() {
-    let input = read_input(2021, 16);
-    assert_eq!(part1(&input), 967);
-}
-
 pub fn part2(input: &str) -> u64 {
     Packet::from_input(input).eval()
-}
-
-#[test]
-fn test_part2() {
-    let input = read_input(2021, 16);
-    assert_eq!(part2(&input), 12883091136209);
 }

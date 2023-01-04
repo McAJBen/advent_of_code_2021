@@ -1,5 +1,3 @@
-use crate::utils::read_input;
-
 pub fn part1(input: &str) -> u64 {
     let grid: Vec<Vec<u8>> = input
         .lines()
@@ -57,12 +55,6 @@ pub fn part1(input: &str) -> u64 {
     visibility_grid.iter().flatten().filter(|v| **v).count() as u64
 }
 
-#[test]
-fn test_part1() {
-    let input = read_input(2022, 8);
-    assert_eq!(part1(&input), 1851);
-}
-
 pub fn part2(input: &str) -> u64 {
     let grid: Vec<Vec<u8>> = input
         .lines()
@@ -107,10 +99,4 @@ pub fn part2(input: &str) -> u64 {
     }
 
     max
-}
-
-#[test]
-fn test_part2() {
-    let input = read_input(2022, 8);
-    assert_eq!(part2(&input), 574080);
 }

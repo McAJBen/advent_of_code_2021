@@ -1,4 +1,3 @@
-use crate::utils::read_input;
 use std::{collections::HashMap, path::PathBuf};
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
@@ -89,12 +88,6 @@ pub fn part1(input: &str) -> u64 {
         .sum()
 }
 
-#[test]
-fn test_part1() {
-    let input = read_input(2022, 7);
-    assert_eq!(part1(&input), 1367870);
-}
-
 pub fn part2(input: &str) -> u64 {
     let fds = FileDescriptor::from_terminal(input);
 
@@ -107,10 +100,4 @@ pub fn part2(input: &str) -> u64 {
         .filter(|s| *s > space_needed)
         .min()
         .unwrap()
-}
-
-#[test]
-fn test_part2() {
-    let input = read_input(2022, 7);
-    assert_eq!(part2(&input), 549173);
 }

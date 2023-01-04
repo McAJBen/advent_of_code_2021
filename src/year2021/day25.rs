@@ -1,4 +1,4 @@
-use crate::utils::{read_input, Point};
+use crate::utils::Point;
 use std::fmt::{Display, Formatter};
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
@@ -121,10 +121,4 @@ pub fn part1(input: &str) -> u16 {
     }
 
     iterations
-}
-
-#[test]
-fn test_part1() {
-    let input = read_input(2021, 25);
-    assert_eq!(part1(&input), 557);
 }

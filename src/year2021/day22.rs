@@ -1,4 +1,4 @@
-use crate::utils::{read_input, ZipWithNextExt};
+use crate::utils::ZipWithNextExt;
 use std::collections::HashSet;
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
@@ -150,12 +150,6 @@ pub fn part1(input: &str) -> usize {
     lit_cells.len()
 }
 
-#[test]
-fn test_part1() {
-    let input = read_input(2021, 22);
-    assert_eq!(part1(&input), 644257);
-}
-
 pub fn part2(input: &str) -> u64 {
     let cuboids = input.lines().map(Cuboid::new).collect::<Vec<_>>();
 
@@ -166,10 +160,4 @@ pub fn part2(input: &str) -> u64 {
     }
 
     cuboid_grid.num_lit
-}
-
-#[test]
-fn test_part2() {
-    let input = read_input(2021, 22);
-    assert_eq!(part2(&input), 1235484513229032);
 }

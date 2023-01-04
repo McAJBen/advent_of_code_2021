@@ -1,4 +1,3 @@
-use crate::utils::read_input;
 use std::collections::HashMap;
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
@@ -122,21 +121,10 @@ pub fn part1(input: &str) -> usize {
     paths.len()
 }
 
-#[test]
-fn test_part1() {
-    let input = read_input(2021, 12);
-    assert_eq!(part1(&input), 4011);
-}
-
 pub fn part2(input: &str) -> usize {
     let graph = Graph::new(input);
 
     let paths = graph.get_all_paths2();
 
     paths.len()
-}
-#[test]
-fn test_part2() {
-    let input = read_input(2021, 12);
-    assert_eq!(part2(&input), 108035);
 }

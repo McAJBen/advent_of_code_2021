@@ -1,4 +1,3 @@
-use crate::utils::read_input;
 use std::ops::Add;
 
 #[derive(Debug, Clone)]
@@ -135,12 +134,6 @@ pub fn part1(input: &str) -> u32 {
     result.magnitude()
 }
 
-#[test]
-fn test_part1() {
-    let input = read_input(2021, 18);
-    assert_eq!(part1(&input), 4008);
-}
-
 pub fn part2(input: &str) -> u32 {
     let snailfish_numbers = input.lines().map(SnailfishNumber::new).collect::<Vec<_>>();
 
@@ -157,10 +150,4 @@ pub fn part2(input: &str) -> u32 {
     }
 
     max_magnitude
-}
-
-#[test]
-fn test_part2() {
-    let input = read_input(2021, 18);
-    assert_eq!(part2(&input), 4667);
 }

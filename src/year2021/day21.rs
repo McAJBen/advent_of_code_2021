@@ -1,5 +1,3 @@
-use crate::utils::read_input;
-
 #[derive(Debug, Clone)]
 struct PlayerState {
     position: u16,
@@ -105,12 +103,6 @@ pub fn part1(input: &str) -> u32 {
     die.num_rolls() as u32 * looser_score as u32
 }
 
-#[test]
-fn test_part1() {
-    let input = read_input(2021, 21);
-    assert_eq!(part1(&input), 916083);
-}
-
 pub fn part2(input: &str) -> u64 {
     let mut game_states = vec![(1, GameState::new(input))];
     let mut player1_wins: u64 = 0;
@@ -133,10 +125,4 @@ pub fn part2(input: &str) -> u64 {
     }
 
     player1_wins.max(player2_wins)
-}
-
-#[test]
-fn test_part2() {
-    let input = read_input(2021, 21);
-    assert_eq!(part2(&input), 49982165861983);
 }

@@ -7,6 +7,7 @@ name = "advent_of_code"
 version = "0.1.0"
 dependencies = [
  "clap",
+ "paste",
  "regex",
 ]
 
@@ -132,6 +133,12 @@ checksum = "8e22443d1643a904602595ba1cd8f7d896afe56d26712531c5ff73a15b2fbf64"
 dependencies = [
  "memchr",
 ]
+
+[[package]]
+name = "paste"
+version = "1.0.11"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "d01a5bd0424d00070b0098dd17ebca6f961a959dead1dbcbbbc1d1cd8d3deeba"
 
 [[package]]
 name = "proc-macro-error"

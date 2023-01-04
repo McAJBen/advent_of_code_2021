@@ -1,4 +1,4 @@
-use crate::utils::{read_input, Point};
+use crate::utils::Point;
 use std::collections::HashSet;
 
 #[derive(Debug, Clone)]
@@ -130,12 +130,6 @@ pub fn part1(input: &str) -> u32 {
     low_points.into_iter().map(|x| x as u32 + 1).sum::<u32>()
 }
 
-#[test]
-fn test_part1() {
-    let input = read_input(2021, 9);
-    assert_eq!(part1(&input), 594);
-}
-
 pub fn part2(input: &str) -> usize {
     let grid = Grid::new(input.lines().collect());
 
@@ -150,10 +144,4 @@ pub fn part2(input: &str) -> usize {
     basin_sizes.reverse();
 
     basin_sizes.iter().take(3).product()
-}
-
-#[test]
-fn test_part2() {
-    let input = read_input(2021, 9);
-    assert_eq!(part2(&input), 858494);
 }

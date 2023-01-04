@@ -1,5 +1,3 @@
-use crate::utils::read_input;
-
 pub fn part1(input: &str) -> i32 {
     let lines: Vec<Vec<bool>> = input
         .lines()
@@ -23,12 +21,6 @@ pub fn part1(input: &str) -> i32 {
     let epsilon_rate = (i32::MAX >> (31 - num_bits)) ^ gamma_rate;
 
     gamma_rate * epsilon_rate
-}
-
-#[test]
-fn test_part1() {
-    let input = read_input(2021, 3);
-    assert_eq!(part1(&input), 3959450);
 }
 
 pub fn part2(input: &str) -> i32 {
@@ -86,10 +78,4 @@ pub fn part2(input: &str) -> i32 {
     }
 
     oxygen_rate * co2_rate
-}
-
-#[test]
-fn test_part2() {
-    let input = read_input(2021, 3);
-    assert_eq!(part2(&input), 7440311);
 }

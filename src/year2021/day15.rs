@@ -1,4 +1,4 @@
-use crate::utils::{read_input, Point};
+use crate::utils::Point;
 use std::{collections::BinaryHeap, panic};
 
 struct ToVisit {
@@ -138,20 +138,8 @@ pub fn part1(input: &str) -> u16 {
     grid.dijkstra()
 }
 
-#[test]
-fn test_part1() {
-    let input = read_input(2021, 15);
-    assert_eq!(part1(&input), 769);
-}
-
 pub fn part2(input: &str) -> u16 {
     let grid = Grid::new(input, 5);
 
     grid.dijkstra()
-}
-
-#[test]
-fn test_part2() {
-    let input = read_input(2021, 15);
-    assert_eq!(part2(&input), 2963);
 }

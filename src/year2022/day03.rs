@@ -1,4 +1,3 @@
-use crate::utils::read_input;
 use std::collections::HashSet;
 
 pub fn part1(input: &str) -> u32 {
@@ -22,12 +21,6 @@ pub fn part1(input: &str) -> u32 {
             intersection.into_iter().map(|u8| u8 as u32).sum::<u32>()
         })
         .sum()
-}
-
-#[test]
-fn test_part1() {
-    let input = read_input(2022, 3);
-    assert_eq!(part1(&input), 8176);
 }
 
 pub fn part2(input: &str) -> u32 {
@@ -54,10 +47,4 @@ pub fn part2(input: &str) -> u32 {
                 .sum::<u32>()
         })
         .sum()
-}
-
-#[test]
-fn test_part2() {
-    let input = read_input(2022, 3);
-    assert_eq!(part2(&input), 2689);
 }

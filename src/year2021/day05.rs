@@ -1,4 +1,3 @@
-use crate::utils::read_input;
 use std::{cmp::Ordering, collections::HashMap};
 
 #[derive(Debug, PartialEq, Eq, Hash, Clone, Copy)]
@@ -70,12 +69,6 @@ pub fn part1(input: &str) -> usize {
     map.iter().filter(|(_, &x)| x > 1).count()
 }
 
-#[test]
-fn test_part1() {
-    let input = read_input(2021, 5);
-    assert_eq!(part1(&input), 4826);
-}
-
 pub fn part2(input: &str) -> usize {
     let lines = input.lines().map(Line::new).collect::<Vec<_>>();
 
@@ -138,10 +131,4 @@ pub fn part2(input: &str) -> usize {
     }
 
     map.iter().filter(|(_, &x)| x > 1).count()
-}
-
-#[test]
-fn test_part2() {
-    let input = read_input(2021, 5);
-    assert_eq!(part2(&input), 16793);
 }

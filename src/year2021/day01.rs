@@ -1,4 +1,4 @@
-use crate::utils::{read_input, ZipWithNextExt, ZipWithNextNExt};
+use crate::utils::{ZipWithNextExt, ZipWithNextNExt};
 
 pub fn part1(input: &str) -> usize {
     input
@@ -7,12 +7,6 @@ pub fn part1(input: &str) -> usize {
         .zip_with_next()
         .filter(|(left, right)| left < right)
         .count()
-}
-
-#[test]
-fn test_part1() {
-    let input = read_input(2021, 1);
-    assert_eq!(part1(&input), 1583);
 }
 
 pub fn part2(input: &str) -> usize {
@@ -24,10 +18,4 @@ pub fn part2(input: &str) -> usize {
         .zip_with_next()
         .filter(|(left, right)| left < right)
         .count()
-}
-
-#[test]
-fn test_part2() {
-    let input = read_input(2021, 1);
-    assert_eq!(part2(&input), 1627);
 }

@@ -1,4 +1,4 @@
-use crate::utils::{read_input, Point};
+use crate::utils::Point;
 
 #[derive(Debug, Clone)]
 struct Octopus {
@@ -112,12 +112,6 @@ pub fn part1(input: &str) -> u32 {
     (0..100).map(|_| grid.tick()).sum()
 }
 
-#[test]
-fn test_part1() {
-    let input = read_input(2021, 11);
-    assert_eq!(part1(&input), 1691);
-}
-
 pub fn part2(input: &str) -> u32 {
     let mut grid = OctopusGrid::new(input);
 
@@ -129,10 +123,4 @@ pub fn part2(input: &str) -> u32 {
             break num_ticks;
         }
     }
-}
-
-#[test]
-fn test_part2() {
-    let input = read_input(2021, 11);
-    assert_eq!(part2(&input), 216);
 }

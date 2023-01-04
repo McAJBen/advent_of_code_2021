@@ -1,5 +1,3 @@
-use crate::utils::read_input;
-
 pub fn part1(input: &str) -> u32 {
     input
         .lines()
@@ -18,12 +16,6 @@ pub fn part1(input: &str) -> u32 {
         .sum()
 }
 
-#[test]
-fn test_part1() {
-    let input = read_input(2022, 2);
-    assert_eq!(part1(&input), 12740);
-}
-
 pub fn part2(input: &str) -> u32 {
     input
         .lines()
@@ -40,10 +32,4 @@ pub fn part2(input: &str) -> u32 {
             _ => panic!(),
         })
         .sum()
-}
-
-#[test]
-fn test_part2() {
-    let input = read_input(2022, 2);
-    assert_eq!(part2(&input), 11980);
 }

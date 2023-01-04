@@ -1,4 +1,3 @@
-use crate::utils::read_input;
 use std::collections::HashSet;
 
 struct Display {
@@ -34,12 +33,6 @@ pub fn part1(input: &str) -> usize {
                 .count()
         })
         .sum::<usize>()
-}
-
-#[test]
-fn test_part1() {
-    let input = read_input(2021, 8);
-    assert_eq!(part1(&input), 449);
 }
 
 fn parse_line(line: &str) -> usize {
@@ -104,10 +97,4 @@ fn parse_line(line: &str) -> usize {
 
 pub fn part2(input: &str) -> usize {
     input.lines().map(parse_line).sum::<usize>()
-}
-
-#[test]
-fn test_part2() {
-    let input = read_input(2021, 8);
-    assert_eq!(part2(&input), 968175);
 }

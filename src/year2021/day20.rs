@@ -1,4 +1,3 @@
-use crate::utils::read_input;
 use std::fmt::{Display, Formatter};
 
 #[derive(Debug)]
@@ -124,12 +123,6 @@ pub fn part1(input: &str) -> usize {
     image.num_lit_pixels()
 }
 
-#[test]
-fn test_part1() {
-    let input = read_input(2021, 20);
-    assert_eq!(part1(&input), 5597);
-}
-
 pub fn part2(input: &str) -> usize {
     let (compression_algorithm, image) = input.split_once("\n\n").unwrap();
 
@@ -141,10 +134,4 @@ pub fn part2(input: &str) -> usize {
     }
 
     image.num_lit_pixels()
-}
-
-#[test]
-fn test_part2() {
-    let input = read_input(2021, 20);
-    assert_eq!(part2(&input), 18723);
 }

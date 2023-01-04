@@ -1,4 +1,4 @@
-use crate::utils::{read_input, ZipWithNextExt};
+use crate::utils::ZipWithNextExt;
 use std::collections::HashMap;
 
 pub fn part1(input: &str) -> i32 {
@@ -44,12 +44,6 @@ pub fn part1(input: &str) -> i32 {
     let least_common = char_map.iter().min_by_key(|(_, count)| *count).unwrap();
 
     most_common.1 - least_common.1
-}
-
-#[test]
-fn test_part1() {
-    let input = read_input(2021, 14);
-    assert_eq!(part1(&input), 2223);
 }
 
 pub fn part2(input: &str) -> u64 {
@@ -112,10 +106,4 @@ pub fn part2(input: &str) -> u64 {
     let least_common = char_map.iter().min_by_key(|(_, count)| *count).unwrap();
 
     (most_common.1 - least_common.1) / 2
-}
-
-#[test]
-fn test_part2() {
-    let input = read_input(2021, 14);
-    assert_eq!(part2(&input), 2566282754493);
 }
