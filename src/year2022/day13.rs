@@ -65,9 +65,7 @@ impl Node {
                     }
                 }
             }
-            CodePoint::Number(num) => {
-                return Node::Integer(num);
-            }
+            CodePoint::Number(num) => Node::Integer(num),
             CodePoint::CloseBracket => panic!(),
         }
     }
@@ -78,20 +76,16 @@ impl Node {
         match self {
             Node::Integer(self_num) => match other {
                 Node::Integer(other_num) => match self_num.cmp(other_num) {
-                    Ordering::Less => return Some(true),
-                    Ordering::Equal => return None,
-                    Ordering::Greater => return Some(false),
+                    Ordering::Less => Some(true),
+                    Ordering::Equal => None,
+                    Ordering::Greater => Some(false),
                 },
-                Node::List(other_list) => {
-                    return Node::List(vec![Node::Integer(*self_num)])
-                        .compare(&Node::List(other_list.clone()));
-                }
+                Node::List(other_list) => Node::List(vec![Node::Integer(*self_num)])
+                    .compare(&Node::List(other_list.clone())),
             },
             Node::List(self_list) => match other {
-                Node::Integer(other_num) => {
-                    return Node::List(self_list.clone())
-                        .compare(&Node::List(vec![Node::Integer(*other_num)]));
-                }
+                Node::Integer(other_num) => Node::List(self_list.clone())
+                    .compare(&Node::List(vec![Node::Integer(*other_num)])),
                 Node::List(other_list) => {
                     let mut i = 0;
                     loop {
@@ -126,7 +120,7 @@ pub fn part1(input: &str) -> usize {
             let left = Node::from_str(left);
             let right = Node::from_str(right);
             if left.compare(&right) == Some(true) {
-                return Some(index + 1);
+                Some(index + 1)
             } else {
                 None
             }

@@ -11,7 +11,7 @@ fn get_heights(input: &str) -> Vec<Vec<u8>> {
                 .map(|c| match c {
                     'S' | 'a' => 0,
                     'E' => 25,
-                    c => c as u8 - 'a' as u8,
+                    c => c as u8 - b'a',
                 })
                 .collect()
         })
@@ -37,23 +37,19 @@ fn get_neighbors(heights: &Vec<Vec<u8>>) -> Vec<Vec<usize>> {
                 }
             }
             let pos_y = y + 1;
-            if pos_y < height {
-                if heights[pos_y][x] <= heights[y][x] + 1 {
-                    neighbors[y * width + x].push(pos_y * width + x);
-                }
+            if pos_y < height && heights[pos_y][x] <= heights[y][x] + 1 {
+                neighbors[y * width + x].push(pos_y * width + x);
             }
             let pos_x = x + 1;
-            if pos_x < width {
-                if heights[y][pos_x] <= heights[y][x] + 1 {
-                    neighbors[y * width + x].push(y * width + pos_x);
-                }
+            if pos_x < width && heights[y][pos_x] <= heights[y][x] + 1 {
+                neighbors[y * width + x].push(y * width + pos_x);
             }
         }
     }
     neighbors
 }
 
-fn dijkstra(starts: &[usize], end: usize, neighbors: &Vec<Vec<usize>>) -> usize {
+fn dijkstra(starts: &[usize], end: usize, neighbors: &[Vec<usize>]) -> usize {
     let mut finished_nodes = HashSet::new();
 
     let mut pending_nodes = BinaryHeap::new();
@@ -67,7 +63,7 @@ fn dijkstra(starts: &[usize], end: usize, neighbors: &Vec<Vec<usize>>) -> usize 
         }
 
         if finished_nodes.insert(node) {
-            for neighbor in neighbors[node as usize].iter() {
+            for neighbor in neighbors[node].iter() {
                 pending_nodes.push(Reverse((path_length + 1, *neighbor)));
             }
         }

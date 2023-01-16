@@ -22,12 +22,12 @@ pub fn part1(input: &str) -> u32 {
         for ((a_x, a_y), (b_x, b_y)) in points.into_iter().zip_with_next() {
             if a_x == b_x {
                 if a_y < b_y {
-                    for y in a_y..=b_y {
-                        board[y][a_x] = true;
+                    for row in board.iter_mut().take(b_y + 1).skip(a_y) {
+                        row[a_x] = true;
                     }
                 } else {
-                    for y in b_y..=a_y {
-                        board[y][a_x] = true;
+                    for row in board.iter_mut().take(a_y + 1).skip(b_y) {
+                        row[a_x] = true;
                     }
                 }
             } else if a_y == b_y {
@@ -96,12 +96,12 @@ pub fn part2(input: &str) -> u32 {
         for ((a_x, a_y), (b_x, b_y)) in points.into_iter().zip_with_next() {
             if a_x == b_x {
                 if a_y < b_y {
-                    for y in a_y..=b_y {
-                        board[y][a_x] = true;
+                    for row in board.iter_mut().take(b_y + 1).skip(a_y) {
+                        row[a_x] = true;
                     }
                 } else {
-                    for y in b_y..=a_y {
-                        board[y][a_x] = true;
+                    for row in board.iter_mut().take(a_y + 1).skip(b_y) {
+                        row[a_x] = true;
                     }
                 }
             } else if a_y == b_y {
