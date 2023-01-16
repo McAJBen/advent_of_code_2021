@@ -66,10 +66,8 @@ struct Burrow {
 
 impl Burrow {
     fn new(input: &str) -> (Self, BurrowState) {
-        let lines = input.lines().collect::<Vec<_>>();
-
-        let mut cells = lines
-            .iter()
+        let mut cells: Vec<Vec<CellInput>> = input
+            .lines()
             .map(|line| {
                 line.chars()
                     .map(|c| match c {
@@ -95,13 +93,37 @@ impl Burrow {
                             is_end: false,
                         },
                     })
-                    .collect::<Vec<_>>()
+                    .collect()
             })
-            .collect::<Vec<_>>();
+            .collect();
 
-        for c in cells[lines.len() - 2].iter_mut() {
+        let max_depth = cells.len() - 2;
+
+        for c in cells[max_depth].iter_mut() {
             if c.is_movable {
                 c.is_end = true;
+            }
+        }
+
+        let room_columns: Vec<usize> = cells[max_depth]
+            .iter()
+            .enumerate()
+            .filter_map(|(i, c)| if c.is_movable { Some(i) } else { None })
+            .collect();
+
+        for (index, column) in room_columns.into_iter().enumerate() {
+            let room_type = match index {
+                0 => Amphipod::Amber,
+                1 => Amphipod::Bronze,
+                2 => Amphipod::Copper,
+                3 => Amphipod::Desert,
+                _ => panic!("Invalid room type"),
+            };
+            cells[1][column].can_stay = false;
+            for row in cells.iter_mut().skip(2) {
+                if row[column].is_movable {
+                    row[column].room = Some(room_type);
+                }
             }
         }
 
@@ -136,30 +158,7 @@ impl Burrow {
             }
         }
 
-        let room_columns = lines[2]
-            .chars()
-            .enumerate()
-            .filter(|(_, c)| *c != '#')
-            .map(|(i, _)| i)
-            .collect::<Vec<_>>();
-
-        for (index, &column) in room_columns.iter().enumerate() {
-            let room_type = match index {
-                0 => Amphipod::Amber,
-                1 => Amphipod::Bronze,
-                2 => Amphipod::Copper,
-                3 => Amphipod::Desert,
-                _ => panic!("Invalid room type"),
-            };
-            cells[1][column].can_stay = false;
-            for row in cells.iter_mut().skip(2) {
-                if row[column].is_movable {
-                    row[column].room = Some(room_type);
-                }
-            }
-        }
-
-        let important_cells = adjacency_list.keys().cloned().collect::<Vec<_>>();
+        let important_cells: Vec<Point> = adjacency_list.keys().cloned().collect();
 
         let burrow_state = BurrowState {
             amphipods: important_cells
@@ -177,7 +176,7 @@ impl Burrow {
             energy_cost: 0,
         };
 
-        let cells = important_cells
+        let cells: HashMap<Point, Cell> = important_cells
             .iter()
             .map(|&p| {
                 let cell = cells[p.y][p.x];
@@ -198,12 +197,12 @@ impl Burrow {
                     )
                 }
             })
-            .collect::<HashMap<_, _>>();
+            .collect();
 
-        let adjacency_list = important_cells
+        let adjacency_list: HashMap<Point, Vec<Point>> = important_cells
             .iter()
             .map(|&p| (p, adjacency_list[&p].iter().copied().collect::<Vec<_>>()))
-            .collect::<HashMap<_, _>>();
+            .collect();
 
         (
             Self {
@@ -365,7 +364,7 @@ fn find_shortest(burrow: &Burrow, state: &BurrowState) -> Option<BurrowState> {
     None
 }
 
-pub fn part1(input: &str) {
+pub fn part1(input: &str) -> u32 {
     let (burrow, state) = Burrow::new(input);
 
     println!("{:#?}", burrow);
@@ -379,6 +378,8 @@ pub fn part1(input: &str) {
     assert_eq!(113229032, energy_cost);
 
     println!("{}", energy_cost);
+
+    energy_cost
 }
 
 // TODO fix day 23 part 1, add part 2, and make tests
