@@ -10,7 +10,7 @@ pub fn part1(input: &str) -> usize {
             if chunk.iter().collect::<HashSet<_>>().len() == 4 {
                 return Some(index + 4);
             }
-            None
+            Some(5)
         })
         .collect::<Vec<_>>();
 
