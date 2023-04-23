@@ -83,7 +83,7 @@ fn main() {
     matches_args!(2021, year2021, 21, day21, 2, part2);
     matches_args!(2021, year2021, 22, day22, 1, part1);
     matches_args!(2021, year2021, 22, day22, 2, part2);
-    // matches_args!(2021, year2021, 23, day23, 1, part1);
+    matches_args!(2021, year2021, 23, day23, 1, part1);
     // matches_args!(2021, year2021, 23, day23, 2, part2);
     // matches_args!(2021, year2021, 24, day24, 1, part1);
     // matches_args!(2021, year2021, 24, day24, 2, part2);
