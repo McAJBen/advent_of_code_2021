@@ -86,7 +86,7 @@ impl Point {
 
 pub fn part1(input: &str) -> u64 {
     const Y: u32 = 2000000;
-    let sensors: Vec<Sensor> = input.lines().map(|line| Sensor::from_line(line)).collect();
+    let sensors: Vec<Sensor> = input.lines().map(Sensor::from_line).collect();
 
     let min_x = sensors
         .iter()
@@ -120,7 +120,7 @@ pub fn part1(input: &str) -> u64 {
 
 pub fn part2(input: &str) -> i64 {
     const MAX: u32 = 4000000;
-    let sensors: Vec<Sensor> = input.lines().map(|line| Sensor::from_line(line)).collect();
+    let sensors: Vec<Sensor> = input.lines().map(Sensor::from_line).collect();
 
     let beacon = sensors
         .par_iter()
