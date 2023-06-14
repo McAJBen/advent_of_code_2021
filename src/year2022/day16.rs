@@ -50,29 +50,30 @@ fn valve_from_line() {
 }
 
 #[derive(Debug, Clone)]
-struct ValvePathState<'a, const MAX_MOVES: u8, const NUM_PLAYERS: usize> {
+struct ValvePathState<const MAX_MOVES: u8, const NUM_PLAYERS: usize> {
     num_moves: [u8; NUM_PLAYERS],
     total_pressure: u16,
-    current_valve: [&'a Valve<'a>; NUM_PLAYERS],
-    valves_opened: HashSet<&'a str>,
+    current_valve_index: [usize; NUM_PLAYERS],
+    valves_opened: HashSet<usize>,
 }
 
-impl<'a, const MAX_MOVES: u8, const NUM_PLAYERS: usize> ValvePathState<'a, MAX_MOVES, NUM_PLAYERS> {
-    fn new(starting_valves: [&'a Valve<'a>; NUM_PLAYERS]) -> Self {
+impl<const MAX_MOVES: u8, const NUM_PLAYERS: usize> ValvePathState<MAX_MOVES, NUM_PLAYERS> {
+    fn new(starting_valve_index: [usize; NUM_PLAYERS]) -> Self {
         Self {
             num_moves: [0; NUM_PLAYERS],
             total_pressure: 0,
-            current_valve: starting_valves,
+            current_valve_index: starting_valve_index,
             valves_opened: HashSet::new(),
         }
     }
 
-    fn add_move(
+    fn add_move<'a>(
         &self,
         valve: &'a Valve<'a>,
-        path_lengths: &HashMap<&str, HashMap<&str, u8>>,
+        valve_index: usize,
+        path_lengths: &Vec<Vec<u8>>,
     ) -> Option<Self> {
-        if self.valves_opened.contains(valve.name) {
+        if self.valves_opened.contains(&valve_index) {
             return None;
         }
 
@@ -80,11 +81,7 @@ impl<'a, const MAX_MOVES: u8, const NUM_PLAYERS: usize> ValvePathState<'a, MAX_M
         let mut distance: u8;
 
         loop {
-            distance = *path_lengths
-                .get(self.current_valve[player_num].name)
-                .unwrap()
-                .get(valve.name)
-                .unwrap();
+            distance = path_lengths[self.current_valve_index[player_num]][valve_index];
 
             if self.num_moves[player_num] + distance >= MAX_MOVES {
                 if player_num == NUM_PLAYERS - 1 {
@@ -101,16 +98,16 @@ impl<'a, const MAX_MOVES: u8, const NUM_PLAYERS: usize> ValvePathState<'a, MAX_M
         clone.num_moves[player_num] += distance + 1;
         clone.total_pressure +=
             valve.rate as u16 * (MAX_MOVES - clone.num_moves[player_num]) as u16;
-        clone.current_valve[player_num] = valve;
-        clone.valves_opened.insert(valve.name);
+        clone.current_valve_index[player_num] = valve_index;
+        clone.valves_opened.insert(valve_index);
         return Some(clone);
     }
 }
 
 fn find_best_path<'a, const MAX_MOVES: u8, const NUM_PLAYERS: usize>(
     valves: &'a [Valve<'a>],
-    start: ValvePathState<'a, MAX_MOVES, NUM_PLAYERS>,
-) -> ValvePathState<'a, MAX_MOVES, NUM_PLAYERS> {
+    start: ValvePathState<MAX_MOVES, NUM_PLAYERS>,
+) -> ValvePathState<MAX_MOVES, NUM_PLAYERS> {
     // map valve's name back to its index
     let name_map: HashMap<&str, usize> = valves
         .iter()
@@ -129,7 +126,7 @@ fn find_best_path<'a, const MAX_MOVES: u8, const NUM_PLAYERS: usize>(
         })
         .collect();
 
-    let path_lengths: HashMap<&str, HashMap<&str, u8>> = (0..valves.len())
+    let path_lengths: Vec<Vec<u8>> = (0..valves.len())
         .map(|i| {
             let mut shortest_paths = vec![u8::MAX; valves.len()];
 
@@ -148,18 +145,15 @@ fn find_best_path<'a, const MAX_MOVES: u8, const NUM_PLAYERS: usize>(
                 );
             }
 
-            (
-                valves[i].name,
-                shortest_paths
-                    .into_iter()
-                    .enumerate()
-                    .map(|(i, length)| (valves[i].name, length))
-                    .collect(),
-            )
+            shortest_paths
         })
         .collect();
 
-    let good_valves: Vec<&Valve> = valves.iter().filter(|v| v.rate > 0).collect();
+    let good_valves: Vec<(usize, &Valve)> = valves
+        .iter()
+        .enumerate()
+        .filter(|(_, v)| v.rate > 0)
+        .collect();
 
     let mut best = start;
 
@@ -170,8 +164,8 @@ fn find_best_path<'a, const MAX_MOVES: u8, const NUM_PLAYERS: usize>(
             best = test_path.clone();
         }
 
-        for new_valve in good_valves.iter() {
-            if let Some(n) = test_path.add_move(new_valve, &path_lengths) {
+        for (valve_index, new_valve) in good_valves.iter() {
+            if let Some(n) = test_path.add_move(new_valve, *valve_index, &path_lengths) {
                 to_test.push(n);
             }
         }
@@ -183,7 +177,7 @@ fn find_best_path<'a, const MAX_MOVES: u8, const NUM_PLAYERS: usize>(
 pub fn part1(input: &str) -> u16 {
     let valves: Vec<Valve> = input.lines().map(|line| Valve::from_line(line)).collect();
 
-    let start_valve = valves.iter().find(|v| v.name == "AA").unwrap();
+    let start_valve = valves.iter().position(|v| v.name == "AA").unwrap();
 
     let best = find_best_path(&valves, ValvePathState::<30, 1>::new([start_valve]));
 
@@ -193,7 +187,7 @@ pub fn part1(input: &str) -> u16 {
 pub fn part2(input: &str) -> u16 {
     let valves: Vec<Valve> = input.lines().map(|line| Valve::from_line(line)).collect();
 
-    let start_valve = valves.iter().find(|v| v.name == "AA").unwrap();
+    let start_valve = valves.iter().position(|v| v.name == "AA").unwrap();
 
     let best = find_best_path(
         &valves,
