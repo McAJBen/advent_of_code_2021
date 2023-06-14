@@ -119,7 +119,6 @@ impl<'a, const MAX_MOVES: u8, const NUM_PLAYERS: usize> ValvePathState<'a, MAX_M
 
     fn add_move(
         &self,
-        player: usize,
         valve: &'a Valve<'a>,
         path_lengths: &HashMap<&str, HashMap<&str, u8>>,
     ) -> Option<Self> {
@@ -127,18 +126,32 @@ impl<'a, const MAX_MOVES: u8, const NUM_PLAYERS: usize> ValvePathState<'a, MAX_M
             return None;
         }
 
-        let distance = *path_lengths
-            .get(self.current_valve[player].name)
-            .unwrap()
-            .get(valve.name)
-            .unwrap();
-        if self.num_moves[player] + distance >= MAX_MOVES {
-            return None;
+        let mut player_num = 0;
+        let mut distance: u8;
+
+        loop {
+            distance = *path_lengths
+                .get(self.current_valve[player_num].name)
+                .unwrap()
+                .get(valve.name)
+                .unwrap();
+
+            if self.num_moves[player_num] + distance >= MAX_MOVES {
+                if player_num == NUM_PLAYERS - 1 {
+                    return None;
+                } else {
+                    player_num += 1;
+                }
+            } else {
+                break;
+            }
         }
+
         let mut clone = self.clone();
-        clone.num_moves[player] += distance + 1;
-        clone.total_pressure += valve.rate as u16 * (MAX_MOVES - clone.num_moves[player]) as u16;
-        clone.current_valve[player] = valve;
+        clone.num_moves[player_num] += distance + 1;
+        clone.total_pressure +=
+            valve.rate as u16 * (MAX_MOVES - clone.num_moves[player_num]) as u16;
+        clone.current_valve[player_num] = valve;
         clone.valves_opened.insert(valve.name);
         return Some(clone);
     }
@@ -161,7 +174,7 @@ pub fn part1(input: &str) -> u16 {
         }
 
         for new_valve in good_valves.iter() {
-            if let Some(n) = test_path.add_move(0, new_valve, &path_lengths) {
+            if let Some(n) = test_path.add_move(new_valve, &path_lengths) {
                 to_test.push(n);
             }
         }
@@ -179,31 +192,16 @@ pub fn part2(input: &str) -> u16 {
 
     let start_valve = valves.iter().find(|v| v.name == "AA").unwrap();
     let mut best = ValvePathState::<26, 2>::new([start_valve, start_valve]);
-    let mut to_test = Vec::new();
-    {
-        let test_path = best.clone();
-        for i in 0..good_valves.len() {
-            for j in (i + 1)..good_valves.len() {
-                if let Some(n) = test_path.add_move(0, good_valves[i], &path_lengths) {
-                    if let Some(m) = n.add_move(1, good_valves[j], &path_lengths) {
-                        to_test.push(m);
-                    }
-                }
-            }
-        }
-    }
+    let mut to_test = vec![best.clone()];
 
     while let Some(test_path) = to_test.pop() {
         if test_path.total_pressure > best.total_pressure {
             best = test_path.clone();
-            println!("{:#?}", best);
         }
 
-        for i in 0..=1 {
-            for new_valve in good_valves.iter() {
-                if let Some(n) = test_path.add_move(i, new_valve, &path_lengths) {
-                    to_test.push(n);
-                }
+        for new_valve in good_valves.iter() {
+            if let Some(n) = test_path.add_move(new_valve, &path_lengths) {
+                to_test.push(n);
             }
         }
     }
