@@ -29,6 +29,18 @@ impl<'a> Valve<'a> {
         }
     }
 }
+#[test]
+fn valve_from_line() {
+    let valve = Valve::from_line("Valve PZ has flow rate=14; tunnels lead to valves KU, HE");
+    assert_eq!(valve.name, "PZ");
+    assert_eq!(valve.rate, 14);
+    assert_eq!(valve.next_valves, vec!["KU", "HE"]);
+
+    let valve = Valve::from_line("Valve PP has flow rate=25; tunnel leads to valve KU");
+    assert_eq!(valve.name, "PP");
+    assert_eq!(valve.rate, 25);
+    assert_eq!(valve.next_valves, vec!["KU"]);
+}
 
 #[derive(Debug, Default, Clone)]
 struct ValvePath<'a> {
