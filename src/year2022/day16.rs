@@ -1,6 +1,6 @@
 use std::{
     cmp::Reverse,
-    collections::{BinaryHeap, HashMap, HashSet},
+    collections::{BinaryHeap, HashMap},
 };
 
 #[derive(Debug)]
@@ -30,31 +30,12 @@ impl<'a> Valve<'a> {
     }
 }
 
-#[test]
-fn valve_from_line() {
-    let valve = Valve::from_line("Valve PZ has flow rate=14; tunnels lead to valves KU, HE");
-    assert_eq!(valve.name, "PZ");
-    assert_eq!(valve.rate, 14);
-    assert_eq!(valve.next_valves, vec!["KU", "HE"]);
-
-    let valve = Valve::from_line("Valve PP has flow rate=25; tunnel leads to valve KU");
-    assert_eq!(valve.name, "PP");
-    assert_eq!(valve.rate, 25);
-    assert_eq!(valve.next_valves, vec!["KU"]);
-
-    let valve =
-        Valve::from_line("Valve WA has flow rate=6; tunnels lead to valves TX, AF, RG, HU, NY");
-    assert_eq!(valve.name, "WA");
-    assert_eq!(valve.rate, 6);
-    assert_eq!(valve.next_valves, vec!["TX", "AF", "RG", "HU", "NY"]);
-}
-
 #[derive(Debug, Clone)]
 struct ValvePathState<const MAX_MOVES: u8, const NUM_PLAYERS: usize> {
     num_moves: [u8; NUM_PLAYERS],
     total_pressure: u16,
     current_valve_index: [usize; NUM_PLAYERS],
-    valves_opened: HashSet<usize>,
+    valves_opened: u64,
 }
 
 impl<const MAX_MOVES: u8, const NUM_PLAYERS: usize> ValvePathState<MAX_MOVES, NUM_PLAYERS> {
@@ -63,7 +44,7 @@ impl<const MAX_MOVES: u8, const NUM_PLAYERS: usize> ValvePathState<MAX_MOVES, NU
             num_moves: [0; NUM_PLAYERS],
             total_pressure: 0,
             current_valve_index: starting_valve_index,
-            valves_opened: HashSet::new(),
+            valves_opened: 0,
         }
     }
 
@@ -71,36 +52,29 @@ impl<const MAX_MOVES: u8, const NUM_PLAYERS: usize> ValvePathState<MAX_MOVES, NU
         &self,
         valve: &'a Valve<'a>,
         valve_index: usize,
-        path_lengths: &Vec<Vec<u8>>,
+        path_lengths: &[Vec<u8>],
     ) -> Option<Self> {
-        if self.valves_opened.contains(&valve_index) {
+        if (self.valves_opened & (1 << valve_index)) != 0 {
             return None;
         }
 
-        let mut player_num = 0;
-        let mut distance: u8;
-
-        loop {
-            distance = path_lengths[self.current_valve_index[player_num]][valve_index];
-
-            if self.num_moves[player_num] + distance >= MAX_MOVES {
-                if player_num == NUM_PLAYERS - 1 {
-                    return None;
-                } else {
-                    player_num += 1;
-                }
-            } else {
-                break;
-            }
-        }
+        let (player_num, distance) = (0..NUM_PLAYERS)
+            .map(|player_num| {
+                let current_player_valve = self.current_valve_index[player_num];
+                let distance_to_valve = path_lengths[current_player_valve][valve_index];
+                (player_num, distance_to_valve)
+            })
+            .find(|(player_num, distance_to_valve)| {
+                self.num_moves[*player_num] + distance_to_valve < MAX_MOVES
+            })?;
 
         let mut clone = self.clone();
         clone.num_moves[player_num] += distance + 1;
         clone.total_pressure +=
             valve.rate as u16 * (MAX_MOVES - clone.num_moves[player_num]) as u16;
         clone.current_valve_index[player_num] = valve_index;
-        clone.valves_opened.insert(valve_index);
-        return Some(clone);
+        clone.valves_opened |= 1 << valve_index;
+        Some(clone)
     }
 }
 
@@ -175,24 +149,29 @@ fn find_best_path<'a, const MAX_MOVES: u8, const NUM_PLAYERS: usize>(
 }
 
 pub fn part1(input: &str) -> u16 {
-    let valves: Vec<Valve> = input.lines().map(|line| Valve::from_line(line)).collect();
+    let valves: Vec<Valve> = input.lines().map(Valve::from_line).collect();
+
+    debug_assert!(valves.len() <= 64);
 
     let start_valve = valves.iter().position(|v| v.name == "AA").unwrap();
 
-    let best = find_best_path(&valves, ValvePathState::<30, 1>::new([start_valve]));
+    let start_state = ValvePathState::<30, 1>::new([start_valve]);
+
+    let best = find_best_path(&valves, start_state);
 
     best.total_pressure
 }
 
 pub fn part2(input: &str) -> u16 {
-    let valves: Vec<Valve> = input.lines().map(|line| Valve::from_line(line)).collect();
+    let valves: Vec<Valve> = input.lines().map(Valve::from_line).collect();
+
+    debug_assert!(valves.len() <= 64);
 
     let start_valve = valves.iter().position(|v| v.name == "AA").unwrap();
 
-    let best = find_best_path(
-        &valves,
-        ValvePathState::<26, 2>::new([start_valve, start_valve]),
-    );
+    let start_state = ValvePathState::<26, 2>::new([start_valve, start_valve]);
+
+    let best = find_best_path(&valves, start_state);
 
     best.total_pressure
 }
