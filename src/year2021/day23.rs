@@ -86,9 +86,9 @@ struct Burrow {
 }
 
 impl Burrow {
-    fn new(input: &str) -> (Self, BurrowState) {
-        let mut cells: Vec<Vec<CellInput>> = input
-            .lines()
+    fn new<'a, I: IntoIterator<Item = &'a str>>(lines: I) -> (Self, BurrowState) {
+        let mut cells: Vec<Vec<CellInput>> = lines
+            .into_iter()
             .map(|line| {
                 line.chars()
                     .map(|c| match c {
@@ -380,7 +380,18 @@ fn find_shortest(burrow: &Burrow, state: &BurrowState) -> Option<BurrowState> {
 }
 
 pub fn part1(input: &str) -> u16 {
-    let (burrow, state) = Burrow::new(input);
+    let (burrow, state) = Burrow::new(input.lines());
+
+    let state = find_shortest(&burrow, &state).unwrap();
+
+    state.energy_cost
+}
+
+pub fn part2(input: &str) -> u16 {
+    let mut lines: Vec<&str> = input.lines().collect();
+    lines.insert(3, "  #D#C#B#A#  ");
+    lines.insert(4, "  #D#B#A#C#  ");
+    let (burrow, state) = Burrow::new(lines);
 
     let state = find_shortest(&burrow, &state).unwrap();
 

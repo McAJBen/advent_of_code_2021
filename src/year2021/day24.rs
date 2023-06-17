@@ -1,4 +1,4 @@
-use std::{fs::read_to_string, str::FromStr};
+use std::str::FromStr;
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
 enum Register {
@@ -217,8 +217,6 @@ impl<'a> ALUProgramState<'a> {
 }
 
 pub fn part1(input: &str) {
-    let input = read_to_string("input/24").unwrap();
-
     let program = ALUProgram::new(
         &input,
         vec![
@@ -262,8 +260,6 @@ pub fn part1(input: &str) {
 }
 
 pub fn part2(input: &str) {
-    let input = read_to_string("input/24").unwrap();
-
     let program = ALUProgram::new(
         &input,
         vec![
