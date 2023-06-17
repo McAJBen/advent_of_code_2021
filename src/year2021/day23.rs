@@ -1,7 +1,7 @@
 use crate::utils::Point;
 use std::{
     cmp::Reverse,
-    collections::{BinaryHeap, HashMap, HashSet},
+    collections::{BinaryHeap, HashMap, HashSet, VecDeque},
 };
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, PartialOrd, Ord)]
@@ -48,7 +48,7 @@ enum Cell {
     Room { amphipod: Amphipod },
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, Hash, PartialOrd, Ord)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, PartialOrd, Ord)]
 enum MoveNum {
     Zero,
     One,
@@ -65,16 +65,28 @@ impl MoveNum {
     }
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, Hash, PartialOrd, Ord)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 struct AmphipodState {
     position: u8,
     move_num: MoveNum,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, Hash, PartialOrd, Ord)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 struct BurrowState {
     energy_cost: u16,
     amphipods: Vec<AmphipodState>,
+}
+
+impl PartialOrd for BurrowState {
+    fn partial_cmp(&self, other: &Self) -> Option<std::cmp::Ordering> {
+        self.energy_cost.partial_cmp(&other.energy_cost)
+    }
+}
+
+impl Ord for BurrowState {
+    fn cmp(&self, other: &Self) -> std::cmp::Ordering {
+        self.energy_cost.cmp(&other.energy_cost)
+    }
 }
 
 #[derive(Debug)]
@@ -269,8 +281,9 @@ impl Burrow {
         }
         let base_energy_cost = self.amphipods[amphipod_index].energy_cost();
         let current_position = state.amphipods[amphipod_index].position;
+        let move_num = state.amphipods[amphipod_index].move_num;
 
-        let mut moves_to_test: Vec<Move> = self.adjacency_list[current_position as usize]
+        let mut moves_to_test: VecDeque<Move> = self.adjacency_list[current_position as usize]
             .iter()
             .map(|&(position, cost)| Move {
                 energy_cost: base_energy_cost * cost,
@@ -282,22 +295,9 @@ impl Burrow {
 
         let mut valid_moves = Vec::new();
 
-        while let Some(movement) = moves_to_test.pop() {
+        while let Some(movement) = moves_to_test.pop_front() {
             if !visited.insert(movement.position) {
                 continue;
-            }
-
-            match self.cells[movement.position as usize] {
-                Cell::Hallway => {
-                    if let Cell::Room { .. } = self.cells[current_position as usize] {
-                        valid_moves.push(movement.clone());
-                    }
-                }
-                Cell::Room { amphipod, .. } => {
-                    if amphipod == self.amphipods[amphipod_index] {
-                        valid_moves.push(movement.clone());
-                    }
-                }
             }
 
             moves_to_test.extend(self.adjacency_list[movement.position as usize].iter().map(
@@ -306,6 +306,22 @@ impl Burrow {
                     position,
                 },
             ));
+
+            match move_num {
+                MoveNum::Zero => {
+                    if let Cell::Hallway = self.cells[movement.position as usize] {
+                        valid_moves.push(movement.clone());
+                    }
+                }
+                MoveNum::One => {
+                    if let Cell::Room { amphipod } = self.cells[movement.position as usize] {
+                        if amphipod == self.amphipods[amphipod_index] {
+                            valid_moves.push(movement.clone());
+                        }
+                    }
+                }
+                MoveNum::Two => {}
+            }
         }
 
         valid_moves
@@ -339,40 +355,23 @@ struct Move {
     position: u8,
 }
 
-fn find_shortest(burrow: &Burrow, state: &BurrowState) -> Option<BurrowState> {
-    let mut states = BinaryHeap::new();
-    states.push(Reverse(state.clone()));
-    let mut visited_states = HashSet::<(Vec<u8>, u16)>::new();
-    visited_states.insert((
-        state.amphipods.iter().map(|a| a.position).collect(),
-        state.energy_cost,
-    ));
+fn find_shortest(burrow: &Burrow, state: BurrowState) -> Option<BurrowState> {
+    let mut visited_states = HashSet::<Vec<u8>>::new();
 
-    let mut i = 0;
+    let mut states = BinaryHeap::new();
+    states.push(Reverse(state));
 
     while let Some(Reverse(test_state)) = states.pop() {
+        if !visited_states.insert(test_state.amphipods.iter().map(|a| a.position).collect()) {
+            // already visited
+            continue;
+        }
+
         if burrow.is_complete(&test_state) {
             return Some(test_state);
         } else {
-            let mut new_states = burrow.get_moves(&test_state);
-
-            new_states.sort_unstable_by_key(|s| s.energy_cost);
-
-            states.extend(
-                new_states
-                    .into_iter()
-                    .filter(|s| {
-                        visited_states.insert((
-                            s.amphipods.iter().map(|a| a.position).collect(),
-                            s.energy_cost,
-                        ))
-                    })
-                    .map(Reverse),
-            );
-        }
-        i += 1;
-        if i % 10000 == 0 {
-            println!("{}:{}", test_state.energy_cost, i)
+            let new_states = burrow.get_moves(&test_state);
+            states.extend(new_states.into_iter().map(Reverse));
         }
     }
 
@@ -382,7 +381,7 @@ fn find_shortest(burrow: &Burrow, state: &BurrowState) -> Option<BurrowState> {
 pub fn part1(input: &str) -> u16 {
     let (burrow, state) = Burrow::new(input.lines());
 
-    let state = find_shortest(&burrow, &state).unwrap();
+    let state = find_shortest(&burrow, state).unwrap();
 
     state.energy_cost
 }
@@ -393,7 +392,7 @@ pub fn part2(input: &str) -> u16 {
     lines.insert(4, "  #D#B#A#C#  ");
     let (burrow, state) = Burrow::new(lines);
 
-    let state = find_shortest(&burrow, &state).unwrap();
+    let state = find_shortest(&burrow, state).unwrap();
 
     state.energy_cost
 }
