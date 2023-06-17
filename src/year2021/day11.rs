@@ -16,7 +16,6 @@ impl OctopusGrid {
     fn new(input: &str) -> Self {
         let octopus_energies: Vec<Vec<u8>> = input
             .lines()
-            .into_iter()
             .map(|line| {
                 line.chars()
                     .map(|char| char.to_digit(10).unwrap() as u8)

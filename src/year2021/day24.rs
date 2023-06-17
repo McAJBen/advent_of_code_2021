@@ -218,7 +218,7 @@ impl<'a> ALUProgramState<'a> {
 
 pub fn part1(input: &str) {
     let program = ALUProgram::new(
-        &input,
+        input,
         vec![
             vec![1, 2],
             vec![9],
@@ -261,7 +261,7 @@ pub fn part1(input: &str) {
 
 pub fn part2(input: &str) {
     let program = ALUProgram::new(
-        &input,
+        input,
         vec![
             vec![1, 2],
             vec![9],
