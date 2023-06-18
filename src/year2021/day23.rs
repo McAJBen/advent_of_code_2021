@@ -1,8 +1,5 @@
 use crate::utils::Point;
-use std::{
-    cmp::Reverse,
-    collections::{BinaryHeap, HashMap, HashSet, VecDeque},
-};
+use std::collections::{BinaryHeap, HashMap, HashSet, VecDeque};
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, PartialOrd, Ord)]
 enum Amphipod {
@@ -42,7 +39,7 @@ struct CellInput {
     is_end: bool,
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 enum Cell {
     Hallway,
     Room { amphipod: Amphipod },
@@ -79,13 +76,13 @@ struct BurrowState {
 
 impl PartialOrd for BurrowState {
     fn partial_cmp(&self, other: &Self) -> Option<std::cmp::Ordering> {
-        self.energy_cost.partial_cmp(&other.energy_cost)
+        other.energy_cost.partial_cmp(&self.energy_cost)
     }
 }
 
 impl Ord for BurrowState {
     fn cmp(&self, other: &Self) -> std::cmp::Ordering {
-        self.energy_cost.cmp(&other.energy_cost)
+        other.energy_cost.cmp(&self.energy_cost)
     }
 }
 
@@ -93,8 +90,7 @@ impl Ord for BurrowState {
 struct Burrow {
     cells: Vec<Cell>,
     amphipods: Vec<Amphipod>,
-    /// (new position, cost)
-    adjacency_list: Vec<Vec<(u8, u16)>>,
+    movement_paths: Vec<Vec<MovementPath>>,
 }
 
 impl Burrow {
@@ -221,7 +217,7 @@ impl Burrow {
             .map(|(index, point)| (*point, index as u8))
             .collect();
 
-        let adjacency_list: Vec<Vec<(u8, u16)>> = point_indexes
+        let adjacency_list: Vec<HashMap<u8, u8>> = point_indexes
             .iter()
             .map(|point| {
                 adjacency_list
@@ -265,81 +261,58 @@ impl Burrow {
             })
             .collect();
 
+        let movement_paths = (0..cells.len())
+            .map(|i| MovementPath::from_adjacency_list(&adjacency_list, i as u8))
+            .collect();
+
         (
             Self {
                 cells,
                 amphipods: amphipods.iter().map(|(amphipod, _)| *amphipod).collect(),
-                adjacency_list,
+                movement_paths,
             },
             initial_burrow_state,
         )
     }
 
-    fn get_valid_moves(&self, state: &BurrowState, amphipod_index: usize) -> Vec<Move> {
-        if state.amphipods[amphipod_index].move_num == MoveNum::Two {
-            return Vec::new();
-        }
-        let base_energy_cost = self.amphipods[amphipod_index].energy_cost();
-        let current_position = state.amphipods[amphipod_index].position;
-        let move_num = state.amphipods[amphipod_index].move_num;
-
-        let mut moves_to_test: VecDeque<Move> = self.adjacency_list[current_position as usize]
-            .iter()
-            .map(|&(position, cost)| Move {
-                energy_cost: base_energy_cost * cost,
-                position,
-            })
-            .collect();
-
-        let mut visited: HashSet<u8> = state.amphipods.iter().map(|a| a.position).collect();
-
-        let mut valid_moves = Vec::new();
-
-        while let Some(movement) = moves_to_test.pop_front() {
-            if !visited.insert(movement.position) {
-                continue;
-            }
-
-            moves_to_test.extend(self.adjacency_list[movement.position as usize].iter().map(
-                |&(position, cost)| Move {
-                    energy_cost: movement.energy_cost + base_energy_cost * cost,
-                    position,
-                },
-            ));
-
-            match move_num {
-                MoveNum::Zero => {
-                    if let Cell::Hallway = self.cells[movement.position as usize] {
-                        valid_moves.push(movement.clone());
-                    }
-                }
-                MoveNum::One => {
-                    if let Cell::Room { amphipod } = self.cells[movement.position as usize] {
-                        if amphipod == self.amphipods[amphipod_index] {
-                            valid_moves.push(movement.clone());
-                        }
-                    }
-                }
-                MoveNum::Two => {}
-            }
-        }
-
-        valid_moves
-    }
-
     fn get_moves(&self, state: &BurrowState) -> Vec<BurrowState> {
+        let blocked_paths: HashSet<u8> = state.amphipods.iter().map(|a| a.position).collect();
+
         (0..state.amphipods.len())
-            .flat_map(|index| {
+            .flat_map(|amphipod_index| {
+                let move_num = state.amphipods[amphipod_index].move_num;
                 // find empty space to move to
-                self.get_valid_moves(state, index)
-                    .into_iter()
-                    .map(move |m| {
-                        let mut copy = state.clone();
-                        copy.amphipods[index].position = m.position;
-                        copy.amphipods[index].move_num = copy.amphipods[index].move_num.increment();
-                        copy.energy_cost += m.energy_cost;
-                        copy
-                    })
+                if move_num == MoveNum::Two {
+                    Vec::new()
+                } else {
+                    let current_position = state.amphipods[amphipod_index].position;
+
+                    self.movement_paths[current_position as usize]
+                        .iter()
+                        .flat_map(|c| {
+                            let mut v = Vec::new();
+                            // TODO this more than allocating vecs everywhere
+                            c.find_paths(&mut v, &blocked_paths);
+                            v
+                        })
+                        .filter(|movement| match self.cells[movement.position as usize] {
+                            Cell::Hallway => move_num == MoveNum::Zero,
+                            Cell::Room { amphipod } => {
+                                amphipod == self.amphipods[amphipod_index]
+                                    && move_num == MoveNum::One
+                            }
+                        })
+                        .map(move |m| {
+                            let mut copy = state.clone();
+                            copy.amphipods[amphipod_index].position = m.position;
+                            copy.amphipods[amphipod_index].move_num =
+                                copy.amphipods[amphipod_index].move_num.increment();
+                            let base_energy_cost = self.amphipods[amphipod_index].energy_cost();
+                            copy.energy_cost += m.num_steps as u16 * base_energy_cost;
+                            copy
+                        })
+                        .collect()
+                }
             })
             .collect()
     }
@@ -351,17 +324,93 @@ impl Burrow {
 
 #[derive(Debug, Clone)]
 struct Move {
-    energy_cost: u16,
+    num_steps: u8,
     position: u8,
+}
+
+#[derive(Debug, Clone)]
+struct MovementPath {
+    num_steps: u8,
+    position: u8,
+    children: Vec<MovementPath>,
+}
+
+impl MovementPath {
+    fn from_adjacency_list(
+        adjacency_list: &[HashMap<u8, u8>],
+        current_position: u8,
+    ) -> Vec<MovementPath> {
+        let mut moves_to_test: VecDeque<(u8, u8, u8)> = adjacency_list[current_position as usize]
+            .iter()
+            .map(|(new_position, num_steps)| (current_position, *new_position, *num_steps))
+            .collect();
+
+        let mut visited: HashSet<u8> = HashSet::new();
+        visited.insert(current_position);
+
+        let mut paths = Vec::new();
+
+        while let Some((prev_position, new_position, steps)) = moves_to_test.pop_front() {
+            if !visited.insert(new_position) {
+                continue;
+            }
+
+            moves_to_test.extend(adjacency_list[new_position as usize].iter().map(
+                |(new_adj_position, num_steps)| {
+                    (new_position, *new_adj_position, *num_steps + steps)
+                },
+            ));
+
+            if prev_position == current_position {
+                paths.push(Self {
+                    num_steps: steps,
+                    position: new_position,
+                    children: Vec::new(),
+                })
+            } else {
+                for p in paths.iter_mut() {
+                    p.add_child(prev_position, new_position, steps);
+                }
+            }
+        }
+
+        paths
+    }
+
+    fn add_child(&mut self, prev_position: u8, new_position: u8, steps: u8) {
+        if self.position == prev_position {
+            self.children.push(Self {
+                num_steps: steps,
+                position: new_position,
+                children: Vec::new(),
+            });
+        } else {
+            for c in self.children.iter_mut() {
+                c.add_child(prev_position, new_position, steps)
+            }
+        }
+    }
+
+    fn find_paths(&self, vec: &mut Vec<Move>, blocked_paths: &HashSet<u8>) {
+        if !blocked_paths.contains(&self.position) {
+            vec.push(Move {
+                num_steps: self.num_steps,
+                position: self.position,
+            });
+            for c in self.children.iter() {
+                c.find_paths(vec, blocked_paths)
+            }
+        }
+    }
 }
 
 fn find_shortest(burrow: &Burrow, state: BurrowState) -> Option<BurrowState> {
     let mut visited_states = HashSet::<Vec<u8>>::new();
 
     let mut states = BinaryHeap::new();
-    states.push(Reverse(state));
+    states.push(state);
 
-    while let Some(Reverse(test_state)) = states.pop() {
+    while let Some(test_state) = states.pop() {
         if !visited_states.insert(test_state.amphipods.iter().map(|a| a.position).collect()) {
             // already visited
             continue;
@@ -370,8 +419,7 @@ fn find_shortest(burrow: &Burrow, state: BurrowState) -> Option<BurrowState> {
         if burrow.is_complete(&test_state) {
             return Some(test_state);
         } else {
-            let new_states = burrow.get_moves(&test_state);
-            states.extend(new_states.into_iter().map(Reverse));
+            states.extend(burrow.get_moves(&test_state));
         }
     }
 
