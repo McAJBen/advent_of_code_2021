@@ -9,6 +9,6 @@ version = "0.1.0"
 clap = {version = "4.3.10", features = ["derive"]}
 num-bigint = "0.4.3"
 num-traits = "0.2.15"
-paste = "1.0.12"
+paste = "1.0.13"
 rayon = "1.7.0"
 regex = "1.8.4"
