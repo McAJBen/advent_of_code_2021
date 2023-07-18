@@ -1,4 +1,5 @@
 use crate::utils::Point;
+use enum_iterator::Sequence;
 use std::collections::{BinaryHeap, HashMap, HashSet, VecDeque};
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, PartialOrd, Ord)]
@@ -45,21 +46,11 @@ enum Cell {
     Room { amphipod: Amphipod },
 }
 
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, PartialOrd, Ord)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, PartialOrd, Ord, Sequence)]
 enum MoveNum {
     Zero,
     One,
     Two,
-}
-
-impl MoveNum {
-    fn increment(&self) -> Self {
-        match self {
-            MoveNum::Zero => MoveNum::One,
-            MoveNum::One => MoveNum::Two,
-            MoveNum::Two => panic!(),
-        }
-    }
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Hash)]
@@ -306,7 +297,8 @@ impl Burrow {
                             let mut copy = state.clone();
                             copy.amphipods[amphipod_index].position = m.position;
                             copy.amphipods[amphipod_index].move_num =
-                                copy.amphipods[amphipod_index].move_num.increment();
+                                enum_iterator::next(&copy.amphipods[amphipod_index].move_num)
+                                    .unwrap();
                             let base_energy_cost = self.amphipods[amphipod_index].energy_cost();
                             copy.energy_cost += m.num_steps as u16 * base_energy_cost;
                             copy
