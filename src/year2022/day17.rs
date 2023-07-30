@@ -1,5 +1,7 @@
 use crate::utils::Point;
 use enum_iterator::Sequence;
+use indicatif::{ProgressBar, ProgressIterator, ProgressStyle};
+use std::collections::VecDeque;
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 enum WindJet {
@@ -70,7 +72,8 @@ impl Rock {
 
 #[derive(Debug, Default)]
 struct Chamber {
-    squares: Vec<[bool; 7]>,
+    squares: VecDeque<[bool; 7]>,
+    hidden_height: usize,
 }
 
 impl Chamber {
@@ -140,11 +143,20 @@ impl Chamber {
     fn save_rock(&mut self, rock_coordinates: Vec<Point>) {
         for rock_coordinate in rock_coordinates {
             while self.squares.len() <= rock_coordinate.y {
-                self.squares.push([false; 7]);
+                self.squares.push_back([false; 7]);
             }
 
             self.squares[rock_coordinate.y][rock_coordinate.x] = true;
         }
+
+        if self.squares.len() > 100_000 {
+            self.squares.drain(..95_000);
+            self.hidden_height += 95_000;
+        }
+    }
+
+    fn height(&self) -> usize {
+        self.squares.len() + self.hidden_height
     }
 }
 
@@ -157,9 +169,27 @@ pub fn part1(input: &str) -> usize {
         chamber.add_rock(&mut jet_pattern, rock);
     }
 
-    chamber.squares.len()
+    chamber.height()
 }
 
-pub fn part2(_input: &str) -> u64 {
-    0
+pub fn part2(input: &str) -> usize {
+    let jets = WindJet::from_str(input);
+    let mut jet_pattern = jets.into_iter().cycle();
+    let mut chamber = Chamber::default();
+
+    let progress_bar = ProgressBar::new(1_000_000_000_000).with_style(
+        ProgressStyle::default_bar()
+            .template("[{eta_precise}] {bar:40.cyan/blue} {percent} {pos:>7}/{len:7} {msg}")
+            .unwrap(),
+    );
+
+    for rock in enum_iterator::all::<Rock>()
+        .cycle()
+        .take(1_000_000_000_000)
+        .progress_with(progress_bar)
+    {
+        chamber.add_rock(&mut jet_pattern, rock);
+    }
+
+    chamber.height()
 }

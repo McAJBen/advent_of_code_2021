@@ -132,7 +132,7 @@ test_method!(2022, year2022, 15, day15, part2, 13673971349056);
 test_method!(2022, year2022, 16, day16, part1, 1474);
 test_method!(2022, year2022, 16, day16, part2, 2100);
 test_method!(2022, year2022, 17, day17, part1, 3168);
-// test_method!(2022, year2022, 17, day17, part2, 0);
+// test_method!(2022, year2022, 17, day17, part2, 1554117647070);
 test_method!(2022, year2022, 18, day18, part1, 3500);
 test_method!(2022, year2022, 18, day18, part2, 2048);
 // test_method!(2022, year2022, 19, day19, part1, 0);
