@@ -98,10 +98,7 @@ pub fn part1(input: &str) -> u64 {
 }
 
 pub fn part2(input: &str) -> u64 {
-    let mut incomplete_values = input
-        .lines()
-        .filter_map(|line| parse_line(line))
-        .collect::<Vec<_>>();
+    let mut incomplete_values = input.lines().filter_map(parse_line).collect::<Vec<_>>();
 
     incomplete_values.sort_unstable();
 

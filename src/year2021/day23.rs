@@ -67,7 +67,7 @@ struct BurrowState {
 
 impl PartialOrd for BurrowState {
     fn partial_cmp(&self, other: &Self) -> Option<std::cmp::Ordering> {
-        other.energy_cost.partial_cmp(&self.energy_cost)
+        Some(self.cmp(other))
     }
 }
 

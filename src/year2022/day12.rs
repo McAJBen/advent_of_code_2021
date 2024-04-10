@@ -18,7 +18,7 @@ fn get_heights(input: &str) -> Vec<Vec<u8>> {
         .collect()
 }
 
-fn get_neighbors(heights: &Vec<Vec<u8>>) -> Vec<Vec<usize>> {
+fn get_neighbors(heights: &[Vec<u8>]) -> Vec<Vec<usize>> {
     let height = heights.len();
     let width = heights[0].len();
 

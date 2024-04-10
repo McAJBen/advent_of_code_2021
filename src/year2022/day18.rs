@@ -10,9 +10,9 @@ enum Side {
 fn parse_line(line: &str) -> (u8, u8, u8) {
     let (x, yz) = line.split_once(',').unwrap();
     let (y, z) = yz.split_once(',').unwrap();
-    let x = u8::from_str_radix(x, 10).unwrap();
-    let y = u8::from_str_radix(y, 10).unwrap();
-    let z = u8::from_str_radix(z, 10).unwrap();
+    let x = x.parse::<u8>().unwrap();
+    let y = y.parse::<u8>().unwrap();
+    let z = z.parse::<u8>().unwrap();
     (x, y, z)
 }
 
@@ -43,7 +43,7 @@ pub fn part1(input: &str) -> usize {
 pub fn part2(input: &str) -> usize {
     let points: HashSet<(u8, u8, u8)> = input
         .lines()
-        .map(|line| parse_line(line))
+        .map(parse_line)
         .map(|(x, y, z)| (x + 1, y + 1, z + 1))
         .collect();
 

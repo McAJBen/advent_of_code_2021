@@ -18,9 +18,7 @@ impl Operation {
     fn from_lines(lines: &[&str]) -> Option<Self> {
         let line = lines.iter().find(|l| l.contains("Operation:"))?;
 
-        let Some(statement) = line.trim().strip_prefix("Operation: new = ") else {
-            return None;
-        };
+        let statement = line.trim().strip_prefix("Operation: new = ")?;
         let segments: Vec<&str> = statement.split_whitespace().collect();
 
         let lhs = match segments[0] {

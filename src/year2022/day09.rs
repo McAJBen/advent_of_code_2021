@@ -90,7 +90,7 @@ pub fn part2(input: &str) -> usize {
         })
         .collect();
 
-    let mut snake = vec![(0, 0); 10];
+    let mut snake = [(0, 0); 10];
 
     let mut tail_history = HashSet::new();
     tail_history.insert(*snake.last().unwrap());
