@@ -45,11 +45,6 @@ impl Bracket {
     }
 }
 
-enum ErrorType {
-    Corruption(u64),
-    Incomplete(u64),
-}
-
 fn find_corruption(line: &str) -> Option<Bracket> {
     let mut stack = Vec::new();
     for c in line.chars() {
@@ -67,7 +62,7 @@ fn find_corruption(line: &str) -> Option<Bracket> {
     None
 }
 
-fn parse_line(line: &str) -> ErrorType {
+fn parse_line(line: &str) -> Option<u64> {
     let mut stack = Vec::new();
     for c in line.chars() {
         let (bracket, bracket_type) = Bracket::from_char(c);
@@ -76,7 +71,7 @@ fn parse_line(line: &str) -> ErrorType {
             BracketType::Close => {
                 let last = stack.pop().unwrap();
                 if last != bracket {
-                    return ErrorType::Corruption(bracket.corruption_value());
+                    return None;
                 }
             }
         }
@@ -84,7 +79,7 @@ fn parse_line(line: &str) -> ErrorType {
 
     if !stack.is_empty() {
         stack.reverse();
-        ErrorType::Incomplete(
+        Some(
             stack
                 .into_iter()
                 .fold(0, |acc, bracket| 5 * acc + bracket.incomplete_value()),
@@ -105,10 +100,7 @@ pub fn part1(input: &str) -> u64 {
 pub fn part2(input: &str) -> u64 {
     let mut incomplete_values = input
         .lines()
-        .filter_map(|line| match parse_line(line) {
-            ErrorType::Corruption(_) => None,
-            ErrorType::Incomplete(i) => Some(i),
-        })
+        .filter_map(|line| parse_line(line))
         .collect::<Vec<_>>();
 
     incomplete_values.sort_unstable();
