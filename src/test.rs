@@ -148,3 +148,6 @@ test_method!(2022, year2022, 18, day18, part2, 2048);
 // test_method!(2022, year2022, 24, day24, part1, 0);
 // test_method!(2022, year2022, 24, day24, part2, 0);
 // test_method!(2022, year2022, 25, day25, part1, 0);
+
+test_method!(2023, year2023, 1, day01, part1, 55386);
+test_method!(2023, year2023, 1, day01, part2, 54824);

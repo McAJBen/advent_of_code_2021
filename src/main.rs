@@ -15,6 +15,7 @@ struct Args {
 
 fn main() {
     let args = Args::parse();
+    println!("{:?}", args);
 
     let Args { year, day, part } = args;
 
@@ -139,5 +140,6 @@ fn main() {
     matches_args!(2022, year2022, 24, day24, 2, part2);
     matches_args!(2022, year2022, 25, day25, 1, part1);
 
-    println!("{:?}", args);
+    matches_args!(2023, year2023, 1, day01, 1, part1);
+    matches_args!(2023, year2023, 1, day01, 2, part2);
 }
