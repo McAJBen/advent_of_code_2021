@@ -1,6 +1,6 @@
-use advent_of_code::utils::read_input;
+use advent_of_code::{solvers::Solver, solvers::*, utils::read_input};
 use clap::Parser;
-use std::time::Instant;
+use std::{fmt::Display, time::Instant};
 
 #[derive(Debug, Parser)]
 #[clap(about, version, author)]
@@ -13,133 +13,141 @@ struct Args {
     part: Option<u8>,
 }
 
+fn run<const YEAR: u16, const DAY: u8, const PART: u8, O: Display>(
+    args: &Args,
+    solver: Solver<YEAR, DAY, PART>,
+) where
+    Solver<YEAR, DAY, PART>: SolverTrait<O>,
+{
+    if args.year.unwrap_or(solver.year()) == solver.year()
+        && args.day.unwrap_or(solver.day()) == solver.day()
+        && args.part.unwrap_or(solver.part()) == solver.part()
+    {
+        let input = read_input(solver.year(), solver.day());
+        let start = Instant::now();
+        let result = solver.solve(&input);
+        let duration = Instant::now() - start;
+
+        println!(
+            "year {:04} day {:02} part: {}: {:?}\n{}",
+            solver.year(),
+            solver.day(),
+            solver.part(),
+            duration,
+            result
+        );
+    }
+}
+
 fn main() {
     let args = Args::parse();
     println!("{:?}", args);
 
-    let Args { year, day, part } = args;
+    run(&args, Solver::<2019, 1, 1>);
+    run(&args, Solver::<2019, 1, 2>);
+    run(&args, Solver::<2019, 2, 1>);
+    run(&args, Solver::<2019, 2, 2>);
 
-    macro_rules! matches_args {
-        ($year:expr, $year_i:ident, $day:expr, $day_i:ident, $part:expr, $part_i:ident) => {
-            if year.unwrap_or($year) == $year
-                && day.unwrap_or($day) == $day
-                && part.unwrap_or($part) == $part
-            {
-                let input = read_input($year, $day);
-                let start = Instant::now();
-                let result = advent_of_code::$year_i::$day_i::$part_i(&input);
-                let duration = Instant::now() - start;
-                println!("year{} day{:02} part{}: {:?}", $year, $day, $part, duration);
-                println!("{}", result);
-            }
-        };
-    }
+    run(&args, Solver::<2021, 1, 1>);
+    run(&args, Solver::<2021, 1, 2>);
+    run(&args, Solver::<2021, 2, 1>);
+    run(&args, Solver::<2021, 2, 2>);
+    run(&args, Solver::<2021, 3, 1>);
+    run(&args, Solver::<2021, 3, 2>);
+    run(&args, Solver::<2021, 4, 1>);
+    run(&args, Solver::<2021, 4, 2>);
+    run(&args, Solver::<2021, 5, 1>);
+    run(&args, Solver::<2021, 5, 2>);
+    run(&args, Solver::<2021, 6, 1>);
+    run(&args, Solver::<2021, 6, 2>);
+    run(&args, Solver::<2021, 7, 1>);
+    run(&args, Solver::<2021, 7, 2>);
+    run(&args, Solver::<2021, 8, 1>);
+    run(&args, Solver::<2021, 8, 2>);
+    run(&args, Solver::<2021, 9, 1>);
+    run(&args, Solver::<2021, 9, 2>);
+    run(&args, Solver::<2021, 10, 1>);
+    run(&args, Solver::<2021, 10, 2>);
+    run(&args, Solver::<2021, 11, 1>);
+    run(&args, Solver::<2021, 11, 2>);
+    run(&args, Solver::<2021, 12, 1>);
+    run(&args, Solver::<2021, 12, 2>);
+    run(&args, Solver::<2021, 13, 1>);
+    run(&args, Solver::<2021, 13, 2>);
+    run(&args, Solver::<2021, 14, 1>);
+    run(&args, Solver::<2021, 14, 2>);
+    run(&args, Solver::<2021, 15, 1>);
+    run(&args, Solver::<2021, 15, 2>);
+    run(&args, Solver::<2021, 16, 1>);
+    run(&args, Solver::<2021, 16, 2>);
+    run(&args, Solver::<2021, 17, 1>);
+    run(&args, Solver::<2021, 17, 2>);
+    run(&args, Solver::<2021, 18, 1>);
+    run(&args, Solver::<2021, 18, 2>);
+    run(&args, Solver::<2021, 19, 1>);
+    run(&args, Solver::<2021, 19, 2>);
+    run(&args, Solver::<2021, 20, 1>);
+    run(&args, Solver::<2021, 20, 2>);
+    run(&args, Solver::<2021, 21, 1>);
+    run(&args, Solver::<2021, 21, 2>);
+    run(&args, Solver::<2021, 22, 1>);
+    run(&args, Solver::<2021, 22, 2>);
+    run(&args, Solver::<2021, 23, 1>);
+    // run(&args, Solver::<2021, 23, 2>);
+    // run(&args, Solver::<2021, 24, 1>);
+    // run(&args, Solver::<2021, 24, 2>);
+    run(&args, Solver::<2021, 25, 1>);
 
-    matches_args!(2019, year2019, 1, day01, 1, part1);
-    matches_args!(2019, year2019, 1, day01, 2, part2);
-    matches_args!(2019, year2019, 2, day02, 1, part1);
-    matches_args!(2019, year2019, 2, day02, 2, part2);
+    run(&args, Solver::<2022, 1, 1>);
+    run(&args, Solver::<2022, 1, 2>);
+    run(&args, Solver::<2022, 2, 1>);
+    run(&args, Solver::<2022, 2, 2>);
+    run(&args, Solver::<2022, 3, 1>);
+    run(&args, Solver::<2022, 3, 2>);
+    run(&args, Solver::<2022, 4, 1>);
+    run(&args, Solver::<2022, 4, 2>);
+    run(&args, Solver::<2022, 5, 1>);
+    run(&args, Solver::<2022, 5, 2>);
+    run(&args, Solver::<2022, 6, 1>);
+    run(&args, Solver::<2022, 6, 2>);
+    run(&args, Solver::<2022, 7, 1>);
+    run(&args, Solver::<2022, 7, 2>);
+    run(&args, Solver::<2022, 8, 1>);
+    run(&args, Solver::<2022, 8, 2>);
+    run(&args, Solver::<2022, 9, 1>);
+    run(&args, Solver::<2022, 9, 2>);
+    run(&args, Solver::<2022, 10, 1>);
+    run(&args, Solver::<2022, 10, 2>);
+    run(&args, Solver::<2022, 11, 1>);
+    run(&args, Solver::<2022, 11, 2>);
+    run(&args, Solver::<2022, 12, 1>);
+    run(&args, Solver::<2022, 12, 2>);
+    run(&args, Solver::<2022, 13, 1>);
+    run(&args, Solver::<2022, 13, 2>);
+    run(&args, Solver::<2022, 14, 1>);
+    run(&args, Solver::<2022, 14, 2>);
+    run(&args, Solver::<2022, 15, 1>);
+    run(&args, Solver::<2022, 15, 2>);
+    run(&args, Solver::<2022, 16, 1>);
+    run(&args, Solver::<2022, 16, 2>);
+    run(&args, Solver::<2022, 17, 1>);
+    run(&args, Solver::<2022, 17, 2>);
+    run(&args, Solver::<2022, 18, 1>);
+    run(&args, Solver::<2022, 18, 2>);
+    run(&args, Solver::<2022, 19, 1>);
+    run(&args, Solver::<2022, 19, 2>);
+    run(&args, Solver::<2022, 20, 1>);
+    run(&args, Solver::<2022, 20, 2>);
+    run(&args, Solver::<2022, 21, 1>);
+    run(&args, Solver::<2022, 21, 2>);
+    run(&args, Solver::<2022, 22, 1>);
+    run(&args, Solver::<2022, 22, 2>);
+    run(&args, Solver::<2022, 23, 1>);
+    run(&args, Solver::<2022, 23, 2>);
+    run(&args, Solver::<2022, 24, 1>);
+    run(&args, Solver::<2022, 24, 2>);
+    run(&args, Solver::<2022, 25, 1>);
 
-    matches_args!(2021, year2021, 1, day01, 1, part1);
-    matches_args!(2021, year2021, 1, day01, 2, part2);
-    matches_args!(2021, year2021, 2, day02, 1, part1);
-    matches_args!(2021, year2021, 2, day02, 2, part2);
-    matches_args!(2021, year2021, 3, day03, 1, part1);
-    matches_args!(2021, year2021, 3, day03, 2, part2);
-    matches_args!(2021, year2021, 4, day04, 1, part1);
-    matches_args!(2021, year2021, 4, day04, 2, part2);
-    matches_args!(2021, year2021, 5, day05, 1, part1);
-    matches_args!(2021, year2021, 5, day05, 2, part2);
-    matches_args!(2021, year2021, 6, day06, 1, part1);
-    matches_args!(2021, year2021, 6, day06, 2, part2);
-    matches_args!(2021, year2021, 7, day07, 1, part1);
-    matches_args!(2021, year2021, 7, day07, 2, part2);
-    matches_args!(2021, year2021, 8, day08, 1, part1);
-    matches_args!(2021, year2021, 8, day08, 2, part2);
-    matches_args!(2021, year2021, 9, day09, 1, part1);
-    matches_args!(2021, year2021, 9, day09, 2, part2);
-    matches_args!(2021, year2021, 10, day10, 1, part1);
-    matches_args!(2021, year2021, 10, day10, 2, part2);
-    matches_args!(2021, year2021, 11, day11, 1, part1);
-    matches_args!(2021, year2021, 11, day11, 2, part2);
-    matches_args!(2021, year2021, 12, day12, 1, part1);
-    matches_args!(2021, year2021, 12, day12, 2, part2);
-    matches_args!(2021, year2021, 13, day13, 1, part1);
-    matches_args!(2021, year2021, 13, day13, 2, part2);
-    matches_args!(2021, year2021, 14, day14, 1, part1);
-    matches_args!(2021, year2021, 14, day14, 2, part2);
-    matches_args!(2021, year2021, 15, day15, 1, part1);
-    matches_args!(2021, year2021, 15, day15, 2, part2);
-    matches_args!(2021, year2021, 16, day16, 1, part1);
-    matches_args!(2021, year2021, 16, day16, 2, part2);
-    matches_args!(2021, year2021, 17, day17, 1, part1);
-    matches_args!(2021, year2021, 17, day17, 2, part2);
-    matches_args!(2021, year2021, 18, day18, 1, part1);
-    matches_args!(2021, year2021, 18, day18, 2, part2);
-    matches_args!(2021, year2021, 19, day19, 1, part1);
-    matches_args!(2021, year2021, 19, day19, 2, part2);
-    matches_args!(2021, year2021, 20, day20, 1, part1);
-    matches_args!(2021, year2021, 20, day20, 2, part2);
-    matches_args!(2021, year2021, 21, day21, 1, part1);
-    matches_args!(2021, year2021, 21, day21, 2, part2);
-    matches_args!(2021, year2021, 22, day22, 1, part1);
-    matches_args!(2021, year2021, 22, day22, 2, part2);
-    matches_args!(2021, year2021, 23, day23, 1, part1);
-    // matches_args!(2021, year2021, 23, day23, 2, part2);
-    // matches_args!(2021, year2021, 24, day24, 1, part1);
-    // matches_args!(2021, year2021, 24, day24, 2, part2);
-    matches_args!(2021, year2021, 25, day25, 1, part1);
-
-    matches_args!(2022, year2022, 1, day01, 1, part1);
-    matches_args!(2022, year2022, 1, day01, 2, part2);
-    matches_args!(2022, year2022, 2, day02, 1, part1);
-    matches_args!(2022, year2022, 2, day02, 2, part2);
-    matches_args!(2022, year2022, 3, day03, 1, part1);
-    matches_args!(2022, year2022, 3, day03, 2, part2);
-    matches_args!(2022, year2022, 4, day04, 1, part1);
-    matches_args!(2022, year2022, 4, day04, 2, part2);
-    matches_args!(2022, year2022, 5, day05, 1, part1);
-    matches_args!(2022, year2022, 5, day05, 2, part2);
-    matches_args!(2022, year2022, 6, day06, 1, part1);
-    matches_args!(2022, year2022, 6, day06, 2, part2);
-    matches_args!(2022, year2022, 7, day07, 1, part1);
-    matches_args!(2022, year2022, 7, day07, 2, part2);
-    matches_args!(2022, year2022, 8, day08, 1, part1);
-    matches_args!(2022, year2022, 8, day08, 2, part2);
-    matches_args!(2022, year2022, 9, day09, 1, part1);
-    matches_args!(2022, year2022, 9, day09, 2, part2);
-    matches_args!(2022, year2022, 10, day10, 1, part1);
-    matches_args!(2022, year2022, 10, day10, 2, part2);
-    matches_args!(2022, year2022, 11, day11, 1, part1);
-    matches_args!(2022, year2022, 11, day11, 2, part2);
-    matches_args!(2022, year2022, 12, day12, 1, part1);
-    matches_args!(2022, year2022, 12, day12, 2, part2);
-    matches_args!(2022, year2022, 13, day13, 1, part1);
-    matches_args!(2022, year2022, 13, day13, 2, part2);
-    matches_args!(2022, year2022, 14, day14, 1, part1);
-    matches_args!(2022, year2022, 14, day14, 2, part2);
-    matches_args!(2022, year2022, 15, day15, 1, part1);
-    matches_args!(2022, year2022, 15, day15, 2, part2);
-    matches_args!(2022, year2022, 16, day16, 1, part1);
-    matches_args!(2022, year2022, 16, day16, 2, part2);
-    matches_args!(2022, year2022, 17, day17, 1, part1);
-    matches_args!(2022, year2022, 17, day17, 2, part2);
-    matches_args!(2022, year2022, 18, day18, 1, part1);
-    matches_args!(2022, year2022, 18, day18, 2, part2);
-    matches_args!(2022, year2022, 19, day19, 1, part1);
-    matches_args!(2022, year2022, 19, day19, 2, part2);
-    matches_args!(2022, year2022, 20, day20, 1, part1);
-    matches_args!(2022, year2022, 20, day20, 2, part2);
-    matches_args!(2022, year2022, 21, day21, 1, part1);
-    matches_args!(2022, year2022, 21, day21, 2, part2);
-    matches_args!(2022, year2022, 22, day22, 1, part1);
-    matches_args!(2022, year2022, 22, day22, 2, part2);
-    matches_args!(2022, year2022, 23, day23, 1, part1);
-    matches_args!(2022, year2022, 23, day23, 2, part2);
-    matches_args!(2022, year2022, 24, day24, 1, part1);
-    matches_args!(2022, year2022, 24, day24, 2, part2);
-    matches_args!(2022, year2022, 25, day25, 1, part1);
-
-    matches_args!(2023, year2023, 1, day01, 1, part1);
-    matches_args!(2023, year2023, 1, day01, 2, part2);
+    run(&args, Solver::<2023, 1, 1>);
+    run(&args, Solver::<2023, 1, 2>);
 }
