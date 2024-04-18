@@ -1,8 +1,43 @@
-use std::{collections::VecDeque, fs::read_to_string, iter::Peekable, str::FromStr};
+use std::{
+    collections::VecDeque,
+    fs::{read_dir, read_to_string},
+    iter::Peekable,
+    str::FromStr,
+};
 
-pub fn read_input(year: u16, day: u8) -> String {
-    let path = format!("input/{}/{:02}", year, day);
-    read_to_string(path).unwrap()
+#[derive(Debug)]
+pub struct TestCase {
+    name: String,
+    input: String,
+    output: String,
+}
+
+impl TestCase {
+    pub fn from_dir(year: u16, day: u8, part: u8) -> Vec<Self> {
+        read_dir(format!("data/{year:04}/{day:02}"))
+            .unwrap()
+            .flatten()
+            .map(|entry| entry.path())
+            .filter(|path| path.is_dir())
+            .map(|path| TestCase {
+                name: path.file_name().unwrap().to_str().unwrap().to_string(),
+                input: read_to_string(path.join("input.txt")).unwrap(),
+                output: read_to_string(path.join(format!("output{part}.txt"))).unwrap(),
+            })
+            .collect()
+    }
+
+    pub fn name(&self) -> &str {
+        &self.name
+    }
+
+    pub fn input(&self) -> &str {
+        &self.input
+    }
+
+    pub fn output(&self) -> &str {
+        &self.output
+    }
 }
 
 pub struct ZipWithNext<Iter, Item>

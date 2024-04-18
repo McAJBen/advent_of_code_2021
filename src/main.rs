@@ -1,4 +1,7 @@
-use advent_of_code::{solvers::Solver, solvers::*, utils::read_input};
+use advent_of_code::{
+    solvers::{Solver, SolverTrait},
+    utils::TestCase,
+};
 use clap::Parser;
 use std::{fmt::Display, time::Instant};
 
@@ -23,19 +26,20 @@ fn run<const YEAR: u16, const DAY: u8, const PART: u8, O: Display>(
         && args.day.unwrap_or(solver.day()) == solver.day()
         && args.part.unwrap_or(solver.part()) == solver.part()
     {
-        let input = read_input(solver.year(), solver.day());
-        let start = Instant::now();
-        let result = solver.solve(&input);
-        let duration = Instant::now() - start;
-
-        println!(
-            "year {:04} day {:02} part: {}: {:?}\n{}",
-            solver.year(),
-            solver.day(),
-            solver.part(),
-            duration,
-            result
-        );
+        for test_case in TestCase::from_dir(solver.year(), solver.day(), solver.part()) {
+            let start = Instant::now();
+            let result = solver.solve(test_case.input());
+            let duration = Instant::now() - start;
+            println!(
+                "year {:04} day {:02} part: {} test: {} duration: {:?}\n{}",
+                solver.year(),
+                solver.day(),
+                solver.part(),
+                test_case.name(),
+                duration,
+                result
+            );
+        }
     }
 }
 

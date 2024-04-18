@@ -3,7 +3,7 @@ use std::collections::HashMap;
 
 impl SolverTrait<usize> for Solver<2021, 6, 1> {
     fn solve(&self, input: &str) -> usize {
-        let mut fishes: Vec<u8> = input.split(',').map(|x| x.parse().unwrap()).collect();
+        let mut fishes: Vec<u8> = input.split(',').map(|x| x.parse::<u8>().unwrap()).collect();
 
         for _ in 0..80 {
             let mut num_new_fish = 0;
@@ -26,7 +26,7 @@ impl SolverTrait<usize> for Solver<2021, 6, 1> {
 
 impl SolverTrait<u64> for Solver<2021, 6, 2> {
     fn solve(&self, input: &str) -> u64 {
-        let fishes: Vec<u8> = input.split(',').map(|x| x.parse().unwrap()).collect();
+        let fishes: Vec<u8> = input.split(',').map(|x| x.parse::<u8>().unwrap()).collect();
 
         let mut map = HashMap::new();
 

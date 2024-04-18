@@ -2,7 +2,10 @@ use crate::solvers::{Solver, SolverTrait};
 
 impl SolverTrait<u32> for Solver<2021, 7, 1> {
     fn solve(&self, input: &str) -> u32 {
-        let positions: Vec<u16> = input.split(',').map(|x| x.parse().unwrap()).collect();
+        let positions: Vec<u16> = input
+            .split(',')
+            .map(|x| x.parse::<u16>().unwrap())
+            .collect();
 
         let max_position = *positions.iter().max().unwrap();
         let min_position = *positions.iter().min().unwrap();
@@ -23,7 +26,10 @@ impl SolverTrait<u32> for Solver<2021, 7, 1> {
 
 impl SolverTrait<u32> for Solver<2021, 7, 2> {
     fn solve(&self, input: &str) -> u32 {
-        let positions: Vec<u16> = input.split(',').map(|x| x.parse().unwrap()).collect();
+        let positions: Vec<u16> = input
+            .split(',')
+            .map(|x| x.parse::<u16>().unwrap())
+            .collect();
 
         let max_position = *positions.iter().max().unwrap();
         let min_position = *positions.iter().min().unwrap();
