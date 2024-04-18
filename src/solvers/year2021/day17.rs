@@ -103,8 +103,8 @@ impl TargetRange {
     }
 }
 
-impl SolverTrait<i32> for Solver<2021, 17, 1> {
-    fn solve(&self, input: &str) -> i32 {
+impl SolverTrait for Solver<2021, 17, 1> {
+    fn solve(&self, input: &str) -> impl ToString {
         let value = TargetRange::new(input);
 
         let mut best_probe: Option<Probe> = None;
@@ -131,8 +131,8 @@ impl SolverTrait<i32> for Solver<2021, 17, 1> {
     }
 }
 
-impl SolverTrait<usize> for Solver<2021, 17, 2> {
-    fn solve(&self, input: &str) -> usize {
+impl SolverTrait for Solver<2021, 17, 2> {
+    fn solve(&self, input: &str) -> impl ToString {
         let value = TargetRange::new(input);
 
         let mut probes = Vec::new();

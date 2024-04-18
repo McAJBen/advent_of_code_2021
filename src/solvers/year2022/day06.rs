@@ -4,8 +4,8 @@ use crate::{
 };
 use std::collections::HashSet;
 
-impl SolverTrait<usize> for Solver<2022, 6, 1> {
-    fn solve(&self, input: &str) -> usize {
+impl SolverTrait for Solver<2022, 6, 1> {
+    fn solve(&self, input: &str) -> impl ToString {
         let x = input
             .chars()
             .zip_with_next_n(4)
@@ -22,8 +22,8 @@ impl SolverTrait<usize> for Solver<2022, 6, 1> {
     }
 }
 
-impl SolverTrait<usize> for Solver<2022, 6, 2> {
-    fn solve(&self, input: &str) -> usize {
+impl SolverTrait for Solver<2022, 6, 2> {
+    fn solve(&self, input: &str) -> impl ToString {
         let x = input
             .chars()
             .zip_with_next_n(14)

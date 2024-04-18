@@ -3,7 +3,7 @@ use advent_of_code::{
     utils::TestCase,
 };
 use clap::Parser;
-use std::{fmt::Display, time::Instant};
+use std::time::Instant;
 
 #[derive(Debug, Parser)]
 #[clap(about, version, author)]
@@ -16,11 +16,9 @@ struct Args {
     part: Option<u8>,
 }
 
-fn run<const YEAR: u16, const DAY: u8, const PART: u8, O: Display>(
-    args: &Args,
-    solver: Solver<YEAR, DAY, PART>,
-) where
-    Solver<YEAR, DAY, PART>: SolverTrait<O>,
+fn run<const YEAR: u16, const DAY: u8, const PART: u8>(args: &Args, solver: Solver<YEAR, DAY, PART>)
+where
+    Solver<YEAR, DAY, PART>: SolverTrait,
 {
     if args.year.unwrap_or(solver.year()) == solver.year()
         && args.day.unwrap_or(solver.day()) == solver.day()
@@ -37,7 +35,7 @@ fn run<const YEAR: u16, const DAY: u8, const PART: u8, O: Display>(
                 solver.part(),
                 test_case.name(),
                 duration,
-                result
+                result.to_string()
             );
         }
     }

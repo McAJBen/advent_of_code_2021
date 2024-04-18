@@ -108,16 +108,16 @@ impl OctopusGrid {
     }
 }
 
-impl SolverTrait<u32> for Solver<2021, 11, 1> {
-    fn solve(&self, input: &str) -> u32 {
+impl SolverTrait for Solver<2021, 11, 1> {
+    fn solve(&self, input: &str) -> impl ToString {
         let mut grid = OctopusGrid::new(input);
 
-        (0..100).map(|_| grid.tick()).sum()
+        (0..100).map(|_| grid.tick()).sum::<u32>()
     }
 }
 
-impl SolverTrait<u32> for Solver<2021, 11, 2> {
-    fn solve(&self, input: &str) -> u32 {
+impl SolverTrait for Solver<2021, 11, 2> {
+    fn solve(&self, input: &str) -> impl ToString {
         let mut grid = OctopusGrid::new(input);
 
         let mut num_ticks = 0;

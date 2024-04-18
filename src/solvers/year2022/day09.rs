@@ -12,8 +12,8 @@ enum Direction {
     Right,
 }
 
-impl SolverTrait<usize> for Solver<2022, 9, 1> {
-    fn solve(&self, input: &str) -> usize {
+impl SolverTrait for Solver<2022, 9, 1> {
+    fn solve(&self, input: &str) -> impl ToString {
         let orders: Vec<Direction> = input
             .lines()
             .flat_map(|line| {
@@ -77,8 +77,8 @@ impl SolverTrait<usize> for Solver<2022, 9, 1> {
     }
 }
 
-impl SolverTrait<usize> for Solver<2022, 9, 2> {
-    fn solve(&self, input: &str) -> usize {
+impl SolverTrait for Solver<2022, 9, 2> {
+    fn solve(&self, input: &str) -> impl ToString {
         let orders: Vec<Direction> = input
             .lines()
             .flat_map(|line| {

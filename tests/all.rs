@@ -3,11 +3,10 @@ use advent_of_code::{
     utils::TestCase,
 };
 use paste::paste;
-use std::fmt::Display;
 
-fn run<const YEAR: u16, const DAY: u8, const PART: u8, O: Display>(solver: Solver<YEAR, DAY, PART>)
+fn run<const YEAR: u16, const DAY: u8, const PART: u8>(solver: Solver<YEAR, DAY, PART>)
 where
-    Solver<YEAR, DAY, PART>: SolverTrait<O>,
+    Solver<YEAR, DAY, PART>: SolverTrait,
 {
     for test_case in TestCase::from_dir(YEAR, DAY, PART) {
         assert_eq!(

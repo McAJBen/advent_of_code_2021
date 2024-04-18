@@ -1,8 +1,8 @@
 use crate::solvers::{Solver, SolverTrait};
 use std::ops::RangeInclusive;
 
-impl SolverTrait<usize> for Solver<2022, 4, 1> {
-    fn solve(&self, input: &str) -> usize {
+impl SolverTrait for Solver<2022, 4, 1> {
+    fn solve(&self, input: &str) -> impl ToString {
         input
             .lines()
             .filter(|line| {
@@ -39,8 +39,8 @@ impl SolverTrait<usize> for Solver<2022, 4, 1> {
     }
 }
 
-impl SolverTrait<usize> for Solver<2022, 4, 2> {
-    fn solve(&self, input: &str) -> usize {
+impl SolverTrait for Solver<2022, 4, 2> {
+    fn solve(&self, input: &str) -> impl ToString {
         input
             .lines()
             .filter(|line| {

@@ -76,6 +76,6 @@ impl<const YEAR: u16, const DAY: u8, const PART: u8> Solver<YEAR, DAY, PART> {
     }
 }
 
-pub trait SolverTrait<OutputType> {
-    fn solve(&self, input: &str) -> OutputType;
+pub trait SolverTrait {
+    fn solve(&self, input: &str) -> impl ToString;
 }

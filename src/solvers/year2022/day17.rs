@@ -163,8 +163,8 @@ impl Chamber {
     }
 }
 
-impl SolverTrait<usize> for Solver<2022, 17, 1> {
-    fn solve(&self, input: &str) -> usize {
+impl SolverTrait for Solver<2022, 17, 1> {
+    fn solve(&self, input: &str) -> impl ToString {
         let jets = WindJet::from_str(input);
         let mut jet_pattern = jets.into_iter().cycle();
         let mut chamber = Chamber::default();
@@ -177,8 +177,8 @@ impl SolverTrait<usize> for Solver<2022, 17, 1> {
     }
 }
 
-impl SolverTrait<usize> for Solver<2022, 17, 2> {
-    fn solve(&self, input: &str) -> usize {
+impl SolverTrait for Solver<2022, 17, 2> {
+    fn solve(&self, input: &str) -> impl ToString {
         let jets = WindJet::from_str(input);
         let mut jet_pattern = jets.into_iter().cycle();
         let mut chamber = Chamber::default();

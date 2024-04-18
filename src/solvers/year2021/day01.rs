@@ -3,8 +3,8 @@ use crate::{
     utils::{ZipWithNextExt, ZipWithNextNExt},
 };
 
-impl SolverTrait<usize> for Solver<2021, 1, 1> {
-    fn solve(&self, input: &str) -> usize {
+impl SolverTrait for Solver<2021, 1, 1> {
+    fn solve(&self, input: &str) -> impl ToString {
         input
             .lines()
             .map(|line| line.parse::<u16>().unwrap())
@@ -14,8 +14,8 @@ impl SolverTrait<usize> for Solver<2021, 1, 1> {
     }
 }
 
-impl SolverTrait<usize> for Solver<2021, 1, 2> {
-    fn solve(&self, input: &str) -> usize {
+impl SolverTrait for Solver<2021, 1, 2> {
+    fn solve(&self, input: &str) -> impl ToString {
         input
             .lines()
             .map(|line| line.parse::<u16>().unwrap())

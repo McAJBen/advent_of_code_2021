@@ -3,8 +3,8 @@ use crate::{
     utils::ZipWithNextExt,
 };
 
-impl SolverTrait<u32> for Solver<2022, 14, 1> {
-    fn solve(&self, input: &str) -> u32 {
+impl SolverTrait for Solver<2022, 14, 1> {
+    fn solve(&self, input: &str) -> impl ToString {
         let points: Vec<Vec<(usize, usize)>> = input
             .lines()
             .map(|line| {
@@ -74,8 +74,8 @@ impl SolverTrait<u32> for Solver<2022, 14, 1> {
     }
 }
 
-impl SolverTrait<u32> for Solver<2022, 14, 2> {
-    fn solve(&self, input: &str) -> u32 {
+impl SolverTrait for Solver<2022, 14, 2> {
+    fn solve(&self, input: &str) -> impl ToString {
         let mut points: Vec<Vec<(usize, usize)>> = input
             .lines()
             .map(|line| {

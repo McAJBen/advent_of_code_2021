@@ -111,8 +111,8 @@ impl CompressionAlgorithm {
     }
 }
 
-impl SolverTrait<usize> for Solver<2021, 20, 1> {
-    fn solve(&self, input: &str) -> usize {
+impl SolverTrait for Solver<2021, 20, 1> {
+    fn solve(&self, input: &str) -> impl ToString {
         let (compression_algorithm, image) = input.split_once("\n\n").unwrap();
 
         let compression_algorithm = CompressionAlgorithm::new(compression_algorithm);
@@ -126,8 +126,8 @@ impl SolverTrait<usize> for Solver<2021, 20, 1> {
     }
 }
 
-impl SolverTrait<usize> for Solver<2021, 20, 2> {
-    fn solve(&self, input: &str) -> usize {
+impl SolverTrait for Solver<2021, 20, 2> {
+    fn solve(&self, input: &str) -> impl ToString {
         let (compression_algorithm, image) = input.split_once("\n\n").unwrap();
 
         let compression_algorithm = CompressionAlgorithm::new(compression_algorithm);

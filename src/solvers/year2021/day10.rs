@@ -91,8 +91,8 @@ fn parse_line(line: &str) -> Option<u64> {
     }
 }
 
-impl SolverTrait<u64> for Solver<2021, 10, 1> {
-    fn solve(&self, input: &str) -> u64 {
+impl SolverTrait for Solver<2021, 10, 1> {
+    fn solve(&self, input: &str) -> impl ToString {
         input
             .lines()
             .filter_map(find_corruption)
@@ -101,8 +101,8 @@ impl SolverTrait<u64> for Solver<2021, 10, 1> {
     }
 }
 
-impl SolverTrait<u64> for Solver<2021, 10, 2> {
-    fn solve(&self, input: &str) -> u64 {
+impl SolverTrait for Solver<2021, 10, 2> {
+    fn solve(&self, input: &str) -> impl ToString {
         let mut incomplete_values = input.lines().filter_map(parse_line).collect::<Vec<_>>();
 
         incomplete_values.sort_unstable();

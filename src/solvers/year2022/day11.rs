@@ -108,8 +108,8 @@ impl Test {
     }
 }
 
-impl SolverTrait<u64> for Solver<2022, 11, 1> {
-    fn solve(&self, input: &str) -> u64 {
+impl SolverTrait for Solver<2022, 11, 1> {
+    fn solve(&self, input: &str) -> impl ToString {
         let mut monkies: Vec<Monkey> = input
             .split("\n\n")
             .map(|monkey| {
@@ -154,8 +154,8 @@ impl SolverTrait<u64> for Solver<2022, 11, 1> {
     }
 }
 
-impl SolverTrait<u64> for Solver<2022, 11, 2> {
-    fn solve(&self, input: &str) -> u64 {
+impl SolverTrait for Solver<2022, 11, 2> {
+    fn solve(&self, input: &str) -> impl ToString {
         let mut monkies: Vec<Monkey> = input
             .split("\n\n")
             .map(|monkey| {

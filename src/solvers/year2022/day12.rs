@@ -72,8 +72,8 @@ fn dijkstra(starts: &[usize], end: usize, neighbors: &[Vec<usize>]) -> usize {
     panic!();
 }
 
-impl SolverTrait<usize> for Solver<2022, 12, 1> {
-    fn solve(&self, input: &str) -> usize {
+impl SolverTrait for Solver<2022, 12, 1> {
+    fn solve(&self, input: &str) -> impl ToString {
         let heights = get_heights(input);
         let neighbors = get_neighbors(&heights);
 
@@ -103,8 +103,8 @@ impl SolverTrait<usize> for Solver<2022, 12, 1> {
     }
 }
 
-impl SolverTrait<usize> for Solver<2022, 12, 2> {
-    fn solve(&self, input: &str) -> usize {
+impl SolverTrait for Solver<2022, 12, 2> {
+    fn solve(&self, input: &str) -> impl ToString {
         let heights = get_heights(input);
         let neighbors = get_neighbors(&heights);
 

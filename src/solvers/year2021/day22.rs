@@ -125,8 +125,8 @@ impl CuboidGrid {
     }
 }
 
-impl SolverTrait<usize> for Solver<2021, 22, 1> {
-    fn solve(&self, input: &str) -> usize {
+impl SolverTrait for Solver<2021, 22, 1> {
+    fn solve(&self, input: &str) -> impl ToString {
         let mut lit_cells = HashSet::new();
 
         for line in input.lines() {
@@ -155,8 +155,8 @@ impl SolverTrait<usize> for Solver<2021, 22, 1> {
     }
 }
 
-impl SolverTrait<u64> for Solver<2021, 22, 2> {
-    fn solve(&self, input: &str) -> u64 {
+impl SolverTrait for Solver<2021, 22, 2> {
+    fn solve(&self, input: &str) -> impl ToString {
         let cuboids = input.lines().map(Cuboid::new).collect::<Vec<_>>();
 
         let mut cuboid_grid = CuboidGrid::new(&cuboids);

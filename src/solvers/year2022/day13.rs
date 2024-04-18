@@ -112,8 +112,8 @@ impl Node {
     }
 }
 
-impl SolverTrait<usize> for Solver<2022, 13, 1> {
-    fn solve(&self, input: &str) -> usize {
+impl SolverTrait for Solver<2022, 13, 1> {
+    fn solve(&self, input: &str) -> impl ToString {
         input
             .split("\n\n")
             .enumerate()
@@ -127,12 +127,12 @@ impl SolverTrait<usize> for Solver<2022, 13, 1> {
                     None
                 }
             })
-            .sum()
+            .sum::<usize>()
     }
 }
 
-impl SolverTrait<usize> for Solver<2022, 13, 2> {
-    fn solve(&self, input: &str) -> usize {
+impl SolverTrait for Solver<2022, 13, 2> {
+    fn solve(&self, input: &str) -> impl ToString {
         let mut packets: Vec<Node> = input
             .lines()
             .filter_map(|line| {

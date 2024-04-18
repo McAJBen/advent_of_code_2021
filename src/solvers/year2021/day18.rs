@@ -125,8 +125,8 @@ impl Add for SnailfishNumber {
     }
 }
 
-impl SolverTrait<u32> for Solver<2021, 18, 1> {
-    fn solve(&self, input: &str) -> u32 {
+impl SolverTrait for Solver<2021, 18, 1> {
+    fn solve(&self, input: &str) -> impl ToString {
         let result = input
             .lines()
             .map(SnailfishNumber::new)
@@ -137,8 +137,8 @@ impl SolverTrait<u32> for Solver<2021, 18, 1> {
     }
 }
 
-impl SolverTrait<u32> for Solver<2021, 18, 2> {
-    fn solve(&self, input: &str) -> u32 {
+impl SolverTrait for Solver<2021, 18, 2> {
+    fn solve(&self, input: &str) -> impl ToString {
         let snailfish_numbers = input.lines().map(SnailfishNumber::new).collect::<Vec<_>>();
 
         let mut max_magnitude = 0;

@@ -24,8 +24,8 @@ impl Line {
     }
 }
 
-impl SolverTrait<usize> for Solver<2021, 5, 1> {
-    fn solve(&self, input: &str) -> usize {
+impl SolverTrait for Solver<2021, 5, 1> {
+    fn solve(&self, input: &str) -> impl ToString {
         let lines = input.lines().map(Line::new).collect::<Vec<_>>();
 
         let mut map = HashMap::new();
@@ -72,8 +72,8 @@ impl SolverTrait<usize> for Solver<2021, 5, 1> {
     }
 }
 
-impl SolverTrait<usize> for Solver<2021, 5, 2> {
-    fn solve(&self, input: &str) -> usize {
+impl SolverTrait for Solver<2021, 5, 2> {
+    fn solve(&self, input: &str) -> impl ToString {
         let lines = input.lines().map(Line::new).collect::<Vec<_>>();
 
         let mut map = HashMap::new();

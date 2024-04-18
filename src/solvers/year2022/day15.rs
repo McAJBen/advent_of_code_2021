@@ -85,8 +85,8 @@ impl Point {
     }
 }
 
-impl SolverTrait<u64> for Solver<2022, 15, 1> {
-    fn solve(&self, input: &str) -> u64 {
+impl SolverTrait for Solver<2022, 15, 1> {
+    fn solve(&self, input: &str) -> impl ToString {
         const Y: u32 = 2000000;
         let sensors: Vec<Sensor> = input.lines().map(Sensor::from_line).collect();
 
@@ -121,8 +121,8 @@ impl SolverTrait<u64> for Solver<2022, 15, 1> {
     }
 }
 
-impl SolverTrait<i64> for Solver<2022, 15, 2> {
-    fn solve(&self, input: &str) -> i64 {
+impl SolverTrait for Solver<2022, 15, 2> {
+    fn solve(&self, input: &str) -> impl ToString {
         const MAX: u32 = 4000000;
         let sensors: Vec<Sensor> = input.lines().map(Sensor::from_line).collect();
 

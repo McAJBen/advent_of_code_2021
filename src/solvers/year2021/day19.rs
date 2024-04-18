@@ -103,8 +103,8 @@ impl Scanner {
     }
 }
 
-impl SolverTrait<usize> for Solver<2021, 19, 1> {
-    fn solve(&self, input: &str) -> usize {
+impl SolverTrait for Solver<2021, 19, 1> {
+    fn solve(&self, input: &str) -> impl ToString {
         let mut scanners = Vec::new();
         for line in input.lines() {
             if line.starts_with("---") {
@@ -141,8 +141,8 @@ impl SolverTrait<usize> for Solver<2021, 19, 1> {
     }
 }
 
-impl SolverTrait<i16> for Solver<2021, 19, 2> {
-    fn solve(&self, input: &str) -> i16 {
+impl SolverTrait for Solver<2021, 19, 2> {
+    fn solve(&self, input: &str) -> impl ToString {
         let mut scanners = Vec::new();
         for line in input.lines() {
             if line.starts_with("---") {

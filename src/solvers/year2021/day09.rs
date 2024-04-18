@@ -125,8 +125,8 @@ impl Grid {
     }
 }
 
-impl SolverTrait<u32> for Solver<2021, 9, 1> {
-    fn solve(&self, input: &str) -> u32 {
+impl SolverTrait for Solver<2021, 9, 1> {
+    fn solve(&self, input: &str) -> impl ToString {
         let grid = Grid::new(input.lines().collect());
 
         let low_points = grid.get_low_points();
@@ -135,8 +135,8 @@ impl SolverTrait<u32> for Solver<2021, 9, 1> {
     }
 }
 
-impl SolverTrait<usize> for Solver<2021, 9, 2> {
-    fn solve(&self, input: &str) -> usize {
+impl SolverTrait for Solver<2021, 9, 2> {
+    fn solve(&self, input: &str) -> impl ToString {
         let grid = Grid::new(input.lines().collect());
 
         let low_points = grid.get_low_points2();
@@ -149,6 +149,6 @@ impl SolverTrait<usize> for Solver<2021, 9, 2> {
         basin_sizes.sort_unstable();
         basin_sizes.reverse();
 
-        basin_sizes.iter().take(3).product()
+        basin_sizes.iter().take(3).product::<usize>()
     }
 }

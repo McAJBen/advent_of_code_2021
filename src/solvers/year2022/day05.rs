@@ -1,7 +1,7 @@
 use crate::solvers::{Solver, SolverTrait};
 
-impl SolverTrait<String> for Solver<2022, 5, 1> {
-    fn solve(&self, input: &str) -> String {
+impl SolverTrait for Solver<2022, 5, 1> {
+    fn solve(&self, input: &str) -> impl ToString {
         let (original, directions) = input.split_once("\n\n").unwrap();
 
         let mut positions = Vec::new();
@@ -46,8 +46,8 @@ impl SolverTrait<String> for Solver<2022, 5, 1> {
     }
 }
 
-impl SolverTrait<String> for Solver<2022, 5, 2> {
-    fn solve(&self, input: &str) -> String {
+impl SolverTrait for Solver<2022, 5, 2> {
+    fn solve(&self, input: &str) -> impl ToString {
         let (original, directions) = input.split_once("\n\n").unwrap();
 
         let mut positions = Vec::new();

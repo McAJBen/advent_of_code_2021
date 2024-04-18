@@ -75,8 +75,8 @@ impl FileDescriptor {
     }
 }
 
-impl SolverTrait<u64> for Solver<2022, 7, 1> {
-    fn solve(&self, input: &str) -> u64 {
+impl SolverTrait for Solver<2022, 7, 1> {
+    fn solve(&self, input: &str) -> impl ToString {
         let fds = FileDescriptor::from_terminal(input);
 
         fds.values()
@@ -87,12 +87,12 @@ impl SolverTrait<u64> for Solver<2022, 7, 1> {
                     0
                 }
             })
-            .sum()
+            .sum::<u64>()
     }
 }
 
-impl SolverTrait<u64> for Solver<2022, 7, 2> {
-    fn solve(&self, input: &str) -> u64 {
+impl SolverTrait for Solver<2022, 7, 2> {
+    fn solve(&self, input: &str) -> impl ToString {
         let fds = FileDescriptor::from_terminal(input);
 
         let used_size = fds.get(&PathBuf::new()).unwrap().size;

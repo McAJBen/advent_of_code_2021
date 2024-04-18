@@ -109,8 +109,8 @@ impl SeaFloor {
     }
 }
 
-impl SolverTrait<u16> for Solver<2021, 25, 1> {
-    fn solve(&self, input: &str) -> u16 {
+impl SolverTrait for Solver<2021, 25, 1> {
+    fn solve(&self, input: &str) -> impl ToString {
         let mut prev_floor = SeaFloor::new(input);
         let mut iterations = 0;
 

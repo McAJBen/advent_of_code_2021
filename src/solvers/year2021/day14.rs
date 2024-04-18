@@ -4,8 +4,8 @@ use crate::{
 };
 use std::collections::HashMap;
 
-impl SolverTrait<i32> for Solver<2021, 14, 1> {
-    fn solve(&self, input: &str) -> i32 {
+impl SolverTrait for Solver<2021, 14, 1> {
+    fn solve(&self, input: &str) -> impl ToString {
         let (template, pairs) = input.split_once("\n\n").unwrap();
         let mut template = template.to_string();
 
@@ -51,8 +51,8 @@ impl SolverTrait<i32> for Solver<2021, 14, 1> {
     }
 }
 
-impl SolverTrait<u64> for Solver<2021, 14, 2> {
-    fn solve(&self, input: &str) -> u64 {
+impl SolverTrait for Solver<2021, 14, 2> {
+    fn solve(&self, input: &str) -> impl ToString {
         let (template, pairs) = input.split_once("\n\n").unwrap();
 
         let template_start = *template.chars().collect::<Vec<_>>().first().unwrap();

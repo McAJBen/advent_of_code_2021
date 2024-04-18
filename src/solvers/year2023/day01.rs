@@ -1,7 +1,7 @@
 use crate::solvers::{Solver, SolverTrait};
 
-impl SolverTrait<u32> for Solver<2023, 1, 1> {
-    fn solve(&self, input: &str) -> u32 {
+impl SolverTrait for Solver<2023, 1, 1> {
+    fn solve(&self, input: &str) -> impl ToString {
         input
             .lines()
             .map(|line| {
@@ -10,12 +10,12 @@ impl SolverTrait<u32> for Solver<2023, 1, 1> {
 
                 first_digit * 10 + last_digit
             })
-            .sum()
+            .sum::<u32>()
     }
 }
 
-impl SolverTrait<u32> for Solver<2023, 1, 2> {
-    fn solve(&self, input: &str) -> u32 {
+impl SolverTrait for Solver<2023, 1, 2> {
+    fn solve(&self, input: &str) -> impl ToString {
         input
             .lines()
             .map(|line| {
@@ -57,6 +57,6 @@ impl SolverTrait<u32> for Solver<2023, 1, 2> {
 
                 first_digit * 10 + last_digit
             })
-            .sum()
+            .sum::<u32>()
     }
 }

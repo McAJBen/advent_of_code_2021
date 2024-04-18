@@ -1,8 +1,8 @@
 use crate::solvers::{Solver, SolverTrait};
 use std::collections::HashSet;
 
-impl SolverTrait<u32> for Solver<2022, 3, 1> {
-    fn solve(&self, input: &str) -> u32 {
+impl SolverTrait for Solver<2022, 3, 1> {
+    fn solve(&self, input: &str) -> impl ToString {
         input
             .lines()
             .map(|line| {
@@ -22,12 +22,12 @@ impl SolverTrait<u32> for Solver<2022, 3, 1> {
                 let intersection: HashSet<u8> = c1.intersection(&c2).copied().collect();
                 intersection.into_iter().map(|u8| u8 as u32).sum::<u32>()
             })
-            .sum()
+            .sum::<u32>()
     }
 }
 
-impl SolverTrait<u32> for Solver<2022, 3, 2> {
-    fn solve(&self, input: &str) -> u32 {
+impl SolverTrait for Solver<2022, 3, 2> {
+    fn solve(&self, input: &str) -> impl ToString {
         input
             .lines()
             .collect::<Vec<_>>()
@@ -50,6 +50,6 @@ impl SolverTrait<u32> for Solver<2022, 3, 2> {
                     .map(|u8| u8 as u32)
                     .sum::<u32>()
             })
-            .sum()
+            .sum::<u32>()
     }
 }

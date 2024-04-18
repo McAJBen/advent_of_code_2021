@@ -1,7 +1,7 @@
 use crate::solvers::{Solver, SolverTrait};
 
-impl SolverTrait<i32> for Solver<2021, 3, 1> {
-    fn solve(&self, input: &str) -> i32 {
+impl SolverTrait for Solver<2021, 3, 1> {
+    fn solve(&self, input: &str) -> impl ToString {
         let lines: Vec<Vec<bool>> = input
             .lines()
             .map(|line| line.chars().map(|char| char == '1').collect())
@@ -27,8 +27,8 @@ impl SolverTrait<i32> for Solver<2021, 3, 1> {
     }
 }
 
-impl SolverTrait<i32> for Solver<2021, 3, 2> {
-    fn solve(&self, input: &str) -> i32 {
+impl SolverTrait for Solver<2021, 3, 2> {
+    fn solve(&self, input: &str) -> impl ToString {
         let lines: Vec<Vec<bool>> = input
             .lines()
             .map(|line| line.chars().map(|char| char == '1').collect())

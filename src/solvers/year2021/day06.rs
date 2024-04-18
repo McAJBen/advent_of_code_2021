@@ -1,8 +1,8 @@
 use crate::solvers::{Solver, SolverTrait};
 use std::collections::HashMap;
 
-impl SolverTrait<usize> for Solver<2021, 6, 1> {
-    fn solve(&self, input: &str) -> usize {
+impl SolverTrait for Solver<2021, 6, 1> {
+    fn solve(&self, input: &str) -> impl ToString {
         let mut fishes: Vec<u8> = input.split(',').map(|x| x.parse::<u8>().unwrap()).collect();
 
         for _ in 0..80 {
@@ -24,8 +24,8 @@ impl SolverTrait<usize> for Solver<2021, 6, 1> {
     }
 }
 
-impl SolverTrait<u64> for Solver<2021, 6, 2> {
-    fn solve(&self, input: &str) -> u64 {
+impl SolverTrait for Solver<2021, 6, 2> {
+    fn solve(&self, input: &str) -> impl ToString {
         let fishes: Vec<u8> = input.split(',').map(|x| x.parse::<u8>().unwrap()).collect();
 
         let mut map = HashMap::new();

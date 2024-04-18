@@ -421,8 +421,8 @@ fn find_shortest(burrow: &Burrow, state: BurrowState) -> Option<BurrowState> {
     None
 }
 
-impl SolverTrait<u16> for Solver<2021, 23, 1> {
-    fn solve(&self, input: &str) -> u16 {
+impl SolverTrait for Solver<2021, 23, 1> {
+    fn solve(&self, input: &str) -> impl ToString {
         let (burrow, state) = Burrow::new(input.lines());
 
         let state = find_shortest(&burrow, state).unwrap();
@@ -431,8 +431,8 @@ impl SolverTrait<u16> for Solver<2021, 23, 1> {
     }
 }
 
-impl SolverTrait<u16> for Solver<2021, 23, 2> {
-    fn solve(&self, input: &str) -> u16 {
+impl SolverTrait for Solver<2021, 23, 2> {
+    fn solve(&self, input: &str) -> impl ToString {
         let mut lines: Vec<&str> = input.lines().collect();
         lines.insert(3, "  #D#C#B#A#  ");
         lines.insert(4, "  #D#B#A#C#  ");

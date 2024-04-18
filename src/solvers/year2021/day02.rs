@@ -33,8 +33,8 @@ impl DirectionCommand {
     }
 }
 
-impl SolverTrait<i32> for Solver<2021, 2, 1> {
-    fn solve(&self, input: &str) -> i32 {
+impl SolverTrait for Solver<2021, 2, 1> {
+    fn solve(&self, input: &str) -> impl ToString {
         let mut horizontal_position = 0;
         let mut depth = 0;
 
@@ -52,8 +52,8 @@ impl SolverTrait<i32> for Solver<2021, 2, 1> {
     }
 }
 
-impl SolverTrait<i32> for Solver<2021, 2, 2> {
-    fn solve(&self, input: &str) -> i32 {
+impl SolverTrait for Solver<2021, 2, 2> {
+    fn solve(&self, input: &str) -> impl ToString {
         let mut horizontal_position = 0;
         let mut depth = 0;
         let mut aim = 0;

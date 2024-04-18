@@ -17,8 +17,8 @@ fn parse_line(line: &str) -> (u8, u8, u8) {
     (x, y, z)
 }
 
-impl SolverTrait<usize> for Solver<2022, 18, 1> {
-    fn solve(&self, input: &str) -> usize {
+impl SolverTrait for Solver<2022, 18, 1> {
+    fn solve(&self, input: &str) -> impl ToString {
         let mut sides = HashSet::<(Side, u8, u8, u8)>::new();
 
         for line in input.lines() {
@@ -43,8 +43,8 @@ impl SolverTrait<usize> for Solver<2022, 18, 1> {
     }
 }
 
-impl SolverTrait<usize> for Solver<2022, 18, 2> {
-    fn solve(&self, input: &str) -> usize {
+impl SolverTrait for Solver<2022, 18, 2> {
+    fn solve(&self, input: &str) -> impl ToString {
         let points: HashSet<(u8, u8, u8)> = input
             .lines()
             .map(parse_line)

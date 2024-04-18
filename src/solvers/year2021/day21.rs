@@ -84,8 +84,8 @@ impl DeterministicDie {
     }
 }
 
-impl SolverTrait<u32> for Solver<2021, 21, 1> {
-    fn solve(&self, input: &str) -> u32 {
+impl SolverTrait for Solver<2021, 21, 1> {
+    fn solve(&self, input: &str) -> impl ToString {
         let mut game_state = GameState::new(input);
 
         let mut die = DeterministicDie::new();
@@ -107,8 +107,8 @@ impl SolverTrait<u32> for Solver<2021, 21, 1> {
     }
 }
 
-impl SolverTrait<u64> for Solver<2021, 21, 2> {
-    fn solve(&self, input: &str) -> u64 {
+impl SolverTrait for Solver<2021, 21, 2> {
+    fn solve(&self, input: &str) -> impl ToString {
         let mut game_states = vec![(1, GameState::new(input))];
         let mut player1_wins: u64 = 0;
         let mut player2_wins: u64 = 0;

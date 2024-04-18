@@ -25,8 +25,8 @@ fn format_grid(points: &HashSet<Point>) -> String {
     s
 }
 
-impl SolverTrait<usize> for Solver<2021, 13, 1> {
-    fn solve(&self, input: &str) -> usize {
+impl SolverTrait for Solver<2021, 13, 1> {
+    fn solve(&self, input: &str) -> impl ToString {
         let (points, folds) = input.split_once("\n\n").unwrap();
 
         let mut points = points
@@ -74,8 +74,8 @@ impl SolverTrait<usize> for Solver<2021, 13, 1> {
     }
 }
 
-impl SolverTrait<String> for Solver<2021, 13, 2> {
-    fn solve(&self, input: &str) -> String {
+impl SolverTrait for Solver<2021, 13, 2> {
+    fn solve(&self, input: &str) -> impl ToString {
         let (points, folds) = input.split_once("\n\n").unwrap();
 
         let mut points = points

@@ -77,8 +77,8 @@ fn parse_line(line: &str) -> usize {
         .fold(0, |prev, digit| digit + prev * 10)
 }
 
-impl SolverTrait<usize> for Solver<2021, 8, 1> {
-    fn solve(&self, input: &str) -> usize {
+impl SolverTrait for Solver<2021, 8, 1> {
+    fn solve(&self, input: &str) -> impl ToString {
         let displays = input.lines().map(Display::new).collect::<Vec<_>>();
 
         // number of times that 1, 4, 7, 8 appear
@@ -101,8 +101,8 @@ impl SolverTrait<usize> for Solver<2021, 8, 1> {
     }
 }
 
-impl SolverTrait<usize> for Solver<2021, 8, 2> {
-    fn solve(&self, input: &str) -> usize {
+impl SolverTrait for Solver<2021, 8, 2> {
+    fn solve(&self, input: &str) -> impl ToString {
         input.lines().map(parse_line).sum::<usize>()
     }
 }

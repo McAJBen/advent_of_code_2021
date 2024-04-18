@@ -1,7 +1,7 @@
 use crate::solvers::{Solver, SolverTrait};
 
-impl SolverTrait<u32> for Solver<2019, 1, 1> {
-    fn solve(&self, input: &str) -> u32 {
+impl SolverTrait for Solver<2019, 1, 1> {
+    fn solve(&self, input: &str) -> impl ToString {
         input
             .lines()
             .map(|line| line.parse::<u32>().unwrap() / 3 - 2)
@@ -9,8 +9,8 @@ impl SolverTrait<u32> for Solver<2019, 1, 1> {
     }
 }
 
-impl SolverTrait<u32> for Solver<2019, 1, 2> {
-    fn solve(&self, input: &str) -> u32 {
+impl SolverTrait for Solver<2019, 1, 2> {
+    fn solve(&self, input: &str) -> impl ToString {
         let mut masses = input
             .lines()
             .map(|line| line.parse::<u32>().unwrap())

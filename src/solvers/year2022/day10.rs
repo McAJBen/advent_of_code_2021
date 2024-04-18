@@ -1,7 +1,7 @@
 use crate::solvers::{Solver, SolverTrait};
 
-impl SolverTrait<i64> for Solver<2022, 10, 1> {
-    fn solve(&self, input: &str) -> i64 {
+impl SolverTrait for Solver<2022, 10, 1> {
+    fn solve(&self, input: &str) -> impl ToString {
         let mut register: i64 = 1;
         let mut cycle = 1;
 
@@ -13,19 +13,16 @@ impl SolverTrait<i64> for Solver<2022, 10, 1> {
                 ["noop", ..] => {
                     if (cycle + 20) % 40 == 0 {
                         signal_strength += cycle * register;
-                        println!("{}", cycle * register);
                     }
                     cycle += 1;
                 }
                 ["addx", value] => {
                     if (cycle + 20) % 40 == 0 {
                         signal_strength += cycle * register;
-                        println!("{}", cycle * register);
                     }
                     cycle += 1;
                     if (cycle + 20) % 40 == 0 {
                         signal_strength += cycle * register;
-                        println!("{}", cycle * register);
                     }
                     cycle += 1;
                     register += value.parse::<i64>().unwrap();
@@ -38,8 +35,8 @@ impl SolverTrait<i64> for Solver<2022, 10, 1> {
     }
 }
 
-impl SolverTrait<String> for Solver<2022, 10, 2> {
-    fn solve(&self, input: &str) -> String {
+impl SolverTrait for Solver<2022, 10, 2> {
+    fn solve(&self, input: &str) -> impl ToString {
         let mut register: i64 = 1;
         let mut cycle = 1;
 
@@ -75,7 +72,7 @@ impl SolverTrait<String> for Solver<2022, 10, 2> {
             }
         }
 
-        let string = pixels
+        pixels
             .chunks(40)
             .map(|pixels| {
                 pixels
@@ -84,10 +81,6 @@ impl SolverTrait<String> for Solver<2022, 10, 2> {
                     .chain(['\n'])
                     .collect::<String>()
             })
-            .collect();
-
-        println!("{string}");
-
-        string
+            .collect::<String>()
     }
 }

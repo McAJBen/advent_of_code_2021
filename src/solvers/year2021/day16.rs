@@ -187,14 +187,14 @@ impl Packet {
     }
 }
 
-impl SolverTrait<u64> for Solver<2021, 16, 1> {
-    fn solve(&self, input: &str) -> u64 {
+impl SolverTrait for Solver<2021, 16, 1> {
+    fn solve(&self, input: &str) -> impl ToString {
         Packet::from_input(input).version_sum()
     }
 }
 
-impl SolverTrait<u64> for Solver<2021, 16, 2> {
-    fn solve(&self, input: &str) -> u64 {
+impl SolverTrait for Solver<2021, 16, 2> {
+    fn solve(&self, input: &str) -> impl ToString {
         Packet::from_input(input).eval()
     }
 }

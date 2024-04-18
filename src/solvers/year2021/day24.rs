@@ -217,8 +217,8 @@ impl<'a> ALUProgramState<'a> {
     }
 }
 
-impl SolverTrait<i64> for Solver<2021, 24, 1> {
-    fn solve(&self, input: &str) -> i64 {
+impl SolverTrait for Solver<2021, 24, 1> {
+    fn solve(&self, input: &str) -> impl ToString {
         let program = ALUProgram::new(
             input,
             vec![
@@ -258,8 +258,8 @@ impl SolverTrait<i64> for Solver<2021, 24, 1> {
     }
 }
 
-impl SolverTrait<i64> for Solver<2021, 24, 2> {
-    fn solve(&self, input: &str) -> i64 {
+impl SolverTrait for Solver<2021, 24, 2> {
+    fn solve(&self, input: &str) -> impl ToString {
         let program = ALUProgram::new(
             input,
             vec![

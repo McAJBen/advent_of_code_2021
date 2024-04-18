@@ -69,8 +69,8 @@ impl IntCodeVirtualMachine {
     }
 }
 
-impl SolverTrait<u32> for Solver<2019, 2, 1> {
-    fn solve(&self, input: &str) -> u32 {
+impl SolverTrait for Solver<2019, 2, 1> {
+    fn solve(&self, input: &str) -> impl ToString {
         let mut vm = IntCodeVirtualMachine::new(input);
 
         vm.set_address(1, 12);
@@ -82,8 +82,8 @@ impl SolverTrait<u32> for Solver<2019, 2, 1> {
     }
 }
 
-impl SolverTrait<u32> for Solver<2019, 2, 2> {
-    fn solve(&self, input: &str) -> u32 {
+impl SolverTrait for Solver<2019, 2, 2> {
+    fn solve(&self, input: &str) -> impl ToString {
         for noun in 0..100 {
             for verb in 0..100 {
                 let mut vm = IntCodeVirtualMachine::new(input);

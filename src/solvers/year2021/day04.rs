@@ -49,8 +49,8 @@ impl Board {
     }
 }
 
-impl SolverTrait<i32> for Solver<2021, 4, 1> {
-    fn solve(&self, input: &str) -> i32 {
+impl SolverTrait for Solver<2021, 4, 1> {
+    fn solve(&self, input: &str) -> impl ToString {
         let mut lines = input.lines().collect::<Vec<_>>();
 
         let numbers = lines
@@ -89,8 +89,8 @@ impl SolverTrait<i32> for Solver<2021, 4, 1> {
     }
 }
 
-impl SolverTrait<i32> for Solver<2021, 4, 2> {
-    fn solve(&self, input: &str) -> i32 {
+impl SolverTrait for Solver<2021, 4, 2> {
+    fn solve(&self, input: &str) -> impl ToString {
         let mut lines = input.lines().collect::<Vec<_>>();
 
         let numbers = lines

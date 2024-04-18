@@ -135,16 +135,16 @@ impl Grid {
     }
 }
 
-impl SolverTrait<u16> for Solver<2021, 15, 1> {
-    fn solve(&self, input: &str) -> u16 {
+impl SolverTrait for Solver<2021, 15, 1> {
+    fn solve(&self, input: &str) -> impl ToString {
         let grid = Grid::new(input, 1);
 
         grid.dijkstra()
     }
 }
 
-impl SolverTrait<u16> for Solver<2021, 15, 2> {
-    fn solve(&self, input: &str) -> u16 {
+impl SolverTrait for Solver<2021, 15, 2> {
+    fn solve(&self, input: &str) -> impl ToString {
         let grid = Grid::new(input, 5);
 
         grid.dijkstra()

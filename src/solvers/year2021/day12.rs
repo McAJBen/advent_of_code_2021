@@ -114,8 +114,8 @@ impl Graph {
     }
 }
 
-impl SolverTrait<usize> for Solver<2021, 12, 1> {
-    fn solve(&self, input: &str) -> usize {
+impl SolverTrait for Solver<2021, 12, 1> {
+    fn solve(&self, input: &str) -> impl ToString {
         let graph = Graph::new(input);
 
         let paths = graph.get_all_paths();
@@ -124,8 +124,8 @@ impl SolverTrait<usize> for Solver<2021, 12, 1> {
     }
 }
 
-impl SolverTrait<usize> for Solver<2021, 12, 2> {
-    fn solve(&self, input: &str) -> usize {
+impl SolverTrait for Solver<2021, 12, 2> {
+    fn solve(&self, input: &str) -> impl ToString {
         let graph = Graph::new(input);
 
         let paths = graph.get_all_paths2();

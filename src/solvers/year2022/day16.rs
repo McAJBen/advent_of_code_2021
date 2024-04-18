@@ -149,8 +149,8 @@ fn find_best_path<'a, const MAX_MOVES: u8, const NUM_PLAYERS: usize>(
     best
 }
 
-impl SolverTrait<u16> for Solver<2022, 16, 1> {
-    fn solve(&self, input: &str) -> u16 {
+impl SolverTrait for Solver<2022, 16, 1> {
+    fn solve(&self, input: &str) -> impl ToString {
         let valves: Vec<Valve> = input.lines().map(Valve::from_line).collect();
 
         debug_assert!(valves.len() <= 64);
@@ -165,8 +165,8 @@ impl SolverTrait<u16> for Solver<2022, 16, 1> {
     }
 }
 
-impl SolverTrait<u16> for Solver<2022, 16, 2> {
-    fn solve(&self, input: &str) -> u16 {
+impl SolverTrait for Solver<2022, 16, 2> {
+    fn solve(&self, input: &str) -> impl ToString {
         let valves: Vec<Valve> = input.lines().map(Valve::from_line).collect();
 
         debug_assert!(valves.len() <= 64);
