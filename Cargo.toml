@@ -9,7 +9,7 @@ version = "0.1.0"
 clap = { version = "4.5.4", features = ["derive"] }
 enum-iterator = "2.0.0"
 indicatif = "0.17.8"
-num-bigint = "0.4.4"
+num-bigint = "0.4.5"
 num-traits = "0.2.18"
 paste = "1.0.14"
 rayon = "1.10.0"
