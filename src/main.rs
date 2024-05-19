@@ -14,6 +14,8 @@ struct Args {
     day: Option<u8>,
     #[clap(short, long)]
     part: Option<u8>,
+    #[clap(short, long)]
+    test: Option<String>,
 }
 
 fn run<const YEAR: u16, const DAY: u8, const PART: u8>(args: &Args, solver: Solver<YEAR, DAY, PART>)
@@ -25,18 +27,23 @@ where
         && args.part.unwrap_or(solver.part()) == solver.part()
     {
         for test_case in TestCase::from_dir(solver.year(), solver.day(), solver.part()) {
-            let start = Instant::now();
-            let result = solver.solve(test_case.input());
-            let duration = Instant::now() - start;
-            println!(
-                "year {:04} day {:02} part: {} test: {} duration: {:?}\n{}",
-                solver.year(),
-                solver.day(),
-                solver.part(),
-                test_case.name(),
-                duration,
-                result.to_string()
-            );
+            if args
+                .test
+                .as_ref()
+                .map_or(true, |test| test.eq(test_case.name()))
+            {
+                println!(
+                    "year {:04} day {:02} part: {} test: {}",
+                    solver.year(),
+                    solver.day(),
+                    solver.part(),
+                    test_case.name(),
+                );
+                let start = Instant::now();
+                let result = solver.solve(test_case.input());
+                let duration = Instant::now() - start;
+                println!("  duration: {:?}\n    {}", duration, result.to_string());
+            }
         }
     }
 }
