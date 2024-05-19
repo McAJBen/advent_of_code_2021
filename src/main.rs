@@ -43,6 +43,7 @@ where
                 let result = solver.solve(test_case.input());
                 let duration = Instant::now() - start;
                 println!("  duration: {:?}\n    {}", duration, result.to_string());
+                assert_eq!(test_case.output(), result.to_string());
             }
         }
     }
@@ -159,4 +160,6 @@ fn main() {
 
     run(&args, Solver::<2023, 1, 1>);
     run(&args, Solver::<2023, 1, 2>);
+    run(&args, Solver::<2023, 2, 1>);
+    run(&args, Solver::<2023, 2, 2>);
 }
