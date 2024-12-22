@@ -60,6 +60,9 @@ mod year2023 {
     mod day01;
     mod day02;
 }
+mod year2024 {
+    mod day01;
+}
 
 pub struct Solver<const YEAR: u16, const DAY: u8, const PART: u8>;
 

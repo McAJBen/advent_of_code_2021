@@ -136,3 +136,6 @@ test_method!(2023, 1, 1);
 test_method!(2023, 1, 2);
 test_method!(2023, 2, 1);
 test_method!(2023, 2, 2);
+
+test_method!(2024, 1, 1);
+test_method!(2024, 1, 2);

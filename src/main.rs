@@ -162,4 +162,7 @@ fn main() {
     run(&args, Solver::<2023, 1, 2>);
     run(&args, Solver::<2023, 2, 1>);
     run(&args, Solver::<2023, 2, 2>);
+
+    run(&args, Solver::<2024, 1, 1>);
+    run(&args, Solver::<2024, 1, 2>);
 }
